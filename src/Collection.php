@@ -94,6 +94,28 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
+     * Set data.
+     *
+     * @param array|null $data
+     */
+    public function setData(array $data = null): self
+    {
+        $this->data = (array) $data;
+
+        return $this;
+    }
+
+    /**
+     * Get data.
+     *
+     * @return array
+     */
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    /**
      * Set an item.
      *
      * @param  int|string $key
@@ -122,7 +144,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
             return $this->data[$key];
         }
 
-        return $valueDefault;
+        return $this->dig($key, $valueDefault);
     }
 
     /**
@@ -199,6 +221,30 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     final public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->data);
+    }
+
+    /**
+     * Array getter with dot notation support for sub-array paths.
+     *
+     * @param  int|string $key (aka path)
+     * @param  any        $valueDefault
+     * @return any
+     */
+    final public function dig($key, $valueDefault = null)
+    {
+        $data = $this->getData();
+        // direct access
+        if (isset($data[$key])) {
+            $value =& $data[$key];
+        } else {
+            // trace element path
+            $value =& $data;
+            foreach (explode('.', trim((string) $key)) as $key) {
+                $value =& $value[$key];
+            }
+        }
+
+        return ($value !== null) ? $value : $valueDefault;
     }
 
     /**
