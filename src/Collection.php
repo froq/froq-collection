@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace Froq\Collection;
 
+use Froq\Util\Util;
+
 /**
  * @package     Froq
  * @subpackage  Froq\Collection
@@ -45,7 +47,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function __construct(array $data = [])
     {
-        $this->data = $data;
+        $this->setData($data);
     }
 
     /**
@@ -224,30 +226,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Array getter with dot notation support for sub-array paths.
-     *
-     * @param  int|string $key (aka path)
-     * @param  any        $valueDefault
-     * @return any
-     */
-    final public function dig($key, $valueDefault = null)
-    {
-        $data = $this->getData();
-        // direct access
-        if (isset($data[$key])) {
-            $value =& $data[$key];
-        } else {
-            // trace element path
-            $value =& $data;
-            foreach (explode('.', trim((string) $key)) as $key) {
-                $value =& $value[$key];
-            }
-        }
-
-        return ($value !== null) ? $value : $valueDefault;
-    }
-
-    /**
      * Get all data as array.
      *
      * @param  bool $snn Set values null if none.
@@ -264,5 +242,37 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
         }
 
         return $array;
+    }
+
+    /**
+     * Array getter with dot notation support for sub-array paths.
+     *
+     * @param  int|string $key (aka path)
+     * @param  any        $valueDefault
+     * @return any
+     */
+    final public function dig($key, $valueDefault = null)
+    {
+        return Util::arrayDig($this->data, $key, $valueDefault);
+    }
+
+    /**
+     * Get data keys.
+     *
+     * @return array
+     */
+    final public function keys(): array
+    {
+        return array_keys($this->data);
+    }
+
+    /**
+     * Get data values.
+     *
+     * @return array
+     */
+    final public function values(): array
+    {
+        return array_values($this->data);
     }
 }
