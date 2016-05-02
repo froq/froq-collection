@@ -98,7 +98,8 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Set data.
      *
-     * @param array|null $data
+     * @param  array|null $data
+     * @return self
      */
     public function setData(array $data = null): self
     {
