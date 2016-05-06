@@ -121,6 +121,17 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
+     * Check an item.
+     *
+     * @param  int|string $key
+     * @return bool
+     */
+    public function has($key): bool
+    {
+        return $this->offsetExists($key);
+    }
+
+    /**
      * Set an item.
      *
      * @param  int|string $key
@@ -150,17 +161,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
         }
 
         return $this->dig($key, $valueDefault);
-    }
-
-    /**
-     * Check an item.
-     *
-     * @param  int|string $key
-     * @return bool
-     */
-    public function has($key): bool
-    {
-        return $this->offsetExists($key);
     }
 
     /**
