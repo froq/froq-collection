@@ -164,6 +164,17 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
+     * Remove an item.
+     *
+     * @param  int|string $key
+     * @return void
+     */
+    public function del($key)
+    {
+        $this->offsetUnset($key);
+    }
+
+    /**
      * Set an item.
      *
      * @param  int|string $key
