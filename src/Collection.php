@@ -45,9 +45,11 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @param array $data;
      */
-    public function __construct(array $data = [])
+    public function __construct(array $data = null)
     {
-        $this->setData($data);
+        if (!empty($data)) {
+            $this->setData($data);
+        }
     }
 
     /**
@@ -98,10 +100,10 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Set data.
      *
-     * @param  array|null $data
+     * @param  array $data
      * @return self
      */
-    public function setData(array $data = null): self
+    public function setData(array $data): self
     {
         $this->data = (array) $data;
 
