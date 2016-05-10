@@ -220,14 +220,14 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Get all data as array.
-     * @param  bool $snn Set values null if none.
+     * @param  bool $setNoneNull Set values null if none.
      * @return array
      */
-    public function toArray(bool $snn = false): array
+    public function toArray(bool $setNoneNull = false): array
     {
         $array = [];
         foreach ($this->data as $key => $value) {
-            if ($snn && $value === '') {
+            if ($setNoneNull && $value === '') {
                 $value = null;
             }
             $array[$key] = $value;
