@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace Froq\Collection;
 
-use Froq\Util\Util;
+use Froq\Util\UtilArray;
 
 /**
  * @package     Froq
@@ -244,7 +244,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     final public function dig($key, $valueDefault = null)
     {
-        return Util::arrayDig($this->data, $key, $valueDefault);
+        return UtilArray::dig($this->data, $key, $valueDefault);
     }
 
     /**
