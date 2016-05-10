@@ -42,7 +42,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Constructor.
-     *
      * @param array $data;
      */
     public function __construct(array $data = null)
@@ -54,9 +53,8 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Set an item.
-     *
-     * @param  int|string $key
-     * @param  any          $value
+     * @param  any $key
+     * @param  any $value
      * @return void
      */
     public function __set($key, $value)
@@ -66,8 +64,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Get an item.
-     *
-     * @param  int|string $key
+     * @param  any $key
      * @return any
      */
     public function __get($key)
@@ -77,29 +74,26 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Check an item.
-     *
-     * @param  int|string $key
+     * @param  any $key
      * @return bool
      */
     public function __isset($key)
     {
-        return $this->offsetExists($key);
+        return array_key_exists($key, $this->data);
     }
 
     /**
      * Remove an item.
-     *
-     * @param  int|string $key
+     * @param  any $key
      * @return void
      */
     public function __unset($key)
     {
-        $this->offsetUnset($key);
+        unset($this->data[$key]);
     }
 
     /**
      * Set data.
-     *
      * @param  array $data
      * @return self
      */
@@ -112,7 +106,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Get data.
-     *
      * @return array
      */
     public function getData(): array
@@ -122,20 +115,18 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Check an item.
-     *
-     * @param  int|string $key
+     * @param  any $key
      * @return bool
      */
     public function has($key): bool
     {
-        return $this->offsetExists($key);
+        return $this->__isset($key);
     }
 
     /**
      * Set an item.
-     *
-     * @param  int|string $key
-     * @param  any        $value
+     * @param  any $key
+     * @param  any $value
      * @return void
      */
     public function set($key, $value)
@@ -149,36 +140,29 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Get an item.
-     *
-     * @param  int|string $key
-     * @param  any        $valueDefault
+     * @param  any $key
+     * @param  any $valueDefault
      * @return any
      */
     public function get($key, $valueDefault = null)
     {
-        if ($this->offsetExists($key)) {
-            return $this->data[$key];
-        }
-
         return $this->dig($key, $valueDefault);
     }
 
     /**
      * Remove an item.
-     *
-     * @param  int|string $key
+     * @param  any $key
      * @return void
      */
     public function del($key)
     {
-        $this->offsetUnset($key);
+        $this->__unset($key);
     }
 
     /**
      * Set an item.
-     *
-     * @param  int|string $key
-     * @param  any        $value
+     * @param  any $key
+     * @param  any $value
      * @return void
      */
     final public function offsetSet($key, $value)
@@ -188,8 +172,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Get an item.
-     *
-     * @param  int|string $key
+     * @param  any $key
      * @return any
      */
     final public function offsetGet($key)
@@ -199,29 +182,26 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Remove an item.
-     *
      * @param  any $key
      * @return void
      */
     final public function offsetUnset($key)
     {
-        unset($this->data[$key]);
+        $this->__unset($key);
     }
 
     /**
      * Check an item.
-     *
-     * @param  int|string $key
+     * @param  any $key
      * @return bool
      */
     final public function offsetExists($key): bool
     {
-        return array_key_exists($key, $this->data);
+        return $this->__isset($key);
     }
 
     /**
      * Count data (from \Countable).
-     *
      * @return int
      */
     final public function count(): int
@@ -231,7 +211,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Generate iterator (from \IteratorAggregate).
-     *
      * @return \ArrayIterator
      */
     final public function getIterator(): \ArrayIterator
@@ -241,7 +220,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Get all data as array.
-     *
      * @param  bool $snn Set values null if none.
      * @return array
      */
@@ -249,7 +227,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     {
         $array = [];
         foreach ($this->data as $key => $value) {
-            if ($snn && $value === none) {
+            if ($snn && $value === '') {
                 $value = null;
             }
             $array[$key] = $value;
@@ -260,9 +238,8 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Array getter with dot notation support for sub-array paths.
-     *
-     * @param  int|string $key (aka path)
-     * @param  any        $valueDefault
+     * @param  any $key (aka path)
+     * @param  any $valueDefault
      * @return any
      */
     final public function dig($key, $valueDefault = null)
@@ -272,7 +249,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Get data keys.
-     *
      * @return array
      */
     final public function keys(): array
@@ -282,7 +258,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Get data values.
-     *
      * @return array
      */
     final public function values(): array
