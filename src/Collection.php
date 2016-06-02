@@ -35,7 +35,6 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 {
     /**
      * Data stack.
-     *
      * @var array
      */
     protected $data = [];
@@ -52,7 +51,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Set an item.
+     * Set.
      * @param  any $key
      * @param  any $value
      * @return void
@@ -63,7 +62,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Get an item.
+     * Get.
      * @param  any $key
      * @return any
      */
@@ -73,7 +72,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Check an item.
+     * Isset.
      * @param  any $key
      * @return bool
      */
@@ -83,7 +82,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Remove an item.
+     * Unset.
      * @param  any $key
      * @return void
      */
@@ -114,17 +113,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Check an item.
-     * @param  any $key
-     * @return bool
-     */
-    public function has($key): bool
-    {
-        return $this->__isset($key);
-    }
-
-    /**
-     * Set an item.
+     * Set.
      * @param  any $key
      * @param  any $value
      * @return void
@@ -139,7 +128,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Get an item.
+     * Get.
      * @param  any $key
      * @param  any $valueDefault
      * @return any
@@ -150,17 +139,27 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Remove an item.
+     * Isset.
+     * @param  any $key
+     * @return bool
+     */
+    public function isset($key): bool
+    {
+        return $this->__isset($key);
+    }
+
+    /**
+     * Unset.
      * @param  any $key
      * @return void
      */
-    public function del($key)
+    public function unset($key)
     {
         $this->__unset($key);
     }
 
     /**
-     * Set an item.
+     * Offset set.
      * @param  any $key
      * @param  any $value
      * @return void
@@ -171,7 +170,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Get an item.
+     * Offset get.
      * @param  any $key
      * @return any
      */
@@ -181,7 +180,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Remove an item.
+     * Offset unset.
      * @param  any $key
      * @return void
      */
@@ -191,7 +190,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Check an item.
+     * Offset exists.
      * @param  any $key
      * @return bool
      */
@@ -201,7 +200,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Count data (from \Countable).
+     * Count.
      * @return int
      */
     final public function count(): int
@@ -219,8 +218,8 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Get all data as array.
-     * @param  bool $setNoneNull Set values null if none.
+     * To array.
+     * @param  bool $setNoneNull (set values null if none)
      * @return array
      */
     public function toArray(bool $setNoneNull = false): array
@@ -237,7 +236,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Array getter with dot notation support for sub-array paths.
+     * Dig (getter with dot notation support for sub-array paths).
      * @param  any $key (aka path)
      * @param  any $valueDefault
      * @return any
@@ -248,7 +247,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Get data keys.
+     * Keys.
      * @return array
      */
     final public function keys(): array
@@ -257,11 +256,31 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Get data values.
+     * Values.
      * @return array
      */
     final public function values(): array
     {
         return array_values($this->data);
+    }
+
+    /**
+     * Check.
+     * @param  any $key
+     * @return bool
+     */
+    public function has($key): bool
+    {
+        return $this->__isset($key);
+    }
+
+    /**
+     * Remove.
+     * @param  any $key
+     * @return void
+     */
+    public function remove($key)
+    {
+        $this->__unset($key);
     }
 }
