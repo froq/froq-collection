@@ -219,20 +219,11 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * To array.
-     * @param  bool $setNoneNull (set values null if none)
      * @return array
      */
-    public function toArray(bool $setNoneNull = false): array
+    public function toArray(): array
     {
-        $array = [];
-        foreach ($this->data as $key => $value) {
-            if ($setNoneNull && $value === '') {
-                $value = null;
-            }
-            $array[$key] = $value;
-        }
-
-        return $array;
+        return $this->data;
     }
 
     /**
