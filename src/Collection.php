@@ -42,7 +42,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Constructor.
-     * @param array $data;
+     * @param array $data
      */
     public function __construct(array $data = null)
     {
@@ -52,7 +52,7 @@ class Collection implements Arrayable, \ArrayAccess
     /**
      * Set.
      * @param  int|string $key
-     * @param  any $value
+     * @param  any        $value
      * @return void
      */
     public function __set($key, $value)
@@ -114,7 +114,7 @@ class Collection implements Arrayable, \ArrayAccess
     /**
      * Set.
      * @param  int|string $key
-     * @param  any $value
+     * @param  any        $value
      * @return void
      */
     public function set($key, $value)
@@ -129,7 +129,7 @@ class Collection implements Arrayable, \ArrayAccess
     /**
      * Get.
      * @param  int|string $key
-     * @param  any $valueDefault
+     * @param  any        $valueDefault
      * @return any
      */
     public function get($key, $valueDefault = null)
@@ -160,7 +160,7 @@ class Collection implements Arrayable, \ArrayAccess
     /**
      * Offset set.
      * @param  int|string $key
-     * @param  any $value
+     * @param  any        $value
      * @return void
      */
     final public function offsetSet($key, $value)
@@ -226,9 +226,9 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Dig (getter with dot notation support for sub-array paths).
-     * @param  int|string $key (aka path)
-     * @param  any $valueDefault
+     * Dig.
+     * @param  int|string $key
+     * @param  any        $valueDefault
      * @return any
      */
     final public function dig($key, $valueDefault = null)
