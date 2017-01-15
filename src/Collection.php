@@ -274,6 +274,58 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
+     * Has key.
+     * @param  int|string $key
+     * @return bool
+     */
+    public function hasKey($key): bool
+    {
+        return $this->__isset($key);
+    }
+
+    /**
+     * Has keys.
+     * @param  array $keys
+     * @return bool
+     */
+    public function hasKeys(array $keys): bool
+    {
+        foreach ($keys as $key) {
+            if (!$this->hasKey($key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Has value.
+     * @param  array $value
+     * @param  bool  $strict
+     * @return bool
+     */
+    public function hasValue($value, bool $strict = false): bool
+    {
+        return in_array($value, $this->data, $strict);
+    }
+
+    /**
+     * Has values.
+     * @param  array $values
+     * @param  bool  $strict
+     * @return bool
+     */
+    public function hasValues(array $values, bool $strict = false): bool
+    {
+        foreach ($values as $value) {
+            if (!$this->hasValue($value, $strict)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Remove.
      * @param  int|string $key
      * @return void
