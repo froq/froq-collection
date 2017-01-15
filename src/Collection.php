@@ -46,9 +46,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        if (!empty($data)) {
-            $this->setData($data);
-        }
+        $data && $this->setData($data);
     }
 
     /**
