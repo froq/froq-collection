@@ -35,7 +35,7 @@ use Froq\Util\Collection as CollectionUtil;
 class Collection implements Arrayable, \ArrayAccess
 {
     /**
-     * Data stack.
+     * Data.
      * @var array
      */
     protected $data = [];
@@ -51,7 +51,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Set.
-     * @param  any $key
+     * @param  int|string $key
      * @param  any $value
      * @return void
      */
@@ -62,7 +62,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Get.
-     * @param  any $key
+     * @param  int|string $key
      * @return any
      */
     public function __get($key)
@@ -72,17 +72,17 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Isset.
-     * @param  any $key
+     * @param  int|string $key
      * @return bool
      */
-    public function __isset($key)
+    public function __isset($key): bool
     {
         return array_key_exists($key, $this->data);
     }
 
     /**
      * Unset.
-     * @param  any $key
+     * @param  int|string $key
      * @return void
      */
     public function __unset($key)
@@ -113,7 +113,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Set.
-     * @param  any $key
+     * @param  int|string $key
      * @param  any $value
      * @return void
      */
@@ -128,7 +128,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Get.
-     * @param  any $key
+     * @param  int|string $key
      * @param  any $valueDefault
      * @return any
      */
@@ -139,7 +139,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Isset.
-     * @param  any $key
+     * @param  int|string $key
      * @return bool
      */
     public function isset($key): bool
@@ -149,7 +149,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Unset.
-     * @param  any $key
+     * @param  int|string $key
      * @return void
      */
     public function unset($key)
@@ -159,7 +159,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Offset set.
-     * @param  any $key
+     * @param  int|string $key
      * @param  any $value
      * @return void
      */
@@ -170,7 +170,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Offset get.
-     * @param  any $key
+     * @param  int|string $key
      * @return any
      */
     final public function offsetGet($key)
@@ -180,7 +180,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Offset unset.
-     * @param  any $key
+     * @param  int|string $key
      * @return void
      */
     final public function offsetUnset($key)
@@ -190,7 +190,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Offset exists.
-     * @param  any $key
+     * @param  int|string $key
      * @return bool
      */
     final public function offsetExists($key): bool
@@ -227,7 +227,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Dig (getter with dot notation support for sub-array paths).
-     * @param  any $key (aka path)
+     * @param  int|string $key (aka path)
      * @param  any $valueDefault
      * @return any
      */
@@ -265,7 +265,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Check.
-     * @param  any $key
+     * @param  int|string $key
      * @return bool
      */
     public function has($key): bool
@@ -275,7 +275,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Remove.
-     * @param  any $key
+     * @param  int|string $key
      * @return void
      */
     public function remove($key)
