@@ -208,7 +208,7 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Generate iterator (from \IteratorAggregate).
+     * Get iterator.
      * @return \ArrayIterator
      */
     final public function getIterator(): \ArrayIterator
