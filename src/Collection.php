@@ -98,7 +98,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function setData(array $data): self
     {
-        $this->data = (array) $data;
+        $this->data = $data;
 
         return $this;
     }
