@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace Froq\Collection;
 
+use Froq\Util\Interfaces\Arrayable;
 use Froq\Util\Collection as CollectionUtil;
 
 /**
@@ -31,7 +32,7 @@ use Froq\Util\Collection as CollectionUtil;
  * @object      Froq\Collection\Collection
  * @author      Kerem Güneş <k-gun@mail.com>
  */
-class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
+class Collection implements Arrayable, \ArrayAccess
 {
     /**
      * Data stack.
@@ -235,6 +236,15 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     final public function dig($key, $valueDefault = null)
     {
         return CollectionUtil::dig($this->data, $key, $valueDefault);
+    }
+
+    /**
+     * Empty.
+     * @return bool
+     */
+    final public function empty(): bool
+    {
+        return empty($this->data);
     }
 
     /**
