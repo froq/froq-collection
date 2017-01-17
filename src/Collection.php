@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace Froq\Collection;
 
 use Froq\Util\Interfaces\Arrayable;
-use Froq\Util\Collection as CollectionUtil;
+use Froq\Util\Arrays;
 
 /**
  * @package     Froq
@@ -115,26 +115,27 @@ class Collection implements Arrayable, \ArrayAccess
      * Set.
      * @param  int|string $key
      * @param  any        $value
-     * @return void
+     * @return self
      */
-    public function set($key, $value)
+    public function set($key, $value): self
     {
         if ($key === null) {
             $this->data[] = $value;
         } else {
             $this->data[$key] = $value;
         }
+        return $this;
     }
 
     /**
      * Get.
      * @param  int|string $key
-     * @param  any        $valueDefault
+     * @param  any        $value
      * @return any
      */
-    public function get($key, $valueDefault = null)
+    public function get($key, $value = null)
     {
-        return $this->dig($key, $valueDefault);
+        return $this->dig($key, $value);
     }
 
     /**
@@ -228,12 +229,12 @@ class Collection implements Arrayable, \ArrayAccess
     /**
      * Dig.
      * @param  int|string $key
-     * @param  any        $valueDefault
+     * @param  any        $value
      * @return any
      */
-    final public function dig($key, $valueDefault = null)
+    final public function dig($key, $value = null)
     {
-        return CollectionUtil::dig($this->data, $key, $valueDefault);
+        return Arrays::dig($this->data, $key, $value);
     }
 
     /**
@@ -306,7 +307,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function hasValue($value, bool $strict = false): bool
     {
-        return in_array($value, $this->data, $strict);
+        return Arrays::index($this->data, $value, $strict) > -1;
     }
 
     /**
@@ -326,6 +327,86 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
+     * Prepend.
+     * @param  any $value
+     * @return self
+     */
+    public function prepend($value): self
+    {
+        array_unshift($this->data, $value);
+        return $this;
+    }
+
+    /**
+     * Append.
+     * @param  any $value
+     * @return self
+     */
+    public function append($value): self
+    {
+        array_push($this->data, $value);
+        return $this;
+    }
+
+    /**
+     * Put.
+     * @param  int|string $key
+     * @param  any        $value
+     * @param  bool       $prev
+     * @return self
+     */
+    public function put($key, $value, bool $prev = false): self
+    {
+        if ($this->__isset($key)) {
+            $i = Arrays::index(array_keys($this->data), $key);
+            if ($prev) {
+                $i -= 1;
+            }
+            $this->data = array_merge(array_slice($this->data, 0, $i + 1),
+                [$value], array_slice($this->data, $i + 1));
+        } elseif ($prev) {
+            $this->data = array_merge([$key => $value], array_slice($this->data, 0));
+        } else {
+            $this->data[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Put prev.
+     * @param  int|string $key
+     * @param  any        $value
+     * @return self
+     */
+    public function putPrev($key, $value): self
+    {
+        return $this->put($key, $value, true);
+    }
+
+    /**
+     * Put next.
+     * @param  int|string $key
+     * @param  any        $value
+     * @return self
+     */
+    public function putNext($key, $value): self
+    {
+        return $this->put($key, $value);
+    }
+
+    /**
+     * Put.
+     * @param  int|strign $key
+     * @param  any        $value
+     * @return any
+     */
+    public function pick($key, $value = null)
+    {
+        return Arrays::pick($this->data, $key, $value);
+    }
+
+    /**
      * Remove.
      * @param  int|string $key
      * @return void
@@ -333,5 +414,47 @@ class Collection implements Arrayable, \ArrayAccess
     public function remove($key)
     {
         $this->__unset($key);
+    }
+
+    /**
+     * Item.
+     * @param  int|string $key
+     * @return ?any
+     */
+    public function item($key)
+    {
+        return $this->get($key);
+    }
+
+    /**
+     * Items.
+     * @param  array $keys
+     * @return array
+     */
+    public function items(array $keys): array
+    {
+        $return = [];
+        foreach ($keys as $key) {
+            $return[$key] = $this->item($key);
+        }
+        return $return;
+    }
+
+    /**
+     * Item first.
+     * @return ?any
+     */
+    public function itemFirst()
+    {
+        return Arrays::first($this->data);
+    }
+
+    /**
+     * Item last.
+     * @return ?any
+     */
+    public function itemLast()
+    {
+        return Arrays::last($this->data);
     }
 }
