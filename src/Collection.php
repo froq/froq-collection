@@ -139,11 +139,11 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Isset.
+     * Is set.
      * @param  int|string $key
      * @return bool
      */
-    public function isset($key): bool
+    public function isSet($key): bool
     {
         return $this->__isset($key);
     }
@@ -239,9 +239,18 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Empty.
+     * @return void
+     */
+    final public function empty()
+    {
+        $this->data = [];
+    }
+
+    /**
+     * Is empty.
      * @return bool
      */
-    final public function empty(): bool
+    final public function isEmpty(): bool
     {
         return empty($this->data);
     }
