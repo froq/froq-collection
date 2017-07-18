@@ -458,7 +458,7 @@ class Collection implements Arrayable, \ArrayAccess
     {
         $return = [];
         foreach ($keys as $key) {
-            $return[$key] = $this->item($key);
+            $return[$key] = $this->get($key);
         }
         return $return;
     }
