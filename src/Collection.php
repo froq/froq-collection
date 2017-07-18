@@ -290,7 +290,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function hasKey($key): bool
     {
-        return $this->isset($key);
+        return array_key_exists($key, $this->data);
     }
 
     /**
@@ -301,7 +301,7 @@ class Collection implements Arrayable, \ArrayAccess
     public function hasKeys(array $keys): bool
     {
         foreach ($keys as $key) {
-            if (!$this->hasKey($key)) {
+            if (!array_key_exists($key, $this->data)) {
                 return false;
             }
         }
