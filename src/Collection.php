@@ -409,13 +409,24 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Put.
-     * @param  int|strign $key
-     * @param  any        $value
+     * @param  int|string $key
+     * @param  any        $valueDefault
      * @return any
      */
-    public function pick($key, $value = null)
+    public function pick($key, $valueDefault = null)
     {
-        return Arrays::pick($this->data, $key, $value);
+        return Arrays::pick($this->data, $key, $valueDefault);
+    }
+
+    /**
+     * Pick all.
+     * @param  array  $keys
+     * @param  any    $valueDefault
+     * @return any
+     */
+    public function pickAll(array $keys, $valueDefault = null): array
+    {
+        return Arrays::pickAll($this->data, $keys, $valueDefault);
     }
 
     /**
