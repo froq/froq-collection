@@ -77,7 +77,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function __isset($key): bool
     {
-        return array_key_exists($key, $this->data);
+        return $this->isset($key);
     }
 
     /**
@@ -87,7 +87,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function __unset($key)
     {
-        unset($this->data[$key]);
+        $this->unset($key);
     }
 
     /**
@@ -130,12 +130,12 @@ class Collection implements Arrayable, \ArrayAccess
     /**
      * Get.
      * @param  int|string $key
-     * @param  any        $value
+     * @param  any        $valueDefault
      * @return any
      */
-    public function get($key, $value = null)
+    public function get($key, $valueDefault = null)
     {
-        return $this->dig($key, $value);
+        return $this->dig($key, $valueDefault);
     }
 
     /**
@@ -143,9 +143,9 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  int|string $key
      * @return bool
      */
-    public function isSet($key): bool
+    public function isset($key): bool
     {
-        return $this->__isset($key);
+        return array_key_exists($key, $this->data);
     }
 
     /**
@@ -155,7 +155,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function unset($key)
     {
-        $this->__unset($key);
+        unset($this->data[$key]);
     }
 
     /**
@@ -186,7 +186,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     final public function offsetUnset($key)
     {
-        $this->__unset($key);
+        $this->unset($key);
     }
 
     /**
@@ -196,7 +196,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     final public function offsetExists($key): bool
     {
-        return $this->__isset($key);
+        return $this->isset($key);
     }
 
     /**
@@ -280,7 +280,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function has($key): bool
     {
-        return $this->__isset($key);
+        return $this->isset($key);
     }
 
     /**
@@ -290,7 +290,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function hasKey($key): bool
     {
-        return $this->__isset($key);
+        return $this->isset($key);
     }
 
     /**
@@ -367,7 +367,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function put($key, $value, $keySearch = null, bool $prev = false): self
     {
-        if ($keySearch !== null && $this->__isset($keySearch)) {
+        if ($keySearch !== null && $this->isset($keySearch)) {
             $i = Arrays::index(array_keys($this->data), $keySearch);
             if ($prev) {
                 $i -= 1;
@@ -436,7 +436,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function remove($key)
     {
-        $this->__unset($key);
+        $this->unset($key);
     }
 
     /**
