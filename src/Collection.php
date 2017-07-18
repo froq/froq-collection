@@ -361,18 +361,19 @@ class Collection implements Arrayable, \ArrayAccess
      * Put.
      * @param  int|string $key
      * @param  any        $value
+     * @param  int|string $keySearch
      * @param  bool       $prev
      * @return self
      */
-    public function put($key, $value, bool $prev = false): self
+    public function put($key, $value, $keySearch = null, bool $prev = false): self
     {
-        if ($this->__isset($key)) {
-            $i = Arrays::index(array_keys($this->data), $key);
+        if ($keySearch !== null && $this->__isset($keySearch)) {
+            $i = Arrays::index(array_keys($this->data), $keySearch);
             if ($prev) {
                 $i -= 1;
             }
             $this->data = array_merge(array_slice($this->data, 0, $i + 1),
-                [$value], array_slice($this->data, $i + 1));
+                [$key => $value], array_slice($this->data, $i + 1));
         } elseif ($prev) {
             $this->data = array_merge([$key => $value], array_slice($this->data, 0));
         } else {
@@ -386,22 +387,24 @@ class Collection implements Arrayable, \ArrayAccess
      * Put prev.
      * @param  int|string $key
      * @param  any        $value
+     * @param  int|string $keySearch
      * @return self
      */
-    public function putPrev($key, $value): self
+    public function putPrev($key, $value, $keySearch = null): self
     {
-        return $this->put($key, $value, true);
+        return $this->put($key, $value, $keySearch, true);
     }
 
     /**
      * Put next.
      * @param  int|string $key
      * @param  any        $value
+     * @param  int|string $keySearch
      * @return self
      */
-    public function putNext($key, $value): self
+    public function putNext($key, $value, $keySearch = null): self
     {
-        return $this->put($key, $value);
+        return $this->put($key, $value, $keySearch, false);
     }
 
     /**
