@@ -229,12 +229,12 @@ class Collection implements Arrayable, \ArrayAccess
     /**
      * Dig.
      * @param  int|string $key
-     * @param  any        $value
+     * @param  any        $valueDefault
      * @return any
      */
-    final public function dig($key, $value = null)
+    final public function dig($key, $valueDefault = null)
     {
-        return Arrays::dig($this->data, $key, $value);
+        return Arrays::dig($this->data, $key, $valueDefault);
     }
 
     /**
