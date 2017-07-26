@@ -124,6 +124,7 @@ class Collection implements Arrayable, \ArrayAccess
         } else {
             $this->data[$key] = $value;
         }
+
         return $this;
     }
 
@@ -343,6 +344,7 @@ class Collection implements Arrayable, \ArrayAccess
     public function prepend($value): self
     {
         array_unshift($this->data, $value);
+
         return $this;
     }
 
@@ -354,6 +356,7 @@ class Collection implements Arrayable, \ArrayAccess
     public function append($value): self
     {
         array_push($this->data, $value);
+
         return $this;
     }
 
@@ -460,6 +463,7 @@ class Collection implements Arrayable, \ArrayAccess
         foreach ($keys as $key) {
             $return[$key] = $this->get($key);
         }
+
         return $return;
     }
 
