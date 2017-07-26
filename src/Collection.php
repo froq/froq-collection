@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace Froq\Collection;
 
-use Froq\Util\Interfaces\Arrayable;
 use Froq\Util\Arrays;
+use Froq\Util\Interfaces\Arrayable;
 
 /**
  * @package     Froq
@@ -164,7 +164,7 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  any        $value
      * @return void
      */
-    final public function offsetSet($key, $value)
+    public final function offsetSet($key, $value)
     {
         return $this->set($key, $value);
     }
@@ -174,7 +174,7 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  int|string $key
      * @return any
      */
-    final public function offsetGet($key)
+    public final function offsetGet($key)
     {
         return $this->get($key);
     }
@@ -184,7 +184,7 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  int|string $key
      * @return void
      */
-    final public function offsetUnset($key)
+    public final function offsetUnset($key)
     {
         $this->unset($key);
     }
@@ -194,7 +194,7 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  int|string $key
      * @return bool
      */
-    final public function offsetExists($key): bool
+    public final function offsetExists($key): bool
     {
         return $this->isset($key);
     }
@@ -203,7 +203,7 @@ class Collection implements Arrayable, \ArrayAccess
      * Count.
      * @return int
      */
-    final public function count(): int
+    public final function count(): int
     {
         return count($this->data);
     }
@@ -212,7 +212,7 @@ class Collection implements Arrayable, \ArrayAccess
      * Get iterator.
      * @return \ArrayIterator
      */
-    final public function getIterator(): \ArrayIterator
+    public final function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->data);
     }
@@ -232,7 +232,7 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  any        $valueDefault
      * @return any
      */
-    final public function dig($key, $valueDefault = null)
+    public final function dig($key, $valueDefault = null)
     {
         return Arrays::dig($this->data, $key, $valueDefault);
     }
@@ -241,7 +241,7 @@ class Collection implements Arrayable, \ArrayAccess
      * Empty.
      * @return void
      */
-    final public function empty()
+    public final function empty()
     {
         $this->data = [];
     }
@@ -250,7 +250,7 @@ class Collection implements Arrayable, \ArrayAccess
      * Is empty.
      * @return bool
      */
-    final public function isEmpty(): bool
+    public final function isEmpty(): bool
     {
         return empty($this->data);
     }
@@ -259,7 +259,7 @@ class Collection implements Arrayable, \ArrayAccess
      * Keys.
      * @return array
      */
-    final public function keys(): array
+    public final function keys(): array
     {
         return array_keys($this->data);
     }
@@ -268,7 +268,7 @@ class Collection implements Arrayable, \ArrayAccess
      * Values.
      * @return array
      */
-    final public function values(): array
+    public final function values(): array
     {
         return array_values($this->data);
     }
