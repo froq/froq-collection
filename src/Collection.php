@@ -163,9 +163,9 @@ class Collection implements Arrayable, \ArrayAccess
      * Offset set.
      * @param  int|string $key
      * @param  any        $value
-     * @return void
+     * @return self
      */
-    public final function offsetSet($key, $value): void
+    public final function offsetSet($key, $value): self
     {
         return $this->set($key, $value);
     }
