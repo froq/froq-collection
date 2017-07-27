@@ -75,7 +75,7 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  int|string $key
      * @return bool
      */
-    public function __isset($key): bool
+    public function __isset($key)
     {
         return $this->isset($key);
     }
@@ -154,7 +154,7 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  int|string $key
      * @return void
      */
-    public function unset($key)
+    public function unset($key): void
     {
         unset($this->data[$key]);
     }
@@ -165,7 +165,7 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  any        $value
      * @return void
      */
-    public final function offsetSet($key, $value)
+    public final function offsetSet($key, $value): void
     {
         return $this->set($key, $value);
     }
@@ -185,7 +185,7 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  int|string $key
      * @return void
      */
-    public final function offsetUnset($key)
+    public final function offsetUnset($key): void
     {
         $this->unset($key);
     }
@@ -242,7 +242,7 @@ class Collection implements Arrayable, \ArrayAccess
      * Empty.
      * @return void
      */
-    public final function empty()
+    public final function empty(): void
     {
         $this->data = [];
     }
@@ -387,7 +387,7 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  int|string $key
      * @return void
      */
-    public function remove($key)
+    public function remove($key): void
     {
         $this->unset($key);
     }
