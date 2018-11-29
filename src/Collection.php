@@ -320,7 +320,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function hasValue($value, bool $strict = false): bool
     {
-        return Arrays::index($this->data, $value, $strict) !== null;
+        return array_search($value, $this->data, $strict) !== false;
     }
 
     /**
