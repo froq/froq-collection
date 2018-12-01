@@ -339,7 +339,7 @@ class Collection implements Arrayable, \ArrayAccess
     /**
      * Item.
      * @param  int|string $key
-     * @return ?any
+     * @return any
      */
     public function item($key)
     {
@@ -367,7 +367,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Item first.
-     * @return ?any
+     * @return any
      */
     public function itemFirst()
     {
@@ -376,7 +376,7 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Item last.
-     * @return ?any
+     * @return any
      */
     public function itemLast()
     {
