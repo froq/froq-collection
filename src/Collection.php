@@ -49,7 +49,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $data && $this->setData($data);
+        $this->setData($data ?? []);
     }
 
     /**
@@ -96,13 +96,11 @@ class Collection implements Arrayable, \ArrayAccess
     /**
      * Set data.
      * @param  array $data
-     * @return self
+     * @return void
      */
-    public function setData(array $data): self
+    public function setData(array $data): void
     {
         $this->data = $data;
-
-        return $this;
     }
 
     /**
@@ -122,7 +120,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function set($key, $value): self
     {
-        if ($key === null) {
+        if ($key === null) { // $x[] = ..
             $this->data[] = $value;
         } else {
             $this->data[$key] = $value;
@@ -204,8 +202,7 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Count.
-     * @return int
+     * @inheritDoc \Countable
      */
     public final function count(): int
     {
@@ -213,8 +210,7 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Get iterator.
-     * @return \ArrayIterator
+     * @inheritDoc \IteratorAggregate
      */
     public final function getIterator(): \ArrayIterator
     {
@@ -298,69 +294,14 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Has keys.
-     * @param  array $keys
-     * @return bool
-     */
-    public function hasKeys(array $keys): bool
-    {
-        foreach ($keys as $key) {
-            if (!array_key_exists($key, $this->data)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
      * Has value.
      * @param  array $value
-     * @param  bool  $strict
+     * @param  bool  $isStrict
      * @return bool
      */
-    public function hasValue($value, bool $strict = false): bool
+    public function hasValue($value, bool $isStrict = false): bool
     {
-        return array_search($value, $this->data, $strict) !== false;
-    }
-
-    /**
-     * Has values.
-     * @param  array $values
-     * @param  bool  $strict
-     * @return bool
-     */
-    public function hasValues(array $values, bool $strict = false): bool
-    {
-        foreach ($values as $value) {
-            if (!$this->hasValue($value, $strict)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Prepend.
-     * @param  any $value
-     * @return self
-     */
-    public function prepend($value): self
-    {
-        array_unshift($this->data, $value);
-
-        return $this;
-    }
-
-    /**
-     * Append.
-     * @param  any $value
-     * @return self
-     */
-    public function append($value): self
-    {
-        array_push($this->data, $value);
-
-        return $this;
+        return false !== array_search($value, $this->data, $isStrict);
     }
 
     /**
@@ -407,14 +348,18 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Items.
-     * @param  array $keys
+     * @param  array|null $keys
      * @return array
      */
-    public function items(array $keys): array
+    public function items(array $keys = null): array
     {
-        $return = [];
-        foreach ($keys as $key) {
-            $return[$key] = $this->get($key);
+        if ($keys != null) {
+            $return = [];
+            foreach ($keys as $key) {
+                $return[$key] = $this->get($key);
+            }
+        } else {
+            $return = $this->data;
         }
 
         return $return;
