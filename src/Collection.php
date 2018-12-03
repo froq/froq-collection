@@ -295,8 +295,8 @@ class Collection implements Arrayable, \ArrayAccess
 
     /**
      * Has value.
-     * @param  array $value
-     * @param  bool  $isStrict
+     * @param  any  $value
+     * @param  bool $isStrict
      * @return bool
      */
     public function hasValue($value, bool $isStrict = false): bool
