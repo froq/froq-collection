@@ -301,7 +301,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function hasValue($value, bool $isStrict = false): bool
     {
-        return false !== array_search($value, $this->data, $isStrict);
+        return in_array($value, $this->data, $isStrict);
     }
 
     /**
