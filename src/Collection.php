@@ -296,12 +296,12 @@ class Collection implements Arrayable, \ArrayAccess
     /**
      * Has value.
      * @param  any  $value
-     * @param  bool $isStrict
+     * @param  bool $strict
      * @return bool
      */
-    public function hasValue($value, bool $isStrict = false): bool
+    public function hasValue($value, bool $strict = false): bool
     {
-        return in_array($value, $this->data, $isStrict);
+        return in_array($value, $this->data, $strict);
     }
 
     /**
