@@ -53,7 +53,7 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Set.
+     * Set magic.
      * @param  int|string $key
      * @param  any        $value
      * @return void
@@ -64,7 +64,7 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Get.
+     * Get magic.
      * @param  int|string $key
      * @return any
      */
@@ -74,7 +74,7 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Isset.
+     * Isset magic.
      * @param  int|string $key
      * @return bool
      */
@@ -84,7 +84,7 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Unset.
+     * Unset magic.
      * @param  int|string $key
      * @return void
      */
