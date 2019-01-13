@@ -245,25 +245,25 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Pick.
+     * Pull.
      * @param  int|string $key
      * @param  any        $valueDefault
      * @return any
      */
-    public function pick($key, $valueDefault = null)
+    public function pull($key, $valueDefault = null)
     {
-        return Arrays::pick($this->data, $key, $valueDefault);
+        return Arrays::pull($this->data, $key, $valueDefault);
     }
 
     /**
-     * Pick all.
+     * Pull all.
      * @param  array  $keys
      * @param  any    $valueDefault
      * @return any
      */
-    public function pickAll(array $keys, $valueDefault = null): array
+    public function pullAll(array $keys, $valueDefault = null): array
     {
-        return Arrays::pickAll($this->data, $keys, $valueDefault);
+        return Arrays::pullAll($this->data, $keys, $valueDefault);
     }
 
     /**
