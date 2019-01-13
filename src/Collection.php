@@ -223,7 +223,16 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function toArray(): array
     {
-        return $this->data;
+        return $this->getData();
+    }
+
+    /**
+     * To object.
+     * @return object
+     */
+    public function toObject(): object
+    {
+        return (object) $this->toArray();
     }
 
     /**
