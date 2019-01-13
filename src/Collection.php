@@ -267,13 +267,32 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Remove.
-     * @param  int|string $key
-     * @return void
+     * Add.
+     * @param  int|string|array $key
+     * @param  any $value
+     * @return self
      */
-    public function remove($key): void
+    public function add($key, $value): self
     {
-        $this->unset($key);
+        if (is_array($key)) {
+            @[$key, $value] = $key;
+        }
+
+        return $this->set($key, $value);
+    }
+
+    /**
+     * Remove.
+     * @param  int|string|array $key
+     * @return self
+     */
+    public function remove($key): self
+    {
+        foreach ((array) $key as $key) {
+            $this->unset($key);
+        }
+
+        return $this;
     }
 
     /**
