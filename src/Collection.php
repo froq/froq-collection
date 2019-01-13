@@ -296,6 +296,26 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
+     * Test (like JavaScript Array.some()).
+     * @param  callable $fn
+     * @return bool
+     */
+    public function test(callable $fn): bool
+    {
+        return Arrays::test($this->data, $fn);
+    }
+
+    /**
+     * Test all (like JavaScript Array.every()).
+     * @param  callable $fn
+     * @return bool
+     */
+    public function testAll(callable $fn): bool
+    {
+        return Arrays::testAll($this->data, $fn);
+    }
+
+    /**
      * Item.
      * @param  int|string $key
      * @return any
