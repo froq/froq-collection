@@ -123,7 +123,7 @@ class Collection implements Arrayable, \ArrayAccess
         if ($key === null) { // $x[] = ..
             $this->data[] = $value;
         } else {
-            $this->data[$key] = $value;
+            Arrays::set($this->data, $key, $value);
         }
 
         return $this;
@@ -137,7 +137,7 @@ class Collection implements Arrayable, \ArrayAccess
      */
     public function get($key, $valueDefault = null)
     {
-        return $this->dig($key, $valueDefault);
+        return Arrays::get($this->data, $key, $valueDefault);
     }
 
     /**
@@ -242,17 +242,6 @@ class Collection implements Arrayable, \ArrayAccess
     public function hasValue($value, bool $strict = false): bool
     {
         return in_array($value, $this->data, $strict);
-    }
-
-    /**
-     * Dig.
-     * @param  int|string $key
-     * @param  any        $valueDefault
-     * @return any
-     */
-    public final function dig($key, $valueDefault = null)
-    {
-        return Arrays::dig($this->data, $key, $valueDefault);
     }
 
     /**
