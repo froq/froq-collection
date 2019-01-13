@@ -161,65 +161,7 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * Offset set.
-     * @param  int|string $key
-     * @param  any        $value
-     * @return self
-     */
-    public final function offsetSet($key, $value): self
-    {
-        return $this->set($key, $value);
-    }
-
-    /**
-     * Offset get.
-     * @param  int|string $key
-     * @return any
-     */
-    public final function offsetGet($key)
-    {
-        return $this->get($key);
-    }
-
-    /**
-     * Offset unset.
-     * @param  int|string $key
-     * @return void
-     */
-    public final function offsetUnset($key): void
-    {
-        $this->unset($key);
-    }
-
-    /**
-     * Offset exists.
-     * @param  int|string $key
-     * @return bool
-     */
-    public final function offsetExists($key): bool
-    {
-        return $this->isset($key);
-    }
-
-    /**
-     * @inheritDoc \Countable
-     */
-    public final function count(): int
-    {
-        return count($this->data);
-    }
-
-    /**
-     * @inheritDoc \IteratorAggregate
-     */
-    public final function getIterator(): \ArrayIterator
-    {
-        return new \ArrayIterator($this->data);
-    }
-
-    /**
-     * To array.
-     * @return array
+     * @inheritDoc Froq\Util\Interfaces\Arrayable
      */
     public function toArray(): array
     {
@@ -233,17 +175,6 @@ class Collection implements Arrayable, \ArrayAccess
     public function toObject(): object
     {
         return (object) $this->toArray();
-    }
-
-    /**
-     * Dig.
-     * @param  int|string $key
-     * @param  any        $valueDefault
-     * @return any
-     */
-    public final function dig($key, $valueDefault = null)
-    {
-        return Arrays::dig($this->data, $key, $valueDefault);
     }
 
     /**
@@ -311,6 +242,17 @@ class Collection implements Arrayable, \ArrayAccess
     public function hasValue($value, bool $strict = false): bool
     {
         return in_array($value, $this->data, $strict);
+    }
+
+    /**
+     * Dig.
+     * @param  int|string $key
+     * @param  any        $valueDefault
+     * @return any
+     */
+    public final function dig($key, $valueDefault = null)
+    {
+        return Arrays::dig($this->data, $key, $valueDefault);
     }
 
     /**
@@ -390,5 +332,66 @@ class Collection implements Arrayable, \ArrayAccess
     public function itemLast()
     {
         return Arrays::last($this->data);
+    }
+
+    /**
+     * Inherited methods from \Countable, \IteratorAggregate, \ArrayAccess
+     */
+
+    /**
+     * @inheritDoc \Countable
+     */
+    public final function count(): int
+    {
+        return count($this->data);
+    }
+
+    /**
+     * @inheritDoc \IteratorAggregate
+     */
+    public final function getIterator(): \ArrayIterator
+    {
+        return new \ArrayIterator($this->data);
+    }
+
+    /**
+     * Offset set.
+     * @param  int|string $key
+     * @param  any        $value
+     * @return self
+     */
+    public final function offsetSet($key, $value): self
+    {
+        return $this->set($key, $value);
+    }
+
+    /**
+     * Offset get.
+     * @param  int|string $key
+     * @return any
+     */
+    public final function offsetGet($key)
+    {
+        return $this->get($key);
+    }
+
+    /**
+     * Offset unset.
+     * @param  int|string $key
+     * @return void
+     */
+    public final function offsetUnset($key): void
+    {
+        $this->unset($key);
+    }
+
+    /**
+     * Offset exists.
+     * @param  int|string $key
+     * @return bool
+     */
+    public final function offsetExists($key): bool
+    {
+        return $this->isset($key);
     }
 }
