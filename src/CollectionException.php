@@ -31,6 +31,7 @@ namespace Froq\Collection;
  * @subpackage Froq\Collection
  * @object     Froq\Collection\CollectionException
  * @author     Kerem Güneş <k-gun@mail.com>
+ * @since      1.0
  */
 final class CollectionException extends \Exception
 {}

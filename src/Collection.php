@@ -30,10 +30,11 @@ use Froq\Util\Arrays;
 use Froq\Util\Interfaces\Arrayable;
 
 /**
- * @package     Froq
- * @subpackage  Froq\Collection
- * @object      Froq\Collection\Collection
- * @author      Kerem Güneş <k-gun@mail.com>
+ * @package    Froq
+ * @subpackage Froq\Collection
+ * @object     Froq\Collection\Collection
+ * @author     Kerem Güneş <k-gun@mail.com>
+ * @since      1.0
  */
 class Collection implements Arrayable, \ArrayAccess
 {
@@ -249,6 +250,7 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  int|string $key
      * @param  any        $valueDefault
      * @return any
+     * @since  3.0
      */
     public function pull($key, $valueDefault = null)
     {
@@ -260,6 +262,7 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  array  $keys
      * @param  any    $valueDefault
      * @return any
+     * @since  3.0
      */
     public function pullAll(array $keys, $valueDefault = null): array
     {
@@ -271,11 +274,12 @@ class Collection implements Arrayable, \ArrayAccess
      * @param  int|string|array $key
      * @param  any $value
      * @return self
+     * @since  3.0
      */
     public function add($key, $value): self
     {
         if (is_array($key)) {
-            @[$key, $value] = $key;
+            @ [$key, $value] = $key;
         }
 
         return $this->set($key, $value);
@@ -299,6 +303,7 @@ class Collection implements Arrayable, \ArrayAccess
      * Test (like JavaScript Array.some()).
      * @param  callable $fn
      * @return bool
+     * @since  3.0
      */
     public function test(callable $fn): bool
     {
@@ -309,6 +314,7 @@ class Collection implements Arrayable, \ArrayAccess
      * Test all (like JavaScript Array.every()).
      * @param  callable $fn
      * @return bool
+     * @since  3.0
      */
     public function testAll(callable $fn): bool
     {
