@@ -322,6 +322,37 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
+     * Sort.
+     * @param  callable|null $func
+     * @param  callable|null $ufunc
+     * @param  int           $flags
+     * @return self
+     */
+    public function sort(callable $func = null, callable $ufunc = null, int $flags = 0): self
+    {
+        if ($func == null) {
+            sort($this->data, $flags);
+        } elseif ($func instanceof \Closure) {
+            usort($this->data, $func);
+        } elseif (is_string($func)) {
+            if ($func[0] == 'u' && $ufunc == null) {
+                throw new CollectionException("Second argument must be callable when usort,uasort,".
+                    "uksort given");
+            }
+            $arguments = [&$this->data, $flags];
+            if ($ufunc != null) {
+                if (in_array($func, ['sort', 'asort', 'ksort'])) {
+                    $func = 'u'. $func; // update to user function
+                }
+                $arguments[1] = $ufunc; // replace flags with ufunc
+            }
+            call_user_func_array($func, $arguments);
+        }
+
+        return $this;
+    }
+
+    /**
      * Item.
      * @param  int|string $key
      * @return any
