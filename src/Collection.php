@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace Froq\Collection;
 
 use Froq\Util\Arrays;
-use Froq\Util\Interfaces\Arrayable;
+use Froq\Util\Interfaces\{Sizable, Arrayable, Objectable};
 
 /**
  * @package    Froq
@@ -36,7 +36,8 @@ use Froq\Util\Interfaces\Arrayable;
  * @author     Kerem Güneş <k-gun@mail.com>
  * @since      1.0
  */
-class Collection implements Arrayable, \ArrayAccess
+class Collection implements Sizable, Arrayable, Objectable,
+    \Countable, \IteratorAggregate, \ArrayAccess
 {
     /**
      * Data.
@@ -162,6 +163,14 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
+     * @inheritDoc Froq\Util\Interfaces\Sizable,
+     */
+    public function size(): int
+    {
+        return $this->count();
+    }
+
+    /**
      * @inheritDoc Froq\Util\Interfaces\Arrayable
      */
     public function toArray(): array
@@ -170,8 +179,7 @@ class Collection implements Arrayable, \ArrayAccess
     }
 
     /**
-     * To object.
-     * @return object
+     * @inheritDoc Froq\Util\Interfaces\Objectable
      */
     public function toObject(): object
     {
