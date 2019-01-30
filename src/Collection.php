@@ -309,24 +309,24 @@ class Collection implements Sizable, Arrayable, Objectable,
 
     /**
      * Test (like JavaScript Array.some()).
-     * @param  callable $fn
+     * @param  callable $func
      * @return bool
      * @since  3.0
      */
-    public function test(callable $fn): bool
+    public function test(callable $func): bool
     {
-        return Arrays::test($this->data, $fn);
+        return Arrays::test($this->data, $func);
     }
 
     /**
      * Test all (like JavaScript Array.every()).
-     * @param  callable $fn
+     * @param  callable $func
      * @return bool
      * @since  3.0
      */
-    public function testAll(callable $fn): bool
+    public function testAll(callable $func): bool
     {
-        return Arrays::testAll($this->data, $fn);
+        return Arrays::testAll($this->data, $func);
     }
 
     /**
