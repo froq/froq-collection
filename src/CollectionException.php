@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
+use froq\exception\Exception;
+
 /**
  * Collection exception.
  * @package froq\collection
@@ -33,5 +35,5 @@ namespace froq\collection;
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   1.0
  */
-final class CollectionException extends \Exception
+final class CollectionException extends Exception
 {}
