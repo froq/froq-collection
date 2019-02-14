@@ -24,20 +24,19 @@
  */
 declare(strict_types=1);
 
-namespace Froq\Collection;
+namespace froq\collection;
 
-use Froq\Util\Arrays;
-use Froq\Util\Interfaces\{Sizable, Arrayable, Objectable};
+use froq\util\Arrays;
+use froq\util\interfaces\{Sizable, Arrayable, Objectable};
 
 /**
- * @package    Froq
- * @subpackage Froq\Collection
- * @object     Froq\Collection\Collection
- * @author     Kerem Güneş <k-gun@mail.com>
- * @since      1.0
+ * Collection.
+ * @package froq\collection
+ * @object  froq\collection\Collection
+ * @author  Kerem Güneş <k-gun@mail.com>
+ * @since   1.0
  */
-class Collection implements Sizable, Arrayable, Objectable,
-    \Countable, \IteratorAggregate, \ArrayAccess
+class Collection implements Sizable, Arrayable, Objectable, \Countable, \IteratorAggregate, \ArrayAccess
 {
     /**
      * Data.
@@ -163,7 +162,7 @@ class Collection implements Sizable, Arrayable, Objectable,
     }
 
     /**
-     * @inheritDoc Froq\Util\Interfaces\Sizable,
+     * @inheritDoc froq\util\interfaces\Sizable,
      */
     public function size(): int
     {
@@ -171,7 +170,7 @@ class Collection implements Sizable, Arrayable, Objectable,
     }
 
     /**
-     * @inheritDoc Froq\Util\Interfaces\Arrayable
+     * @inheritDoc froq\util\interfaces\Arrayable
      */
     public function toArray(): array
     {
@@ -179,7 +178,7 @@ class Collection implements Sizable, Arrayable, Objectable,
     }
 
     /**
-     * @inheritDoc Froq\Util\Interfaces\Objectable
+     * @inheritDoc froq\util\interfaces\Objectable
      */
     public function toObject(): object
     {

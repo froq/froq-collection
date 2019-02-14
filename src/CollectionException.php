@@ -24,14 +24,14 @@
  */
 declare(strict_types=1);
 
-namespace Froq\Collection;
+namespace froq\collection;
 
 /**
- * @package    Froq
- * @subpackage Froq\Collection
- * @object     Froq\Collection\CollectionException
- * @author     Kerem Güneş <k-gun@mail.com>
- * @since      1.0
+ * Collection Exception.
+ * @package froq\collection
+ * @object  froq\collection\CollectionException
+ * @author  Kerem Güneş <k-gun@mail.com>
+ * @since   1.0
  */
 final class CollectionException extends \Exception
 {}
