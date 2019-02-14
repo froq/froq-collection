@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace froq\collection;
 
 /**
- * Collection Exception.
+ * Collection exception.
  * @package froq\collection
  * @object  froq\collection\CollectionException
  * @author  Kerem Güneş <k-gun@mail.com>
