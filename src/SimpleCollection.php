@@ -33,7 +33,7 @@ use froq\util\interfaces\Loopable;
  * @package froq\http\client
  * @object  froq\http\client\SimpleCollection
  * @author  Kerem Güneş <k-gun@mail.com>
- * @since   3.0
+ * @since   3.1
  */
 class SimpleCollection implements Loopable
 {
