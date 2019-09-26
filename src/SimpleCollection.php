@@ -57,8 +57,10 @@ class SimpleCollection implements Loopable
      */
     public function __construct(array $items = null, string $itemsType = null)
     {
-        foreach ((array) $items as $item) {
-            $this->checkItemType($item, $itemsType);
+        if ($item != null && $itemType != null) {
+            foreach ($items as $item) {
+                $this->checkItemType($item, $itemsType);
+            }
         }
 
         $this->items = $items ?? [];
@@ -68,16 +70,11 @@ class SimpleCollection implements Loopable
     /**
      * Item.
      * @param  int $index
-     * @return object
-     * @throws froq\http\client\CollectionException
+     * @return ?object
      */
-    public final function item(int $index): object
+    public final function item(int $index): ?object
     {
-        if (!isset($this->items[$index])) {
-            throw new CollectionException("No item exists with index {$index}");
-        }
-
-        return $this->items[$index];
+        return $this->items[$index] ?? null;
     }
 
     /**
@@ -147,12 +144,12 @@ class SimpleCollection implements Loopable
 
     /**
      * Check item type.
-     * @param  any     $item
-     * @param  ?string $itemType
+     * @param  any    $item
+     * @param  string $itemType
      * @return void
      * @throws froq\http\client\CollectionException
      */
-    protected final function checkItemType($item, ?string $itemType): void
+    protected final function checkItemType($item, string $itemType): void
     {
         if ($item && $itemType && ($itemType != 'any') && !is_a($item, $itemType)) {
             throw new CollectionException(sprintf('Each item must be type of %s, %s given',

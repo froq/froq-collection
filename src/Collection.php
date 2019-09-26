@@ -204,6 +204,16 @@ class Collection implements Sizable, Arrayable, Objectable, \Countable, \Iterato
     }
 
     /**
+     * Is none.
+     * @param  int|string $key
+     * @return bool
+     */
+    public final function isNone($key): bool
+    {
+        return empty($this->data[$key]);
+    }
+
+    /**
      * Keys.
      * @return array
      */
