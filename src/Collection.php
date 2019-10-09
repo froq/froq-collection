@@ -148,7 +148,7 @@ class Collection implements Sizable, Arrayable, Objectable, \Countable, \Iterato
      */
     public function isset($key): bool
     {
-        return array_key_exists($key, $this->data);
+        return isset($this->data[$key]);
     }
 
     /**
@@ -247,7 +247,7 @@ class Collection implements Sizable, Arrayable, Objectable, \Countable, \Iterato
      * @param  bool $strict
      * @return bool
      */
-    public function hasValue($value, bool $strict = false): bool
+    public function hasValue($value, bool $strict = true): bool
     {
         return in_array($value, $this->data, $strict);
     }
