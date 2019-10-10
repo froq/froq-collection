@@ -29,13 +29,13 @@ namespace froq\collection;
 use froq\util\interfaces\Loopable;
 
 /**
- * SimpleCollection.
+ * TypedCollection.
  * @package froq\collection
- * @object  froq\collection\SimpleCollection
+ * @object  froq\collection\TypedCollection
  * @author  Kerem Güneş <k-gun@mail.com>
- * @since   3.1
+ * @since   3.4
  */
-class SimpleCollection implements Loopable
+class TypedCollection implements Loopable
 {
     /**
      * Items.
@@ -44,12 +44,26 @@ class SimpleCollection implements Loopable
     protected $items = [];
 
     /**
-     * Constructor.
-     * @param  array|null $items
+     * Items type.
+     * @var string
      */
-    public function __construct(array $items = null)
+    protected $itemsType;
+
+    /**
+     * Constructor.
+     * @param  array|null  $items
+     * @param  string|null $itemsType
+     */
+    public function __construct(array $items = null, string $itemsType = null)
     {
         $this->items = $items ?? [];
+        $this->itemsType = $itemsType ?? 'any'; // @default
+
+        if ($this->item != null && $this->itemType != null) {
+            foreach ($this->items as $this->item) {
+                $this->checkItemType($this->item, $this->itemsType);
+            }
+        }
     }
 
     /**
@@ -72,12 +86,23 @@ class SimpleCollection implements Loopable
     }
 
     /**
+     * Items type.
+     * @return string
+     */
+    public final function itemsType(): string
+    {
+        return $this->itemsType;
+    }
+
+    /**
      * Add.
      * @param  any $item
      * @return void
      */
     public final function add($item): void
     {
+        $this->checkItemType($item, $this->itemsType);
+
         $this->items[] = $item;
     }
 
@@ -105,5 +130,25 @@ class SimpleCollection implements Loopable
     public final function getIterator()
     {
         return new \ArrayIterator($this->items);
+    }
+
+    /**
+     * Check item type.
+     * @param  any    $item
+     * @param  string $itemType
+     * @return void
+     * @throws froq\collection\CollectionException
+     */
+    private final function checkItemType($item, string $itemType): void
+    {
+        if ($item && $itemType && $itemType != 'any') {
+            if (is_object($item) && !is_a($item, $itemType)) {
+                throw new CollectionException(sprintf('Each item must be type of %s, %s given',
+                    $itemType, get_class($item)));
+            } elseif (is_scalar($item) && gettype($item) != $itemType) {
+                throw new CollectionException(sprintf('Each item must be type of %s, %s given',
+                    $itemType, gettype($item)));
+            }
+        }
     }
 }

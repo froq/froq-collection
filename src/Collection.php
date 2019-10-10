@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\util\Arrays;
-use froq\util\interfaces\{Sizable, Arrayable, Objectable};
+use froq\util\interfaces\{Arrayable, Objectable, Loopable};
 
 /**
  * Collection.
@@ -36,7 +36,7 @@ use froq\util\interfaces\{Sizable, Arrayable, Objectable};
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   1.0
  */
-class Collection implements Sizable, Arrayable, Objectable, \Countable, \IteratorAggregate, \ArrayAccess
+class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
 {
     /**
      * Data.
@@ -57,7 +57,7 @@ class Collection implements Sizable, Arrayable, Objectable, \Countable, \Iterato
      * Set magic.
      * @param  int|string $key
      * @param  any        $value
-     * @return void
+     * @return self
      */
     public function __set($key, $value)
     {
@@ -115,13 +115,13 @@ class Collection implements Sizable, Arrayable, Objectable, \Countable, \Iterato
 
     /**
      * Set.
-     * @param  int|string $key
-     * @param  any        $value
+     * @param  int|string|null $key
+     * @param  any             $value
      * @return self
      */
     public function set($key, $value): self
     {
-        if ($key === null) { // $x[] = ..
+        if ($key === null) { // eg: $x[] = ..
             $this->data[] = $value;
         } else {
             Arrays::set($this->data, $key, $value);
@@ -142,7 +142,7 @@ class Collection implements Sizable, Arrayable, Objectable, \Countable, \Iterato
     }
 
     /**
-     * Is set.
+     * Isset.
      * @param  int|string $key
      * @return bool
      */
@@ -159,30 +159,6 @@ class Collection implements Sizable, Arrayable, Objectable, \Countable, \Iterato
     public function unset($key): void
     {
         unset($this->data[$key]);
-    }
-
-    /**
-     * @inheritDoc froq\util\interfaces\Sizable,
-     */
-    public function size(): int
-    {
-        return $this->count();
-    }
-
-    /**
-     * @inheritDoc froq\util\interfaces\Arrayable
-     */
-    public function toArray(): array
-    {
-        return $this->getData();
-    }
-
-    /**
-     * @inheritDoc froq\util\interfaces\Objectable
-     */
-    public function toObject(): object
-    {
-        return (object) $this->toArray();
     }
 
     /**
@@ -278,8 +254,8 @@ class Collection implements Sizable, Arrayable, Objectable, \Countable, \Iterato
 
     /**
      * Add.
-     * @param  int|string|array $key
-     * @param  any $value
+     * @param  int|string|array|null $key
+     * @param  any                   $value
      * @return self
      * @since  3.0
      */
@@ -353,25 +329,6 @@ class Collection implements Sizable, Arrayable, Objectable, \Countable, \Iterato
     }
 
     /**
-     * Items.
-     * @param  array|null $keys
-     * @return array
-     */
-    public function items(array $keys = null): array
-    {
-        if ($keys != null) {
-            $return = [];
-            foreach ($keys as $key) {
-                $return[$key] = $this->get($key);
-            }
-        } else {
-            $return = $this->data;
-        }
-
-        return $return;
-    }
-
-    /**
      * Item first.
      * @return any
      */
@@ -390,40 +347,68 @@ class Collection implements Sizable, Arrayable, Objectable, \Countable, \Iterato
     }
 
     /**
-     * Inherited methods from \Countable, \IteratorAggregate, \ArrayAccess
+     * Items.
+     * @param  array|null $keys
+     * @return array
      */
+    public function items(array $keys = null): array
+    {
+        if ($keys != null) {
+            $return = [];
+            foreach ($keys as $key) {
+                $return[$key] = $this->get($key);
+            }
+        } else {
+            $return = $this->data;
+        }
+
+        return $return;
+    }
+
+    // Inherits.
 
     /**
-     * @inheritDoc \Countable
+     * @inheritDoc froq\util\interfaces\Arrayable
      */
-    public final function count(): int
+    public function toArray(): array
+    {
+        return $this->getData();
+    }
+
+    /**
+     * @inheritDoc froq\util\interfaces\Objectable
+     */
+    public function toObject(): object
+    {
+        return (object) $this->toArray();
+    }
+
+    /**
+     * @inheritDoc froq\util\interfaces\Loopable > Countable
+     */
+    public final function count()
     {
         return count($this->data);
     }
 
     /**
-     * @inheritDoc \IteratorAggregate
+     * @inheritDoc froq\util\interfaces\Loopable > IteratorAggregate
      */
-    public final function getIterator(): \ArrayIterator
+    public final function getIterator()
     {
         return new \ArrayIterator($this->data);
     }
 
     /**
-     * Offset set.
-     * @param  int|string $key
-     * @param  any        $value
-     * @return self
+     * @inheritDoc ArrayAccess
      */
-    public final function offsetSet($key, $value): self
+    public final function offsetSet($key, $value)
     {
         return $this->set($key, $value);
     }
 
     /**
-     * Offset get.
-     * @param  int|string $key
-     * @return any
+     * @inheritDoc ArrayAccess
      */
     public final function offsetGet($key)
     {
@@ -431,21 +416,17 @@ class Collection implements Sizable, Arrayable, Objectable, \Countable, \Iterato
     }
 
     /**
-     * Offset unset.
-     * @param  int|string $key
-     * @return void
+     * @inheritDoc ArrayAccess
      */
-    public final function offsetUnset($key): void
+    public final function offsetUnset($key)
     {
         $this->unset($key);
     }
 
     /**
-     * Offset exists.
-     * @param  int|string $key
-     * @return bool
+     * @inheritDoc ArrayAccess
      */
-    public final function offsetExists($key): bool
+    public final function offsetExists($key)
     {
         return $this->isset($key);
     }
