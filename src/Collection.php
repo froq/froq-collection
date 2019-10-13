@@ -142,6 +142,17 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
     }
 
     /**
+     * Get all.
+     * @param  array $keys
+     * @param  any   $valueDefault
+     * @return array
+     */
+    public function getAll($keys, $valueDefault = null): array
+    {
+        return Arrays::getAll($this->data, $keys, $valueDefault);
+    }
+
+    /**
      * Isset.
      * @param  int|string $key
      * @return bool
