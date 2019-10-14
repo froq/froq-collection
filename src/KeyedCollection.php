@@ -47,7 +47,7 @@ class KeyedCollection implements Loopable
      * Data keys.
      * @var array
      */
-    protected $dataKeys = [];
+    protected static $dataKeys = [];
 
     /**
      * Constructor.
@@ -55,7 +55,7 @@ class KeyedCollection implements Loopable
      */
     public function __construct(array $dataKeys)
     {
-        $this->dataKeys = $dataKeys;
+        self::$dataKeys = $dataKeys;
     }
 
     /**
@@ -73,7 +73,7 @@ class KeyedCollection implements Loopable
      */
     public final function getDataKeys(): array
     {
-        return $this->dataKeys;
+        return self::$dataKeys;
     }
 
     /**
@@ -84,10 +84,7 @@ class KeyedCollection implements Loopable
      */
     public final function has(string $key): bool
     {
-        if (!$this->keyCheck($key)) {
-            throw new CollectionException(sprintf("Invalid key '%s' given, valid keys are '%s'",
-                $key, join(',', $this->dataKeys)));
-        }
+        $this->keyCheck($key);
 
         return isset($this->data[$key]);
     }
@@ -101,10 +98,7 @@ class KeyedCollection implements Loopable
      */
     public final function set(string $key, $value): self
     {
-        if (!$this->keyCheck($key)) {
-            throw new CollectionException(sprintf("Invalid key '%s' given, valid keys are '%s'",
-                $key, join(',', $this->dataKeys)));
-        }
+        $this->keyCheck($key);
 
         $this->data[$key] = $value;
 
@@ -119,10 +113,7 @@ class KeyedCollection implements Loopable
      */
     public final function get(string $key)
     {
-        if (!$this->keyCheck($key)) {
-            throw new CollectionException(sprintf("Invalid key '%s' given, valid keys are '%s'",
-                $key, join(',', $this->dataKeys)));
-        }
+        $this->keyCheck($key);
 
         return $this->data[$key] ?? null;
     }
@@ -130,11 +121,20 @@ class KeyedCollection implements Loopable
     /**
      * Key check.
      * @param  string $key
+     * @param  bool   $throw
      * @return bool
+     * @throws froq\collection\CollectionException
      */
-    public final function keyCheck(string $key): bool
+    public final function keyCheck(string $key, bool $throw = true): bool
     {
-        return in_array($key, $this->dataKeys);
+        if (in_array($key, self::$dataKeys)) {
+            return true;
+        }
+        if (!$throw) {
+            return false;
+        }
+        throw new CollectionException(sprintf("Invalid key '%s' given, valid keys are '%s'",
+            $key, join(',', self::$dataKeys)));
     }
 
     /**
