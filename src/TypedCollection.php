@@ -26,129 +26,132 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\util\interfaces\Loopable;
+use froq\collection\{AbstractCollection, CollectionException};
 
 /**
- * TypedCollection.
+ * Typed Collection.
+ *
+ * Represents a typed array structure that inspired by TypedArray of JavaScript. @link
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
+ *
  * @package froq\collection
  * @object  froq\collection\TypedCollection
  * @author  Kerem Güneş <k-gun@mail.com>
- * @since   3.4
+ * @since   4.0
  */
-class TypedCollection implements Loopable
+class TypedCollection extends AbstractCollection
 {
     /**
-     * Items.
-     * @var array
-     */
-    protected $items = [];
-
-    /**
-     * Items type.
+     * Data type.
      * @var string
      */
-    protected $itemsType;
+    protected string $dataType;
 
     /**
      * Constructor.
-     * @param  array|null  $items
-     * @param  string|null $itemsType
+     * @param  array|null $data
+     * @param  string     $dataType
+     * @throws froq\collection\CollectionException If no type given.
      */
-    public function __construct(array $items = null, string $itemsType = null)
+    public function __construct(array $data = null, string $dataType)
     {
-        $this->items = $items ?? [];
-        $this->itemsType = $itemsType ?? 'any'; // @default
+        if ($dataType == '') {
+            throw new CollectionException('Data type is required');
+        }
 
-        if ($this->item != null && $this->itemType != null) {
-            foreach ($this->items as $this->item) {
-                $this->checkItemType($this->item, $this->itemsType);
+        $this->dataType = $dataType;
+
+        if ($data != null) {
+            foreach ($data as $key => $value) {
+                $this->typeCheck($value);
             }
         }
+
+        parent::__construct($data);
     }
 
     /**
-     * Item.
-     * @param  int $index
-     * @return any|null
-     */
-    public final function item(int $index)
-    {
-        return $this->items[$index] ?? null;
-    }
-
-    /**
-     * Items.
-     * @return array
-     */
-    public final function items(): array
-    {
-        return $this->items;
-    }
-
-    /**
-     * Items type.
+     * Get data type.
      * @return string
      */
-    public final function itemsType(): string
+    public final function getDataType(): string
     {
-        return $this->itemsType;
+        return $this->dataType;
     }
 
     /**
      * Add.
-     * @param  any $item
-     * @return void
+     * @param  any $value
+     * @return self
      */
-    public final function add($item): void
+    public final function add($value): self
     {
-        $this->checkItemType($item, $this->itemsType);
+        $this->typeCheck($value);
 
-        $this->items[] = $item;
+        $this->data[] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Has.
+     * @param  int|string $key
+     * @return bool
+     */
+    public final function has($key): bool
+    {
+        return isset($this->data[$key]);
+    }
+
+    /**
+     * Set.
+     * @param  int|string $key
+     * @param  any        $value
+     * @return self
+     */
+    public final function set($key, $value): self
+    {
+        $this->typeCheck($value);
+
+        $this->data[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get.
+     * @param  int|string $key
+     * @return any|null
+     */
+    public final function get($key)
+    {
+        return $this->data[$key] ?? null;
     }
 
     /**
      * Remove.
-     * @param  int $index
+     * @param  int|string $key
      * @return void
      */
-    public final function remove(int $index): void
+    public final function remove($key): void
     {
-        unset($this->items[$index]);
+        unset($this->data[$key]);
     }
 
     /**
-     * @inheritDoc froq\util\interfaces\Loopable > Countable
-     */
-    public final function count()
-    {
-        return count($this->items);
-    }
-
-    /**
-     * @inheritDoc froq\util\interfaces\Loopable > IteratorAggregate
-     */
-    public final function getIterator()
-    {
-        return new \ArrayIterator($this->items);
-    }
-
-    /**
-     * Check item type.
-     * @param  any    $item
-     * @param  string $itemType
+     * Check data type.
+     * @param  any $value
      * @return void
      * @throws froq\collection\CollectionException
      */
-    private final function checkItemType($item, string $itemType): void
+    private final function typeCheck($value): void
     {
-        if ($item && $itemType && $itemType != 'any') {
-            if (is_object($item) && !is_a($item, $itemType)) {
-                throw new CollectionException(sprintf('Each item must be type of %s, %s given',
-                    $itemType, get_class($item)));
-            } elseif (is_scalar($item) && gettype($item) != $itemType) {
-                throw new CollectionException(sprintf('Each item must be type of %s, %s given',
-                    $itemType, gettype($item)));
-            }
+        if (is_object($value) && !($value instanceof $this->dataType)) {
+            throw new CollectionException(sprintf('Each value must be type of %s, %s type '.
+                'given', $this->dataType, get_class($value)));
+        } elseif (gettype($value) != $this->dataType) {
+            throw new CollectionException(sprintf('Each value must be type of %s, %s type '.
+                'given', $this->dataType, gettype($value)));
         }
     }
 }

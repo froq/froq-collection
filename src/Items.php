@@ -26,33 +26,46 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\util\interfaces\Loopable;
+use froq\collection\ItemsException;
+use Countable, IteratorAggregate, ArrayIterator;
 
 /**
- * SimpleCollection.
+ * Items.
+ *
+ * Represents a simple array structure that inspired by DOMTokenList of JavaScript. @link
+ * https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList
+ *
  * @package froq\collection
- * @object  froq\collection\SimpleCollection
+ * @object  froq\collection\Items
  * @author  Kerem Güneş <k-gun@mail.com>
- * @since   3.1
+ * @since   4.0
  */
-class SimpleCollection implements Loopable
+class Items implements Countable, IteratorAggregate
 {
     /**
      * Items.
      * @var array
      */
-    protected $items = [];
+    protected array $items = [];
 
     /**
      * Constructor.
-     * @param  array|null $items
+     * @param array|null $items
      */
     public function __construct(array $items = null)
     {
+        if ($items != null) {
+            foreach (array_keys($items) as $key) {
+                if (!is_int($key)) {
+                    throw new ItemsException('Only int keys accepted for '. static::class);
+                }
+            }
+        }
+
         $this->items = $items ?? [];
     }
 
-    /**
+     /**
      * Item.
      * @param  int $index
      * @return any|null
@@ -69,6 +82,16 @@ class SimpleCollection implements Loopable
     public final function items(): array
     {
         return $this->items;
+    }
+
+    /**
+     * Has.
+     * @param  int $index
+     * @return bool
+     */
+    public final function has(int $index): bool
+    {
+        return isset($this->items[$index]);
     }
 
     /**
@@ -92,18 +115,36 @@ class SimpleCollection implements Loopable
     }
 
     /**
-     * @inheritDoc froq\util\interfaces\Loopable > Countable
+     * Empty.
+     * @return void
      */
-    public final function count()
+    public final function empty(): void
+    {
+        $this->items = [];
+    }
+
+    /**
+     * Is empty.
+     * @return bool
+     */
+    public final function isEmpty(): bool
+    {
+        return empty($this->items);
+    }
+
+    /**
+     * @inheritDoc Countable
+     */
+    public final function count(): int
     {
         return count($this->items);
     }
 
     /**
-     * @inheritDoc froq\util\interfaces\Loopable > IteratorAggregate
+     * @inheritDoc IteratorAggregate
      */
-    public final function getIterator()
+    public final function getIterator(): iterable
     {
-        return new \ArrayIterator($this->items);
+        return new ArrayIterator($this->items);
     }
 }

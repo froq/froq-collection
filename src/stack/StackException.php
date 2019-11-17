@@ -24,16 +24,16 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection;
+namespace froq\collection\stack;
 
-use froq\Exception;
+use froq\collection\CollectionException;
 
 /**
- * Collection Exception.
- * @package froq\collection
- * @object  froq\collection\CollectionException
+ * Stack Exception.
+ * @package froq\collection\stack
+ * @object  froq\collection\stack\StackException
  * @author  Kerem Güneş <k-gun@mail.com>
- * @since   1.0
+ * @since   4.0
  */
-class CollectionException extends Exception
+final class StackException extends CollectionException
 {}

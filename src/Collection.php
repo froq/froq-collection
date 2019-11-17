@@ -26,8 +26,9 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\util\Arrays;
-use froq\util\interfaces\{Arrayable, Objectable, Loopable};
+use froq\collection\AbstractCollection;
+use froq\Arrays;
+use ArrayAccess;
 
 /**
  * Collection.
@@ -36,21 +37,15 @@ use froq\util\interfaces\{Arrayable, Objectable, Loopable};
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   1.0
  */
-class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
+class Collection extends AbstractCollection implements ArrayAccess
 {
     /**
-     * Data.
-     * @var array
-     */
-    protected $data = [];
-
-    /**
      * Constructor.
-     * @param array $data
+     * @param array|null $data
      */
     public function __construct(array $data = null)
     {
-        $this->setData($data ?? []);
+        parent::__construct($data);
     }
 
     /**
@@ -95,25 +90,6 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
     }
 
     /**
-     * Set data.
-     * @param  array $data
-     * @return void
-     */
-    public function setData(array $data): void
-    {
-        $this->data = $data;
-    }
-
-    /**
-     * Get data.
-     * @return array
-     */
-    public function getData(): array
-    {
-        return $this->data;
-    }
-
-    /**
      * Set.
      * @param  int|string|null $key
      * @param  any             $value
@@ -128,6 +104,17 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
         }
 
         return $this;
+    }
+
+    /**
+     * Set all.
+     * @param  array $data
+     * @return self
+     * @since  4.0
+     */
+    public function setAll(array $data): self
+    {
+        Arrays::setAll($this->data, $data);
     }
 
     /**
@@ -170,42 +157,6 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
     public function unset($key): void
     {
         unset($this->data[$key]);
-    }
-
-    /**
-     * Empty.
-     * @return void
-     */
-    public final function empty(): void
-    {
-        $this->data = [];
-    }
-
-    /**
-     * Is empty.
-     * @return bool
-     */
-    public final function isEmpty(): bool
-    {
-        return empty($this->data);
-    }
-
-    /**
-     * Keys.
-     * @return array
-     */
-    public final function keys(): array
-    {
-        return array_keys($this->data);
-    }
-
-    /**
-     * Values.
-     * @return array
-     */
-    public final function values(): array
-    {
-        return array_values($this->data);
     }
 
     /**
@@ -294,6 +245,71 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
     }
 
     /**
+     * Pop.
+     * @return any
+     * @since  4.0
+     */
+    public function pop()
+    {
+        return array_pop($this->data);
+    }
+
+    /**
+     * Unpop.
+     * @param  array<int|string, any> $data
+     * @return self
+     * @since  4.0
+     */
+    function unpop(array $data): self
+    {
+        foreach ($data as $key => $value) {
+            // Drop olds, so prevent in-place replace.
+            if (isset($this->data[$key])) {
+                unset($this->data[$key]);
+            }
+            $this->data[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Shift.
+     * @return any
+     * @since  4.0
+     */
+    public function shift()
+    {
+        return array_shift($this->data);
+    }
+
+    /**
+     * Unshift.
+     * @param  array<int|string, any> $data
+     * @return self
+     * @since  4.0
+     */
+    public function unshift(array $data): self
+    {
+        $this->data = $data + $this->data;
+
+        return $this;
+    }
+
+    /**
+     * Reverse.
+     * @param  bool $preserveKeys
+     * @return self
+     * @since  4.0
+     */
+    public function reverse(bool $preserveKeys = false): self
+    {
+        $this->data = array_reverse($this->data, $preserveKeys);
+
+        return $this;
+    }
+
+    /**
      * Test (like JavaScript Array.some()).
      * @param  callable $func
      * @return bool
@@ -340,74 +356,65 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
     }
 
     /**
-     * Item first.
-     * @return any
-     */
-    public function itemFirst()
-    {
-        return Arrays::first($this->data);
-    }
-
-    /**
-     * Item last.
-     * @return any
-     */
-    public function itemLast()
-    {
-        return Arrays::last($this->data);
-    }
-
-    /**
      * Items.
      * @param  array|null $keys
      * @return array
      */
     public function items(array $keys = null): array
     {
-        if ($keys != null) {
-            $return = [];
-            foreach ($keys as $key) {
-                $return[$key] = $this->get($key);
-            }
-        } else {
-            $return = $this->data;
+        if ($keys == null) {
+            return $this->data;
         }
 
-        return $return;
-    }
-
-    // Inherits.
-
-    /**
-     * @inheritDoc froq\util\interfaces\Arrayable
-     */
-    public function toArray(): array
-    {
-        return $this->getData();
+        $items = [];
+        foreach ($keys as $key) {
+            $items[$key] = $this->get($key);
+        }
+        return $items;
     }
 
     /**
-     * @inheritDoc froq\util\interfaces\Objectable
+     * First.
+     * @return any|null
+     * @since  4.0
      */
-    public function toObject(): object
+    public function first()
     {
-        return (object) $this->toArray();
+        $key = $this->firstKey();
+
+        return ($key !== null) ?  $this->data[$key] : null;
     }
 
     /**
-     * @inheritDoc froq\util\interfaces\Loopable > Countable
+     * First key.
+     * @return int|string
+     * @since  4.0
      */
-    public final function count()
+    public function firstKey()
     {
-        return count($this->data);
+        return array_key_first($this->data);
     }
 
     /**
-     * @inheritDoc froq\util\interfaces\Loopable > IteratorAggregate
+     * Last.
+     * @return any|null
+     * @since  4.0
      */
-    public final function getIterator()
+    public function last()
     {
-        return new \ArrayIterator($this->data);
+        $key = $this->lastKey();
+
+        return ($key !== null) ? $this->data[$key] : null;
+    }
+
+    /**
+     * Last key.
+     * @return int|string
+     * @since  4.0
+     */
+    public function lastKey()
+    {
+        return array_key_last($this->data);
     }
 
     /**

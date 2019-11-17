@@ -26,14 +26,54 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\Exception;
+use froq\collection\AbstractCollection;
 
 /**
- * Collection Exception.
+ * Map Reduce Collection.
  * @package froq\collection
- * @object  froq\collection\CollectionException
+ * @object  froq\collection\MapReduceCollection
  * @author  Kerem Güneş <k-gun@mail.com>
- * @since   1.0
+ * @since   4.0
  */
-class CollectionException extends Exception
-{}
+class MapReduceCollection extends AbstractCollection
+{
+    /**
+     * Constructor.
+     * @param array|null $data
+     */
+    public function __construct(array $data = null)
+    {
+        parent::__construct($data);
+    }
+
+    /**
+     * Map.
+     * @param  callable $callback
+     * @return static
+     */
+    public final function map(callable $callback)
+    {
+        return new static(array_map($callback, $this->data));
+    }
+
+    /**
+     * Filter.
+     * @param  callable $callback
+     * @return static
+     */
+    public final function filter(callable $callback)
+    {
+        return new static(array_filter($this->data, $callback));
+    }
+
+    /**
+     * Reduce.
+     * @param  any|null $initialValue
+     * @param  callable $callback
+     * @return any
+     */
+    public final function reduce($initialValue = null, callable $callback)
+    {
+        return array_reduce($this->data, $callback, $initialValue);
+    }
+}
