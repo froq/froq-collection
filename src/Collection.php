@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\collection\AbstractCollection;
-use froq\Arrays;
+use froq\util\Arrays;
 use ArrayAccess;
 
 /**
