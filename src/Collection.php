@@ -49,7 +49,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Set magic.
+     * Set.
      * @param  int|string $key
      * @param  any        $value
      * @return self
@@ -60,7 +60,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get magic.
+     * Get.
      * @param  int|string $key
      * @return any
      */
@@ -70,7 +70,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Isset magic.
+     * Isset.
      * @param  int|string $key
      * @return bool
      */
@@ -80,7 +80,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Unset magic.
+     * Unset.
      * @param  int|string $key
      * @return void
      */
