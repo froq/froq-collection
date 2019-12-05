@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\AbstractArray;
+use froq\common\AbstractArray;
 
 /**
  * Abstract Collection.
