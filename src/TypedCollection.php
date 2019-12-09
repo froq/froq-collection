@@ -58,7 +58,7 @@ class TypedCollection extends AbstractCollection
         // Data type might be defined in extender class.
         $this->dataType = $dataType ?? $this->dataType ?? '';
         if ($this->dataType == '') {
-            throw new CollectionException('Data type is required for TypedCollection');
+            throw new CollectionException('Data type is required');
         }
 
         $data && $this->setData($data);
