@@ -44,19 +44,14 @@ use froq\collection\stack\StackException;
 class Stack extends AbstractCollection
 {
     /**
-     * Skip key check (tick from SetStack/MapStack).
-     * @var bool
-     */
-    protected bool $skipKeyCheck = false;
-
-    /**
      * Constructor.
      * @param  array<int|string, any>|null $data
+     * @param  bool                        $skipKeyCheck @internal For only SetStack/MapStack constructors.
      * @throws froq\collection\stack\StackException
      */
-    public function __construct(array $data = null)
+    public function __construct(array $data = null, bool $skipKeyCheck = false)
     {
-        if (!$this->skipKeyCheck) {
+        if ($data != null && !$skipKeyCheck) {
             foreach (array_keys($data) as $key) {
                 if (!is_int($key) && !is_string($key)) {
                     throw new StackException('Only int and string keys are accepted for '.

@@ -61,11 +61,8 @@ class MapStack extends Stack
                 }
             }
 
-            // Tick for parent constructor.
-            $this->skipKeyCheck = true;
+            parent::__construct($data, true);
         }
-
-        parent::__construct($data);
     }
 
     /**
