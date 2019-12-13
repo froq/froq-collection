@@ -82,7 +82,7 @@ class SetStack extends Stack
      * @return bool
      * @override
      */
-    public function hasKey(int $key): bool
+    public final function hasKey(int $key): bool
     {
         return parent::hasKey($key);
     }

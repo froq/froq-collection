@@ -82,7 +82,7 @@ class MapStack extends Stack
      * @return bool
      * @override
      */
-    public function hasKey(string $key): bool
+    public final function hasKey(string $key): bool
     {
         return parent::hasKey($key);
     }
