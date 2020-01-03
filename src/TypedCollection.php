@@ -176,11 +176,12 @@ class TypedCollection extends AbstractCollection
                 $this->dataType, $class));
         }
 
-        // Types to check.
+        // Types to check & translate.
         static $types = ['int', 'float', 'string', 'bool', 'array', 'resource'];
+        static $typer = ['integer' => 'int', 'double' => 'float', 'boolean' => 'bool'];
 
         // Shorter types must be used (constructor or in extender class).
-        $type = strtr($type, ['integer' => 'int', 'double' => 'float', 'boolean' => 'bool']);
+        $type = strtr($type, $typer);
 
         // Others.
         if ($type != $this->dataType && in_array($type, $types)) {

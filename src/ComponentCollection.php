@@ -67,6 +67,27 @@ class ComponentCollection extends AbstractCollection
     }
 
     /**
+     * Call.
+     * @param  string $method
+     * @param  array  $methodArgs
+     * @return self|any
+     * @throws froq\collection\CollectionException
+     */
+    public function __call(string $method, array $methodArgs = [])
+    {
+        $cmd  = substr($method, 0, 3);
+        $name = substr($method, 3);
+
+        if ($cmd == 'set') {
+            return $this->set(lcfirst($name), $methodArgs[0]);
+        } elseif ($cmd == 'get') {
+            return $this->get(lcfirst($name));
+        }
+
+        throw new CollectionException('Only set/get prefixed methods can be called via __call()');
+    }
+
+    /**
      * Names.
      * @return array
      */
