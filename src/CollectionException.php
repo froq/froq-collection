@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\Exception;
+use froq\common\Exception;
 
 /**
  * Collection Exception.
