@@ -101,13 +101,14 @@ class SetStack extends Stack
 
     /**
      * Get.
-     * @param  int $key
+     * @param  int      $key
+     * @param  any|null $valueDefault
      * @return any
      * @override
      */
-    public final function get(int $key)
+    public final function get(int $key, $valueDefault = null)
     {
-        return parent::get($key);
+        return parent::get($key, $valueDefault);
     }
 
     /**

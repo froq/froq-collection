@@ -101,13 +101,14 @@ class MapStack extends Stack
 
     /**
      * Get.
-     * @param  string $key
+     * @param  string   $key
+     * @param  any|null $valueDefault
      * @return any
      * @override
      */
-    public final function get(string $key)
+    public final function get(string $key, $valueDefault = null)
     {
-        return parent::get($key);
+        return parent::get($key, $valueDefault);
     }
 
     /**

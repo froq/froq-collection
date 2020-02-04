@@ -110,11 +110,12 @@ class Stack extends AbstractCollection
     /**
      * Get.
      * @param  int|string $key
+     * @param  any|null   $valueDefault
      * @return any|null
      */
-    public function get($key)
+    public function get($key, $valueDefault = null)
     {
-        return $this->data[$key] ?? null;
+        return $this->data[$key] ?? $valueDefault;
     }
 
     /**
