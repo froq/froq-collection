@@ -108,7 +108,7 @@ class WeightedCollection extends AbstractCollection
         }
 
         $accWeight = 0.00;
-        $rndWeight = $this->rand(0.00, $totalWeight);
+        $rndWeight = $this->randomize(0.00, $totalWeight);
 
         foreach ($items as $item) {
             $accWeight += (float) $item['weight'];
@@ -121,12 +121,12 @@ class WeightedCollection extends AbstractCollection
     }
 
     /**
-     * Rand.
+     * Randomize.
      * @param  float $min
      * @param  float $max
      * @return float
      */
-    private final function rand(float $min, float $max): float
+    private function randomize(float $min, float $max): float
     {
         return lcg_value() * ($max - $min) + $min;
     }
