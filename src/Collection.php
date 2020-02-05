@@ -41,7 +41,7 @@ class Collection extends AbstractCollection implements ArrayAccess
 {
     /**
      * Constructor.
-     * @param array|null $data
+     * @param array<int|string, any>|null $data
      */
     public function __construct(array $data = null)
     {
@@ -108,7 +108,7 @@ class Collection extends AbstractCollection implements ArrayAccess
 
     /**
      * Set all.
-     * @param  array $data
+     * @param  array<int|string, any> $data
      * @return self
      * @since  4.0
      */
@@ -130,8 +130,8 @@ class Collection extends AbstractCollection implements ArrayAccess
 
     /**
      * Get all.
-     * @param  array $keys
-     * @param  any   $valueDefault
+     * @param  array<int|string> $keys
+     * @param  any               $valueDefault
      * @return array
      */
     public function getAll($keys, $valueDefault = null): array
@@ -204,8 +204,8 @@ class Collection extends AbstractCollection implements ArrayAccess
 
     /**
      * Pull all.
-     * @param  array  $keys
-     * @param  any    $valueDefault
+     * @param  array<int|string> $keys
+     * @param  any               $valueDefault
      * @return any
      * @since  3.0
      */
@@ -216,8 +216,8 @@ class Collection extends AbstractCollection implements ArrayAccess
 
     /**
      * Add.
-     * @param  int|string|array|null $key
-     * @param  any                   $value
+     * @param  int|string|array<int|string>|null $key
+     * @param  any                               $value
      * @return self
      * @since  3.0
      */
@@ -232,7 +232,7 @@ class Collection extends AbstractCollection implements ArrayAccess
 
     /**
      * Remove.
-     * @param  int|string|array $key
+     * @param  int|string|array<int|string> $key
      * @return self
      */
     public function remove($key): self
@@ -357,7 +357,7 @@ class Collection extends AbstractCollection implements ArrayAccess
 
     /**
      * Items.
-     * @param  array|null $keys
+     * @param  array<int|string>|null $keys
      * @return array
      */
     public function items(array $keys = null): array
@@ -370,6 +370,7 @@ class Collection extends AbstractCollection implements ArrayAccess
         foreach ($keys as $key) {
             $items[$key] = $this->get($key);
         }
+
         return $items;
     }
 

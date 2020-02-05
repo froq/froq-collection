@@ -55,8 +55,8 @@ class ComponentCollection extends AbstractCollection
 
     /**
      * Constructor.
-     * @param array $names
-     * @param bool  $throws
+     * @param array<string> $names
+     * @param bool          $throws
      */
     public function __construct(array $names, bool $throws = true)
     {
@@ -89,7 +89,7 @@ class ComponentCollection extends AbstractCollection
 
     /**
      * Names.
-     * @return array
+     * @return array<string>
      */
     public final function names(): array
     {
