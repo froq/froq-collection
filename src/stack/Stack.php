@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace froq\collection\stack;
 
+use froq\util\Arrays;
 use froq\collection\AbstractCollection;
 use froq\collection\stack\StackException;
 
@@ -127,7 +128,7 @@ class Stack extends AbstractCollection
     public function add($key, $value): self
     {
         if (isset($this->data[$key])) {
-            $this->data[$key] = self::flatten([$this->data[$key], $value]);
+            $this->data[$key] = Arrays::flatten([$this->data[$key], $value]);
         } else {
             $this->data[$key] = $value;
         }
@@ -143,21 +144,5 @@ class Stack extends AbstractCollection
     public function remove($key): void
     {
         unset($this->data[$key]);
-    }
-
-    /**
-     * Flatten.
-     * @param  array $array
-     * @return array
-     */
-    private static final function flatten(array $array): array
-    {
-        $ret = [];
-
-        array_walk_recursive($array, function($re) use (&$ret) {
-            $ret[] = $re;
-        });
-
-        return $ret;
     }
 }
