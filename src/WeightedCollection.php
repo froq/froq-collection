@@ -126,7 +126,7 @@ class WeightedCollection extends AbstractCollection
      * @param  float $max
      * @return float
      */
-    private function randomize(float $min, float $max): float
+    private final function randomize(float $min, float $max): float
     {
         return lcg_value() * ($max - $min) + $min;
     }
