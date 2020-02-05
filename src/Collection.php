@@ -310,6 +310,20 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Search.
+     * @param  any  $value
+     * @param  bool $strict
+     * @return int|string|null
+     * @since  4.0
+     */
+    public function search($value, bool $strict = true)
+    {
+        $key = array_search($value, $this->data, $strict);
+
+        return ($key !== false) ? $key : null;
+    }
+
+    /**
      * Test (like JavaScript Array.some()).
      * @param  callable $func
      * @return bool
