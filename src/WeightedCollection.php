@@ -31,8 +31,7 @@ use froq\collection\AbstractCollection;
 /**
  * Weighted Collection.
  *
- * Represents a weighted array structure that utilizes items selection operations by theirs
- * weights.
+ * Represents a weighted array structure that utilizes items selection operations by their weights.
  *
  * @package froq\collection
  * @object  froq\collection\WeightedCollection
@@ -67,7 +66,7 @@ class WeightedCollection extends AbstractCollection
      */
     public final function selectBy(float $minWeight = null, float $maxWeight = null): ?array
     {
-        return $this->filter(function ($item) use ($minWeight, $maxWeight) {
+        return $this->filterize(function ($item) use ($minWeight, $maxWeight) {
             // There is nothing to do without weight.
             if (!is_array($item) || !isset($item['weight'])) {
                 return false;
@@ -86,11 +85,11 @@ class WeightedCollection extends AbstractCollection
     }
 
     /**
-     * Filter.
+     * Filterize.
      * @param  callable $calback
      * @return ?array
      */
-    private final function filter(callable $calback): ?array
+    private final function filterize(callable $calback): ?array
     {
         $items = array_filter($this->data, $calback);
         $itemsCount = count($items);
