@@ -24,14 +24,14 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection;
+namespace froq\collection\items;
 
 use froq\collection\CollectionException;
 
 /**
  * Items Exception.
- * @package froq\collection
- * @object  froq\collection\ItemsException
+ * @package froq\collection\items
+ * @object  froq\collection\items\ItemsException
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   4.0
  */

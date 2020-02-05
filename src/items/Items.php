@@ -24,45 +24,39 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection;
+namespace froq\collection\items;
 
-use froq\collection\ItemsException;
-use Countable, IteratorAggregate, ArrayIterator;
+use froq\collection\AbstractCollection;
+use froq\collection\items\ItemsException;
 
 /**
  * Items.
  *
- * Represents a simple array structure that inspired by DOMTokenList of JavaScript. @link
- * https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList
+ * Represents a simple array structure that inspired by DOMTokenList of JavaScript.
  *
- * @package froq\collection
- * @object  froq\collection\Items
+ * @package froq\collection\items
+ * @object  froq\collection\items\Items
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   4.0
  */
-class Items implements Countable, IteratorAggregate
+class Items extends AbstractCollection
 {
     /**
-     * Items.
-     * @var array
-     */
-    protected array $items = [];
-
-    /**
      * Constructor.
-     * @param array|null $items
+     * @param array<int, any>|null $data
      */
-    public function __construct(array $items = null)
+    public function __construct(array $data = null)
     {
-        if ($items != null) {
-            foreach (array_keys($items) as $key) {
+        if ($data != null) {
+            foreach (array_keys($data) as $key) {
                 if (!is_int($key)) {
-                    throw new ItemsException('Only int keys accepted for '. static::class);
+                    throw new ItemsException('Only int keys accepted for "%s" class',
+                        [static::class]);
                 }
             }
         }
 
-        $this->items = $items ?? [];
+        parent::__construct($data);
     }
 
      /**
@@ -72,16 +66,16 @@ class Items implements Countable, IteratorAggregate
      */
     public final function item(int $index)
     {
-        return $this->items[$index] ?? null;
+        return $this->data[$index] ?? null;
     }
 
     /**
      * Items.
-     * @return array
+     * @return array<int, any>
      */
     public final function items(): array
     {
-        return $this->items;
+        return $this->data;
     }
 
     /**
@@ -91,60 +85,30 @@ class Items implements Countable, IteratorAggregate
      */
     public final function has(int $index): bool
     {
-        return isset($this->items[$index]);
+        return isset($this->data[$index]);
     }
 
     /**
      * Add.
      * @param  any $item
-     * @return void
+     * @return self
      */
-    public final function add($item): void
+    public final function add($item): self
     {
-        $this->items[] = $item;
+        $this->data[] = $item;
+
+        return $this;
     }
 
     /**
      * Remove.
      * @param  int $index
-     * @return void
+     * @return self
      */
-    public final function remove(int $index): void
+    public final function remove(int $index): self
     {
-        unset($this->items[$index]);
-    }
+        unset($this->data[$index]);
 
-    /**
-     * Empty.
-     * @return void
-     */
-    public final function empty(): void
-    {
-        $this->items = [];
-    }
-
-    /**
-     * Is empty.
-     * @return bool
-     */
-    public final function isEmpty(): bool
-    {
-        return empty($this->items);
-    }
-
-    /**
-     * @inheritDoc Countable
-     */
-    public final function count(): int
-    {
-        return count($this->items);
-    }
-
-    /**
-     * @inheritDoc IteratorAggregate
-     */
-    public final function getIterator(): iterable
-    {
-        return new ArrayIterator($this->items);
+        return $this;
     }
 }
