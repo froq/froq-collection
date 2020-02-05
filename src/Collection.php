@@ -422,7 +422,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public final function offsetSet($key, $value)
     {
-        return $this->set($key, $value);
+        $this->set($key, $value);
     }
 
     /**
