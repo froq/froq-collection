@@ -56,8 +56,8 @@ class TypedCollection extends AbstractCollection
     public function __construct(array $data = null, string $dataType = null)
     {
         // Data type might be defined in extender class.
-        $this->dataType = $dataType ?? $this->dataType ?? '';
-        if ($this->dataType == '') {
+        $this->dataType = $dataType ?? $this->dataType ?? null;
+        if ($this->dataType == null) {
             throw new CollectionException('Data type is required, it must be defined like '.
                 '"protected string $dataType = \'int\';" or given at constructor calls as '.
                 'second argument');
