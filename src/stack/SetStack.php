@@ -26,89 +26,41 @@ declare(strict_types=1);
 
 namespace froq\collection\stack;
 
-use froq\collection\stack\{Stack, StackException};
-
-// '@' is just for 'Declaration of FUCK should be compatible with FUCK!'
-// Shhh, covariance.. https://wiki.php.net/rfc/covariant-returns-and-contravariant-parameters
-@(function() {
+use froq\util\Arrays;
+use froq\collection\AbstractCollection;
+use froq\collection\stack\StackException;
 
 /**
  * Set Stack.
  *
- * This is not an implementation of https://en.wikipedia.org/wiki/Stack_(abstract_data_type) but
- * simply designed to be available to int type key check here. Inspired by HashSet of JAVA.
- * @link https://docs.oracle.com/javase/8/docs/api/java/util/HashSet.html
+ * This is not an implementation of Stack (https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
+ * but simply designed to be available to int type key check here. Inspired by HashSet of JAVA
+ * (https://docs.oracle.com/javase/8/docs/api/java/util/HashSet.html)
  *
  * @package froq\collection\stack
  * @object  froq\collection\stack\SetStack
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   4.0
  */
-class SetStack extends Stack
+class SetStack extends AbstractCollection
 {
     /**
      * Constructor.
      * @param  array<int, any>|null $data
      * @throws froq\collection\stack\StackException
-     * @override
      */
     public function __construct(array $data = null)
     {
         if ($data != null) {
             foreach (array_keys($data) as $key) {
                 if (!is_int($key)) {
-                    throw new StackException('Only int keys are accepted for '. static::class);
+                    throw new StackException('Only int keys are accepted for "%s" stack',
+                        [static::class]);
                 }
             }
-
-            parent::__construct($data, true);
         }
-    }
 
-    /**
-     * Has.
-     * @param  int $key
-     * @return bool
-     * @override
-     */
-    public final function has(int $key): bool
-    {
-        return parent::has($key);
-    }
-
-    /**
-     * Has key.
-     * @param  int $key
-     * @return bool
-     * @override
-     */
-    public final function hasKey(int $key): bool
-    {
-        return parent::hasKey($key);
-    }
-
-    /**
-     * Set.
-     * @param  int $key
-     * @param  any $value
-     * @return self
-     * @override
-     */
-    public final function set(int $key, $value): self
-    {
-        return parent::set($key, $value);
-    }
-
-    /**
-     * Get.
-     * @param  int      $key
-     * @param  any|null $valueDefault
-     * @return any
-     * @override
-     */
-    public final function get(int $key, $valueDefault = null)
-    {
-        return parent::get($key, $valueDefault);
+        parent::__construct($data);
     }
 
     /**
@@ -116,23 +68,82 @@ class SetStack extends Stack
      * @param  int $key
      * @param  any  $value
      * @return self
-     * @override
      */
     public final function add(int $key, $value): self
     {
-        return parent::add($key, $value);
+        if (isset($this->data[$key])) {
+            $this->data[$key] = Arrays::flatten([$this->data[$key], $value]);
+        } else {
+            $this->data[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set.
+     * @param  int $key
+     * @param  any $value
+     * @return self
+     */
+    public final function set(int $key, $value): self
+    {
+        $this->data[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get.
+     * @param  int      $key
+     * @param  any|null $valueDefault
+     * @return any
+     */
+    public final function get(int $key, $valueDefault = null)
+    {
+        return $this->data[$key] ?? $valueDefault;
     }
 
     /**
      * Remove.
      * @param  int $key
-     * @return void
-     * @override
+     * @return self
      */
-    public final function remove(int $key): void
+    public final function remove(int $key): self
     {
-        parent::remove($key);
+        unset($this->data[$key]);
+
+        return $this;
+    }
+
+    /**
+     * Has.
+     * @param  int $key
+     * @return bool
+     */
+    public final function has(int $key): bool
+    {
+        return isset($this->data[$key]);
+    }
+
+    /**
+     * Has key.
+     * @param  int $key
+     * @return bool
+     */
+    public final function hasKey(int $key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    /**
+     * Has value.
+     * @param  any  $value
+     * @param  bool $strict
+     * @return bool
+     */
+    public final function hasValue($value, bool $strict = true): bool
+    {
+        return in_array($value, $this->data, $strict);
     }
 }
-
-})();

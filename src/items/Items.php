@@ -79,16 +79,6 @@ class Items extends AbstractCollection
     }
 
     /**
-     * Has.
-     * @param  int $index
-     * @return bool
-     */
-    public final function has(int $index): bool
-    {
-        return isset($this->data[$index]);
-    }
-
-    /**
      * Add.
      * @param  any $item
      * @return self
@@ -110,5 +100,15 @@ class Items extends AbstractCollection
         unset($this->data[$index]);
 
         return $this;
+    }
+
+    /**
+     * Has.
+     * @param  int $index
+     * @return bool
+     */
+    public final function has(int $index): bool
+    {
+        return isset($this->data[$index]);
     }
 }

@@ -26,89 +26,41 @@ declare(strict_types=1);
 
 namespace froq\collection\stack;
 
-use froq\collection\stack\{Stack, StackException};
-
-// '@' is just for 'Declaration of FUCK should be compatible with FUCK!'
-// Shhh, covariance.. https://wiki.php.net/rfc/covariant-returns-and-contravariant-parameters
-@(function() {
+use froq\util\Arrays;
+use froq\collection\AbstractCollection;
+use froq\collection\stack\StackException;
 
 /**
  * Map Stack.
  *
- * This is not an implementation of https://en.wikipedia.org/wiki/Stack_(abstract_data_type) but
- * simply designed to be available to string type key check here. Inspired by HashMap of JAVA.
- * @link https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html
+ * This is not an implementation of Stack (https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
+ * but simply designed to be available to string type key check here. Inspired by HashMap of JAVA
+ * (https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html).
  *
  * @package froq\collection\stack
  * @object  froq\collection\stack\MapStack
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   4.0
  */
-class MapStack extends Stack
+class MapStack extends AbstractCollection
 {
     /**
      * Constructor.
      * @param  array<string, any>|null $data
      * @throws froq\collection\stack\StackException
-     * @override
      */
     public function __construct(array $data = null)
     {
         if ($data != null) {
             foreach (array_keys($data) as $key) {
                 if (!is_string($key)) {
-                    throw new StackException('Only string keys are accepted for '. static::class);
+                    throw new StackException('Only string keys are accepted for "%s" stack',
+                        [static::class]);
                 }
             }
-
-            parent::__construct($data, true);
         }
-    }
 
-    /**
-     * Has.
-     * @param  string $key
-     * @return bool
-     * @override
-     */
-    public final function has(string $key): bool
-    {
-        return parent::has($key);
-    }
-
-    /**
-     * Has key.
-     * @param  string $key
-     * @return bool
-     * @override
-     */
-    public final function hasKey(string $key): bool
-    {
-        return parent::hasKey($key);
-    }
-
-    /**
-     * Set.
-     * @param  string $key
-     * @param  any    $value
-     * @return self
-     * @override
-     */
-    public final function set(string $key, $value): self
-    {
-        return parent::set($key, $value);
-    }
-
-    /**
-     * Get.
-     * @param  string   $key
-     * @param  any|null $valueDefault
-     * @return any
-     * @override
-     */
-    public final function get(string $key, $valueDefault = null)
-    {
-        return parent::get($key, $valueDefault);
+        parent::__construct($data);
     }
 
     /**
@@ -116,23 +68,82 @@ class MapStack extends Stack
      * @param  string $key
      * @param  any    $value
      * @return self
-     * @override
      */
     public final function add(string $key, $value): self
     {
-        return parent::add($key, $value);
+        if (isset($this->data[$key])) {
+            $this->data[$key] = Arrays::flatten([$this->data[$key], $value]);
+        } else {
+            $this->data[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set.
+     * @param  string $key
+     * @param  any    $value
+     * @return self
+     */
+    public final function set(string $key, $value): self
+    {
+        $this->data[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get.
+     * @param  string   $key
+     * @param  any|null $valueDefault
+     * @return any
+     */
+    public final function get(string $key, $valueDefault = null)
+    {
+        return $this->data[$key] ?? $valueDefault;
     }
 
     /**
      * Remove.
      * @param  string $key
-     * @return void
-     * @override
+     * @return self
      */
-    public final function remove(string $key): void
+    public final function remove(string $key): self
     {
-        parent::remove($key);
+        unset($this->data[$key]);
+
+        return $this;
+    }
+
+    /**
+     * Has.
+     * @param  string $key
+     * @return bool
+     */
+    public final function has(string $key): bool
+    {
+        return isset($this->data[$key]);
+    }
+
+    /**
+     * Has key.
+     * @param  string $key
+     * @return bool
+     */
+    public final function hasKey(string $key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    /**
+     * Has value.
+     * @param  any  $value
+     * @param  bool $strict
+     * @return bool
+     */
+    public final function hasValue($value, bool $strict = true): bool
+    {
+        return in_array($value, $this->data, $strict);
     }
 }
-
-})();

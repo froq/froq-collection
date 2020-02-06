@@ -33,9 +33,9 @@ use froq\collection\stack\StackException;
 /**
  * Stack.
  *
- * This is not an implementation of https://en.wikipedia.org/wiki/Stack_(abstract_data_type) but
+ * This is not an implementation of Stack (https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
  * simply designed to be available key type check in here or extender objects. Inspired by
- * Hashtable of JAVA. @link https://docs.oracle.com/javase/8/docs/api/java/util/Hashtable.html
+ * Hashtable of JAVA (https://docs.oracle.com/javase/8/docs/api/java/util/Hashtable.html).
  *
  * @package froq\collection\stack
  * @object  froq\collection\stack\Stack
@@ -47,16 +47,15 @@ class Stack extends AbstractCollection
     /**
      * Constructor.
      * @param  array<int|string, any>|null $data
-     * @param  bool                        $skipKeyCheck @internal For only SetStack/MapStack constructors.
      * @throws froq\collection\stack\StackException
      */
-    public function __construct(array $data = null, bool $skipKeyCheck = false)
+    public function __construct(array $data = null)
     {
-        if ($data != null && !$skipKeyCheck) {
+        if ($data != null) {
             foreach (array_keys($data) as $key) {
                 if (!is_int($key) && !is_string($key)) {
-                    throw new StackException('Only int and string keys are accepted for '.
-                        static::class);
+                    throw new StackException('Only int and string keys are accepted for "%s" stack',
+                        [static::class]);
                 }
             }
         }
@@ -65,34 +64,20 @@ class Stack extends AbstractCollection
     }
 
     /**
-     * Has.
+     * Add.
      * @param  int|string $key
-     * @return bool
+     * @param  any        $value
+     * @return self
      */
-    public function has($key): bool
+    public final function add($key, $value): self
     {
-        return isset($this->data[$key]);
-    }
+        if (isset($this->data[$key])) {
+            $this->data[$key] = Arrays::flatten([$this->data[$key], $value]);
+        } else {
+            $this->data[$key] = $value;
+        }
 
-    /**
-     * Has key.
-     * @param  int|string $key
-     * @return bool
-     */
-    public function hasKey($key): bool
-    {
-        return array_key_exists($key, $this->data);
-    }
-
-    /**
-     * Has value.
-     * @param  any  $value
-     * @param  bool $strict
-     * @return bool
-     */
-    public function hasValue($value, bool $strict = true): bool
-    {
-        return in_array($value, $this->data, $strict);
+        return $this;
     }
 
     /**
@@ -101,7 +86,7 @@ class Stack extends AbstractCollection
      * @param  any        $value
      * @return self
      */
-    public function set($key, $value): self
+    public final function set($key, $value): self
     {
         $this->data[$key] = $value;
 
@@ -114,35 +99,51 @@ class Stack extends AbstractCollection
      * @param  any|null   $valueDefault
      * @return any|null
      */
-    public function get($key, $valueDefault = null)
+    public final function get($key, $valueDefault = null)
     {
         return $this->data[$key] ?? $valueDefault;
     }
 
     /**
-     * Add.
+     * Remove.
      * @param  int|string $key
-     * @param  any        $value
      * @return self
      */
-    public function add($key, $value): self
+    public final function remove($key): self
     {
-        if (isset($this->data[$key])) {
-            $this->data[$key] = Arrays::flatten([$this->data[$key], $value]);
-        } else {
-            $this->data[$key] = $value;
-        }
+        unset($this->data[$key]);
 
         return $this;
     }
 
     /**
-     * Remove.
+     * Has.
      * @param  int|string $key
-     * @return void
+     * @return bool
      */
-    public function remove($key): void
+    public final function has($key): bool
     {
-        unset($this->data[$key]);
+        return isset($this->data[$key]);
+    }
+
+    /**
+     * Has key.
+     * @param  int|string $key
+     * @return bool
+     */
+    public final function hasKey($key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    /**
+     * Has value.
+     * @param  any  $value
+     * @param  bool $strict
+     * @return bool
+     */
+    public final function hasValue($value, bool $strict = true): bool
+    {
+        return in_array($value, $this->data, $strict);
     }
 }
