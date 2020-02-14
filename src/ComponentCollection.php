@@ -169,7 +169,7 @@ class ComponentCollection extends AbstractCollection
             return;
         }
 
-        throw new CollectionException(sprintf('Invalid name %s given, valid names are %s', $name,
-            join(', ', self::$names)));
+        throw new CollectionException('Invalid name "%s" given, valid names are: "%s"',
+            [$name, join(', ', self::$names)]);
     }
 }
