@@ -51,7 +51,7 @@ class TypedCollection extends AbstractCollection
      * Constructor.
      * @param  array|null  $data
      * @param  string|null $dataType
-     * @throws froq\collection\CollectionException If no type set.
+     * @throws froq\collection\CollectionException
      */
     public function __construct(array $data = null, string $dataType = null)
     {
