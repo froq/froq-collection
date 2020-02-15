@@ -84,8 +84,9 @@ class ComponentCollection extends AbstractCollection
             return $this->get(lcfirst($name));
         }
 
-        throw new CollectionException('Invalid method call as "%s", (tip: only set/get prefixed '.
-            'methods can be called via __call() for "%s")', [$method, static::class]);
+        throw new CollectionException('Invalid method call as "%s" (tip: only set/get prefixed '.
+            'methods can be called via "%s::__call()" if called method not exists)',
+            [$method, static::class]);
     }
 
     /**
@@ -170,7 +171,7 @@ class ComponentCollection extends AbstractCollection
             return;
         }
 
-        throw new CollectionException('Invalid name "%s" given, valid names are: "%s"',
+        throw new CollectionException('Invalid name "%s" given, valid are: %s',
             [$name, join(', ', self::$names)]);
     }
 }
