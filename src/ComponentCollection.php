@@ -84,7 +84,8 @@ class ComponentCollection extends AbstractCollection
             return $this->get(lcfirst($name));
         }
 
-        throw new CollectionException('Only set/get prefixed methods can be called via __call()');
+        throw new CollectionException('Invalid method call as "%s", (tip: only set/get prefixed '.
+            'methods can be called via __call() for "%s")', [$method, static::class]);
     }
 
     /**
