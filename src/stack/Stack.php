@@ -54,8 +54,8 @@ class Stack extends AbstractCollection
         if ($data != null) {
             foreach (array_keys($data) as $key) {
                 if (!is_int($key) && !is_string($key)) {
-                    throw new StackException('Only int and string keys are accepted for "%s" stack',
-                        [static::class]);
+                    throw new StackException('Only int and string keys are accepted for "%s" stack, '.
+                        '"%s" given', [static::class, gettype($key)]);
                 }
             }
         }
