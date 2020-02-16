@@ -26,8 +26,9 @@ declare(strict_types=1);
 
 namespace froq\collection\items;
 
-use froq\collection\AbstractCollection;
+use froq\collection\{AbstractCollection, AccessTrait};
 use froq\collection\items\ItemsException;
+use ArrayAccess;
 
 /**
  * Items.
@@ -39,8 +40,14 @@ use froq\collection\items\ItemsException;
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   4.0
  */
-class Items extends AbstractCollection
+class Items extends AbstractCollection implements ArrayAccess
 {
+    /**
+     * Access Trait.
+     * @see froq\collection\AccessTrait
+     */
+    use AccessTrait;
+
     /**
      * Constructor.
      * @param array<int, any>|null $data
@@ -74,7 +81,7 @@ class Items extends AbstractCollection
      * @param  array<int>|null $indexes
      * @return array<int, any>
      */
-    public function items(array $indexes = null): array
+    public final function items(array $indexes = null): array
     {
         if ($indexes == null) {
             return $this->data;
