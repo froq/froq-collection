@@ -384,7 +384,6 @@ class Collection extends AbstractCollection implements ArrayAccess
         foreach ($keys as $key) {
             $items[$key] = $this->get($key);
         }
-
         return $items;
     }
 
