@@ -71,11 +71,20 @@ class Items extends AbstractCollection
 
     /**
      * Items.
+     * @param  array<int>|null $indexes
      * @return array<int, any>
      */
-    public final function items(): array
+    public function items(array $indexes = null): array
     {
-        return $this->data;
+        if ($indexes == null) {
+            return $this->data;
+        }
+
+        $items = [];
+        foreach ($indexes as $index) {
+            $items[$index] = $this->item($index);
+        }
+        return $items;
     }
 
     /**
@@ -88,6 +97,30 @@ class Items extends AbstractCollection
         $this->data[] = $item;
 
         return $this;
+    }
+
+    /**
+     * Set.
+     * @param  int $index
+     * @param  any $item
+     * @return self
+     */
+    public final function set(int $index, $item): self
+    {
+        $this->data[$index] = $item;
+
+        return $this;
+    }
+
+    /**
+     * Get.
+     * @param  int      $index
+     * @param  any|null $itemDefault
+     * @return any|null
+     */
+    public final function get(int $index, $itemDefault = null)
+    {
+        return $this->data[$index] ?? $itemDefault;
     }
 
     /**
