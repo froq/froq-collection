@@ -34,8 +34,8 @@ use froq\collection\stack\StackException;
  * Map Stack.
  *
  * This is not an implementation of Stack (https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
- * but simply designed to be available to string type key check here. Inspired by HashMap of JAVA
- * (https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html).
+ * but simply designed to be able for checking key types here or in extender objects. Inspired by
+ * JAVA's HashMap (https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html).
  *
  * @package froq\collection\stack
  * @object  froq\collection\stack\MapStack

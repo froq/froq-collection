@@ -32,7 +32,7 @@ use froq\collection\items\ItemsException;
 /**
  * Items.
  *
- * Represents a simple array structure that inspired by DOMTokenList of JavaScript.
+ * Represents a simple array structure that inspired by JavaScript's DOMTokenList.
  *
  * @package froq\collection\items
  * @object  froq\collection\items\Items

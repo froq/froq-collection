@@ -34,8 +34,8 @@ use froq\collection\stack\StackException;
  * Stack.
  *
  * This is not an implementation of Stack (https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
- * simply designed to be available key type check in here or extender objects. Inspired by
- * Hashtable of JAVA (https://docs.oracle.com/javase/8/docs/api/java/util/Hashtable.html).
+ * but simply designed to be able for checking key types here or in extender objects. Inspired by
+ * JAVA's Hashtable (https://docs.oracle.com/javase/8/docs/api/java/util/Hashtable.html).
  *
  * @package froq\collection\stack
  * @object  froq\collection\stack\Stack
