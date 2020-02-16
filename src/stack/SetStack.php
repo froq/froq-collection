@@ -27,8 +27,9 @@ declare(strict_types=1);
 namespace froq\collection\stack;
 
 use froq\util\Arrays;
-use froq\collection\AbstractCollection;
+use froq\collection\{AbstractCollection, AccessTrait};
 use froq\collection\stack\StackException;
+use ArrayAccess;
 
 /**
  * Set Stack.
@@ -42,8 +43,14 @@ use froq\collection\stack\StackException;
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   4.0
  */
-class SetStack extends AbstractCollection
+class SetStack extends AbstractCollection implements ArrayAccess
 {
+    /**
+     * Access Trait.
+     * @see froq\collection\AccessTrait
+     */
+    use AccessTrait;
+
     /**
      * Constructor.
      * @param  array<int, any>|null $data
