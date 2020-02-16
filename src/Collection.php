@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\util\Arrays;
-use froq\collection\AbstractCollection;
+use froq\collection\{AbstractCollection, AccessTrait};
 use ArrayAccess;
 
 /**
@@ -39,6 +39,13 @@ use ArrayAccess;
  */
 class Collection extends AbstractCollection implements ArrayAccess
 {
+    /**
+     * Access Trait.
+     * @see froq\collection\AccessTrait
+     * @since 4.0
+     */
+    use AccessTrait;
+
     /**
      * Constructor.
      * @param array<int|string, any>|null $data
@@ -97,7 +104,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function set($key, $value): self
     {
-        if ($key === null) { // eg: $x[] = ..
+        if ($key === null) { // From conventions like: $a[] = 1.
             $this->data[] = $value;
         } else {
             Arrays::set($this->data, $key, $value);
@@ -216,12 +223,12 @@ class Collection extends AbstractCollection implements ArrayAccess
 
     /**
      * Add.
-     * @param  int|string|array<int|string>|null $key
-     * @param  any                               $value
+     * @param  int|string|array<int|string, any> $key
+     * @param  any|null                          $value
      * @return self
      * @since  3.0
      */
-    public function add($key, $value): self
+    public function add($key, $value = null): self
     {
         if (is_array($key)) {
             @ [$key, $value] = $key;
@@ -429,37 +436,5 @@ class Collection extends AbstractCollection implements ArrayAccess
     public function lastKey()
     {
         return array_key_last($this->data);
-    }
-
-    /**
-     * @inheritDoc ArrayAccess
-     */
-    public final function offsetExists($key)
-    {
-        return $this->isset($key);
-    }
-
-    /**
-     * @inheritDoc ArrayAccess
-     */
-    public final function offsetGet($key)
-    {
-        return $this->get($key);
-    }
-
-    /**
-     * @inheritDoc ArrayAccess
-     */
-    public final function offsetSet($key, $value)
-    {
-        $this->set($key, $value);
-    }
-
-    /**
-     * @inheritDoc ArrayAccess
-     */
-    public final function offsetUnset($key)
-    {
-        $this->unset($key);
     }
 }
