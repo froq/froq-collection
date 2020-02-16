@@ -97,7 +97,7 @@ class SetStack extends AbstractCollection
      * Get.
      * @param  int      $key
      * @param  any|null $valueDefault
-     * @return any
+     * @return any|null
      */
     public final function get(int $key, $valueDefault = null)
     {

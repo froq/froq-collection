@@ -97,7 +97,7 @@ class MapStack extends AbstractCollection
      * Get.
      * @param  string   $key
      * @param  any|null $valueDefault
-     * @return any
+     * @return any|null
      */
     public final function get(string $key, $valueDefault = null)
     {
