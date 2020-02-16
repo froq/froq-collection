@@ -114,13 +114,15 @@ class Stack extends AbstractCollection implements ArrayAccess
     /**
      * Remove.
      * @param  int|string $key
-     * @return self
+     * @return bool
      */
-    public final function remove($key): self
+    public final function remove($key): bool
     {
-        unset($this->data[$key]);
-
-        return $this;
+        if (isset($this->data[$key])) {
+            unset($this->data[$key]);
+            return true;
+        }
+        return false;
     }
 
     /**

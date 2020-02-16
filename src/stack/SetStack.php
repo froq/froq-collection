@@ -114,13 +114,15 @@ class SetStack extends AbstractCollection implements ArrayAccess
     /**
      * Remove.
      * @param  int $key
-     * @return self
+     * @return bool
      */
-    public final function remove(int $key): self
+    public final function remove(int $key): bool
     {
-        unset($this->data[$key]);
-
-        return $this;
+        if (isset($this->data[$key])) {
+            unset($this->data[$key]);
+            return true;
+        }
+        return false;
     }
 
     /**

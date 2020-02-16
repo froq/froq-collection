@@ -114,13 +114,15 @@ class MapStack extends AbstractCollection implements ArrayAccess
     /**
      * Remove.
      * @param  string $key
-     * @return self
+     * @return bool
      */
-    public final function remove(string $key): self
+    public final function remove(string $key): bool
     {
-        unset($this->data[$key]);
-
-        return $this;
+        if (isset($this->data[$key])) {
+            unset($this->data[$key]);
+            return true;
+        }
+        return false;
     }
 
     /**
