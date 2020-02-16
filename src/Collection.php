@@ -435,9 +435,9 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetSet($key, $value)
+    public final function offsetExists($key)
     {
-        $this->set($key, $value);
+        return $this->isset($key);
     }
 
     /**
@@ -451,16 +451,16 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetUnset($key)
+    public final function offsetSet($key, $value)
     {
-        $this->unset($key);
+        $this->set($key, $value);
     }
 
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetExists($key)
+    public final function offsetUnset($key)
     {
-        return $this->isset($key);
+        $this->unset($key);
     }
 }
