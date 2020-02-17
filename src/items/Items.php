@@ -67,7 +67,7 @@ class Items extends AbstractCollection implements ArrayAccess
      * @throws froq\collection\items\ItemsException
      * @override
      */
-    public function setData(array $data): self
+    public final function setData(array $data): self
     {
         foreach (array_keys($data) as $key) {
             if ($key === '') {
