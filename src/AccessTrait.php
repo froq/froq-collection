@@ -59,6 +59,7 @@ trait AccessTrait
         if ($readOnly !== null && $this->readOnly === null) {
             $this->readOnly = $readOnly;
         }
+
         return $this->readOnly;
     }
 

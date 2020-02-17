@@ -26,9 +26,8 @@ declare(strict_types=1);
 
 namespace froq\collection\stack;
 
-use froq\util\Arrays;
 use froq\collection\{AbstractCollection, AccessTrait};
-use froq\collection\stack\StackException;
+use froq\collection\stack\{StackException, StackTrait};
 use ArrayAccess;
 
 /**
@@ -46,10 +45,11 @@ use ArrayAccess;
 class MapStack extends AbstractCollection implements ArrayAccess
 {
     /**
-     * Access Trait.
+     * Access & Stack Trait.
      * @see froq\collection\AccessTrait
+     * @see froq\collection\stack\StackTrait
      */
-    use AccessTrait;
+    use AccessTrait, StackTrait;
 
     /**
      * Constructor.
@@ -94,15 +94,7 @@ class MapStack extends AbstractCollection implements ArrayAccess
      */
     public final function add(string $key, $value): self
     {
-        $this->readOnlyCheck();
-
-        if (isset($this->data[$key])) {
-            $this->data[$key] = Arrays::flatten([$this->data[$key], $value]);
-        } else {
-            $this->data[$key] = $value;
-        }
-
-        return $this;
+        return $this->_add($key, $value);
     }
 
     /**
@@ -113,11 +105,7 @@ class MapStack extends AbstractCollection implements ArrayAccess
      */
     public final function set(string $key, $value): self
     {
-        $this->readOnlyCheck();
-
-        $this->data[$key] = $value;
-
-        return $this;
+        return $this->_set($key, $value);
     }
 
     /**
@@ -128,7 +116,7 @@ class MapStack extends AbstractCollection implements ArrayAccess
      */
     public final function get(string $key, $valueDefault = null)
     {
-        return $this->data[$key] ?? $valueDefault;
+        return $this->_get($key, $valueDefault);
     }
 
     /**
@@ -138,13 +126,7 @@ class MapStack extends AbstractCollection implements ArrayAccess
      */
     public final function remove(string $key): bool
     {
-        $this->readOnlyCheck();
-
-        if (isset($this->data[$key])) {
-            unset($this->data[$key]);
-            return true;
-        }
-        return false;
+        return $this->_remove($key);
     }
 
     /**
@@ -154,7 +136,7 @@ class MapStack extends AbstractCollection implements ArrayAccess
      */
     public final function has(string $key): bool
     {
-        return isset($this->data[$key]);
+        return $this->_has($key);
     }
 
     /**
@@ -164,7 +146,7 @@ class MapStack extends AbstractCollection implements ArrayAccess
      */
     public final function hasKey(string $key): bool
     {
-        return array_key_exists($key, $this->data);
+        return $this->_hasKey($key);
     }
 
     /**
@@ -175,6 +157,6 @@ class MapStack extends AbstractCollection implements ArrayAccess
      */
     public final function hasValue($value, bool $strict = true): bool
     {
-        return in_array($value, $this->data, $strict);
+        return $this->_hasValue($value, $strict);
     }
 }
