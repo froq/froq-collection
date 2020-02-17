@@ -26,7 +26,8 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\{AbstractCollection, CollectionException};
+use froq\collection\{AbstractCollection, CollectionException, AccessTrait};
+use ArrayAccess;
 
 /**
  * Component Collection.
@@ -39,8 +40,15 @@ use froq\collection\{AbstractCollection, CollectionException};
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   3.5, 4.0
  */
-class ComponentCollection extends AbstractCollection
+class ComponentCollection extends AbstractCollection implements ArrayAccess
 {
+    /**
+     * Access Trait.
+     * @see froq\collection\AccessTrait
+     * @since 4.0
+     */
+    use AccessTrait;
+
     /**
      * Names (settable/gettable names).
      * @var array
@@ -90,6 +98,29 @@ class ComponentCollection extends AbstractCollection
     }
 
     /**
+     * Set data.
+     * @param  array<string, any> $data
+     * @return self (static)
+     * @throws froq\collection\CollectionException
+     * @override
+     */
+    public final function setData(array $data): self
+    {
+        foreach (array_keys($data) as $name) {
+            if ($name === '') {
+                throw new CollectionException('Only string names are accepted for "%s" object, '.
+                    'empty string (probably null name) given', [static::class]);
+            }
+            if (!is_string($name)) {
+                throw new CollectionException('Only string names are accepted for "%s" object, '.
+                    '"%s" given', [static::class, gettype($name)]);
+            }
+        }
+
+        return parent::setData($data);
+    }
+
+    /**
      * Names.
      * @return array<string>
      */
@@ -125,7 +156,7 @@ class ComponentCollection extends AbstractCollection
      */
     public final function set(string $name, $value): self
     {
-        $this->nameCheck($name);
+        $this->nameCheck($name) || $this->readOnlyCheck();
 
         $this->data[$name] = $value;
 
@@ -151,7 +182,7 @@ class ComponentCollection extends AbstractCollection
      */
     public final function remove(string $name): void
     {
-        $this->nameCheck($name);
+        $this->nameCheck($name) || $this->readOnlyCheck();
 
         unset($this->data[$name]);
     }
@@ -164,10 +195,10 @@ class ComponentCollection extends AbstractCollection
      */
     private final function nameCheck(string $name): void
     {
-        if (in_array($name, self::$names)) {
+        if (!self::$throws) {
             return;
         }
-        if (!self::$throws) {
+        if (in_array($name, self::$names)) {
             return;
         }
 
