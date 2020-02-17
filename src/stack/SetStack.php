@@ -35,8 +35,7 @@ use ArrayAccess;
  * Set Stack.
  *
  * This is not an implementation of Stack (https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
- * but simply designed to be able for checking key types here or in extender objects. Inspired by
- * JAVA's HashSet (https://docs.oracle.com/javase/8/docs/api/java/util/HashSet.html)
+ * but simply designed to be able for checking key types here or in extender objects.
  *
  * @package froq\collection\stack
  * @object  froq\collection\stack\SetStack
@@ -54,20 +53,36 @@ class SetStack extends AbstractCollection implements ArrayAccess
     /**
      * Constructor.
      * @param  array<int, any>|null $data
-     * @throws froq\collection\stack\StackException
+     * @param  bool|null            $readOnly
      */
-    public function __construct(array $data = null)
+    public function __construct(array $data = null, bool $readOnly = null)
     {
-        if ($data != null) {
-            foreach (array_keys($data) as $key) {
-                if (!is_int($key)) {
-                    throw new StackException('Only int keys are accepted for "%s" stack, '.
-                        '"%s" given', [static::class, gettype($key)]);
-                }
+        parent::__construct($data);
+
+        $this->readOnly = $readOnly;
+    }
+
+    /**
+     * Set data.
+     * @param  array $data
+     * @return self (static)
+     * @throws froq\collection\stack\StackException
+     * @override
+     */
+    public final function setData(array $data): self
+    {
+        foreach (array_keys($data) as $key) {
+            if ($key === '') {
+                throw new StackException('Only int keys are accepted for "%s" stack, '.
+                    'empty string (probably null key) given', [static::class]);
+            }
+            if (!is_int($key)) {
+                throw new StackException('Only int keys are accepted for "%s" stack, '.
+                    '"%s" given', [static::class, gettype($key)]);
             }
         }
 
-        parent::__construct($data);
+        return parent::setData($data);
     }
 
     /**
@@ -78,6 +93,8 @@ class SetStack extends AbstractCollection implements ArrayAccess
      */
     public final function add(int $key, $value): self
     {
+        $this->readOnlyCheck();
+
         if (isset($this->data[$key])) {
             $this->data[$key] = Arrays::flatten([$this->data[$key], $value]);
         } else {
@@ -95,6 +112,8 @@ class SetStack extends AbstractCollection implements ArrayAccess
      */
     public final function set(int $key, $value): self
     {
+        $this->readOnlyCheck();
+
         $this->data[$key] = $value;
 
         return $this;
@@ -118,6 +137,8 @@ class SetStack extends AbstractCollection implements ArrayAccess
      */
     public final function remove(int $key): bool
     {
+        $this->readOnlyCheck();
+
         if (isset($this->data[$key])) {
             unset($this->data[$key]);
             return true;
