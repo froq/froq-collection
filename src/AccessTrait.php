@@ -31,8 +31,8 @@ use froq\collection\AccessException;
 /**
  * Access Trait.
  *
- * Represents an access trait that used in `froq\collection` internally for items, stacks and
- * collection objects.
+ * Represents an access trait that used in `froq\collection` internally for stacks and collection
+ * objects.
  *
  * @package  froq\collection
  * @object   froq\collection\AccessTrait

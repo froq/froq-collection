@@ -24,24 +24,23 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection\items;
+namespace froq\collection;
 
-use froq\collection\{AbstractCollection, AccessTrait};
-use froq\collection\items\ItemsException;
+use froq\collection\{AbstractCollection, AccessTrait, CollectionException};
 use ArrayAccess;
 
 /**
- * Items.
+ * ItemCollection.
  *
  * Represents a simple array structure that accepts int keys only, and also prevents modifications
  * in read-only mode. Inspired by JavaScript's DOMTokenList.
  *
- * @package froq\collection\items
- * @object  froq\collection\items\Items
+ * @package froq\collection
+ * @object  froq\collection\ItemCollection
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   4.0
  */
-class Items extends AbstractCollection implements ArrayAccess
+class ItemCollection extends AbstractCollection implements ArrayAccess
 {
     /**
      * Access Trait.
@@ -65,18 +64,18 @@ class Items extends AbstractCollection implements ArrayAccess
      * Set data.
      * @param  array $data
      * @return self (static)
-     * @throws froq\collection\items\ItemsException
+     * @throws froq\collection\CollectionException
      * @override
      */
     public final function setData(array $data): self
     {
         foreach (array_keys($data) as $key) {
             if ($key === '') {
-                throw new ItemsException('Only int keys are accepted for "%s" object, '.
+                throw new CollectionException('Only int keys are accepted for "%s" object, '.
                     'empty string (probably null key) given', [static::class]);
             }
             if (!is_int($key)) {
-                throw new ItemsException('Only int keys are accepted for "%s" object, '.
+                throw new CollectionException('Only int keys are accepted for "%s" object, '.
                     '"%s" given', [static::class, gettype($key)]);
             }
         }
