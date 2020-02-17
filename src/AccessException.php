@@ -35,5 +35,5 @@ use froq\collection\CollectionException;
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   4.0
  */
-class AccessException extends CollectionException
+final class AccessException extends CollectionException
 {}
