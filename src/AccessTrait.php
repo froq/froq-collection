@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
+use froq\collection\AccessException;
 
 /**
  * Access Trait.
@@ -41,6 +42,38 @@ namespace froq\collection;
  */
 trait AccessTrait
 {
+    /**
+     * Read-only.
+     * @var ?bool
+     */
+    protected ?bool $readOnly = null;
+
+    /**
+     * Read-only setter/getter.
+     * @param  bool|null $readOnly
+     * @return ?bool
+     */
+    public final function readOnly(bool $readOnly = null): ?bool
+    {
+        // Set $readOnly property for once, so it cannot be modified anymore calling readOnly().
+        if ($readOnly !== null && $this->readOnly === null) {
+            $this->readOnly = $readOnly;
+        }
+        return $this->readOnly;
+    }
+
+    /**
+     * Read-only checker.
+     * @return void
+     * @throws froq\stack\StackException
+     */
+    public final function readOnlyCheck(): void
+    {
+        if ($this->readOnly) {
+            throw new AccessException('Cannot modify read-only "%s" object', [static::class]);
+        }
+    }
+
     /**
      * @inheritDoc ArrayAccess
      */
