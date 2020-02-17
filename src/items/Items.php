@@ -51,19 +51,36 @@ class Items extends AbstractCollection implements ArrayAccess
     /**
      * Constructor.
      * @param array<int, any>|null $data
+     * @param bool|null            $readOnly
      */
-    public function __construct(array $data = null)
+    public function __construct(array $data = null, bool $readOnly = null)
     {
-        if ($data != null) {
-            foreach (array_keys($data) as $key) {
-                if (!is_int($key)) {
-                    throw new ItemsException('Only int keys accepted for "%s" class',
-                        [static::class]);
-                }
+        parent::__construct($data);
+
+        $this->readOnly = $readOnly;
+    }
+
+    /**
+     * Set data.
+     * @param  array $data
+     * @return self (static)
+     * @throws froq\collection\items\ItemsException
+     * @override
+     */
+    public function setData(array $data): self
+    {
+        foreach (array_keys($data) as $key) {
+            if ($key === '') {
+                throw new ItemsException('Only int keys are accepted for "%s" object, '.
+                    'empty string (probably null key) given', [static::class]);
+            }
+            if (!is_int($key)) {
+                throw new ItemsException('Only int keys are accepted for "%s" object, '.
+                    '"%s" given', [static::class, gettype($key)]);
             }
         }
 
-        parent::__construct($data);
+        return parent::setData($data);
     }
 
      /**
@@ -101,6 +118,8 @@ class Items extends AbstractCollection implements ArrayAccess
      */
     public final function add($item): self
     {
+        $this->readOnlyCheck();
+
         $this->data[] = $item;
 
         return $this;
@@ -114,6 +133,8 @@ class Items extends AbstractCollection implements ArrayAccess
      */
     public final function set(int $index, $item): self
     {
+        $this->readOnlyCheck();
+
         $this->data[$index] = $item;
 
         return $this;
@@ -133,13 +154,17 @@ class Items extends AbstractCollection implements ArrayAccess
     /**
      * Remove.
      * @param  int $index
-     * @return self
+     * @return bool
      */
-    public final function remove(int $index): self
+    public final function remove(int $index): bool
     {
-        unset($this->data[$index]);
+        $this->readOnlyCheck();
 
-        return $this;
+        if (isset($this->data[$index])) {
+            unset($this->data[$index]);
+            return true;
+        }
+        return false;
     }
 
     /**
