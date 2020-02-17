@@ -31,8 +31,8 @@ use froq\collection\{AbstractCollection, CollectionException};
 /**
  * Typed Collection.
  *
- * Represents a typed array structure that inspired by TypedArray of JavaScript. @link
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
+ * Represents a typed array structure that accepts strict values only which indicated with
+ * `$dataType` property.
  *
  * @package froq\collection
  * @object  froq\collection\TypedCollection
@@ -180,7 +180,7 @@ class TypedCollection extends AbstractCollection
         static $types = ['int', 'float', 'string', 'bool', 'array', 'resource'];
         static $typer = ['integer' => 'int', 'double' => 'float', 'boolean' => 'bool'];
 
-        // Shorter types must be used (constructor or in extender class).
+        // Shorter types must be used (in constructor or extender class).
         $type = strtr($type, $typer);
 
         // Others.
