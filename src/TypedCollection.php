@@ -63,7 +63,7 @@ class TypedCollection extends AbstractCollection
                 'second argument');
         }
 
-        $data && $this->setData($data);
+        parent::__construct($data);
     }
 
     /**
