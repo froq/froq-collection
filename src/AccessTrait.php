@@ -46,7 +46,7 @@ trait AccessTrait
      * Read-only.
      * @var ?bool
      */
-    protected ?bool $readOnly = null;
+    private ?bool $readOnly = null;
 
     /**
      * Read-only setter/getter.
