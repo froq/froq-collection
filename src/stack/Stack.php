@@ -35,7 +35,8 @@ use ArrayAccess;
  * Stack.
  *
  * This is not an implementation of Stack (https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
- * but simply designed to be able for checking key types here or in extender objects.
+ * but simply designed to be able for checking key types here or in extender objects, and also to
+ * prevent the modifications in read-only mode.
  *
  * @package froq\collection\stack
  * @object  froq\collection\stack\Stack
