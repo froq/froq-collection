@@ -33,7 +33,8 @@ use ArrayAccess;
 /**
  * Items.
  *
- * Represents a simple array structure that inspired by JavaScript's DOMTokenList.
+ * Represents a simple array structure that accepts int keys only, and also prevents modifications
+ * in read-only mode. Inspired by JavaScript's DOMTokenList.
  *
  * @package froq\collection\items
  * @object  froq\collection\items\Items
@@ -112,6 +113,16 @@ class Items extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Has.
+     * @param  int $index
+     * @return bool
+     */
+    public final function has(int $index): bool
+    {
+        return isset($this->data[$index]);
+    }
+
+    /**
      * Add.
      * @param  any $item
      * @return self
@@ -168,12 +179,21 @@ class Items extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Has.
-     * @param  int $index
+     * Replace.
+     * @param  any $oldItem
+     * @param  any $newItem
      * @return bool
      */
-    public final function has(int $index): bool
+    public final function replace($oldItem, $newItem): bool
     {
-        return isset($this->data[$index]);
+        $this->readOnlyCheck();
+
+        foreach ($this->data as $index => $item) {
+            if ($item === $oldItem) {
+                $this->data[$index] = $newItem;
+                return true;
+            }
+        }
+        return false;
     }
 }
