@@ -104,6 +104,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function set($key, $value): self
     {
+        $this->readOnlyCheck();
+
         if ($key === null) { // From conventions like: $a[] = 1.
             $this->data[] = $value;
         } else {
@@ -121,6 +123,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function setAll(array $data): self
     {
+        $this->readOnlyCheck();
+
         Arrays::setAll($this->data, $data);
     }
 
@@ -163,6 +167,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function unset($key): void
     {
+        $this->readOnlyCheck();
+
         unset($this->data[$key]);
     }
 
@@ -206,6 +212,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function pull($key, $valueDefault = null)
     {
+        $this->readOnlyCheck();
+
         return Arrays::pull($this->data, $key, $valueDefault);
     }
 
@@ -218,6 +226,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function pullAll(array $keys, $valueDefault = null): array
     {
+        $this->readOnlyCheck();
+
         return Arrays::pullAll($this->data, $keys, $valueDefault);
     }
 
@@ -230,6 +240,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function add($key, $value = null): self
     {
+        $this->readOnlyCheck();
+
         if (is_array($key)) {
             @ [$key, $value] = $key;
         }
@@ -244,6 +256,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function remove($key): self
     {
+        $this->readOnlyCheck();
+
         foreach ((array) $key as $key) {
             $this->unset($key);
         }
@@ -258,6 +272,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function pop()
     {
+        $this->readOnlyCheck();
+
         return array_pop($this->data);
     }
 
@@ -269,6 +285,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     function unpop(array $data): self
     {
+        $this->readOnlyCheck();
+
         foreach ($data as $key => $value) {
             // Drop olds, so prevent in-place replace.
             if (isset($this->data[$key])) {
@@ -287,6 +305,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function shift()
     {
+        $this->readOnlyCheck();
+
         return array_shift($this->data);
     }
 
@@ -298,6 +318,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function unshift(array $data): self
     {
+        $this->readOnlyCheck();
+
         $this->data = $data + $this->data;
 
         return $this;
@@ -311,6 +333,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function reverse(bool $preserveKeys = false): self
     {
+        $this->readOnlyCheck();
+
         $this->data = array_reverse($this->data, $preserveKeys);
 
         return $this;
