@@ -418,17 +418,6 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Merge with.
-     * @param  self (static) $collection
-     * @return self (static)
-     * @since  4.0
-     */
-    public function mergeWith(self $collection): self
-    {
-        return $this->merge($collection);
-    }
-
-    /**
      * Search.
      * @param  any  $value
      * @param  bool $strict
