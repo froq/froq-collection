@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\util\Arrays;
-use froq\collection\{AbstractCollection, AccessTrait};
+use froq\collection\{AbstractCollection, CollectionException, AccessTrait};
 use ArrayAccess;
 
 /**
@@ -493,16 +493,90 @@ class Collection extends AbstractCollection implements ArrayAccess
 
     /**
      * Sort.
-     * @param  callable|null $func
-     * @param  callable|null $ufunc
-     * @param  int           $flags
+     * @param  string|null $funcName
+     * @param  int         $flags
      * @return self
+     * @throws froq\collection\CollectionException
      */
-    public function sort(callable $func = null, callable $ufunc = null, int $flags = 0): self
+    public function sort(string $funcName = null, int $flags = 0): self
     {
         $this->readOnlyCheck();
 
-        Arrays::sort($this->data, $func, $ufunc, $flags);
+        static $funcNames = ['rsort', 'asort', 'arsort', 'ksort', 'krsort'];
+
+        if ($funcName && !in_array($funcName, $funcNames)) {
+            throw new CollectionException('Invalid sort function "%s", valids are: %s and null',
+                [$funcName, join(', ', $funcNames)]);
+        }
+
+        call_user_func_array($funcName ?: 'sort', [&$this->data, $flags]);
+
+        return $this;
+    }
+
+    /**
+     * USort.
+     * @param  callable    $func
+     * @param  string|null $funcName
+     * @return self
+     * @throws froq\collection\CollectionException
+     * @since  4.0
+     */
+    public function usort(callable $func, string $funcName = null): self
+    {
+        $this->readOnlyCheck();
+
+        static $funcNames = ['uasort', 'uksort'];
+
+        if ($funcName && !in_array($funcName, $funcNames)) {
+            throw new CollectionException('Invalid usort function "%s", valids are: %s and null',
+                [$funcName, join(', ', $funcNames)]);
+        }
+
+        call_user_func_array($funcName ?: 'usort', [&$this->data, $func]);
+
+        return $this;
+    }
+
+    /**
+     * Sort locale.
+     * @param  string|null $locale
+     * @return self
+     * @since  4.0
+     */
+    public function sortLocale(string $locale = null): self
+    {
+        $this->readOnlyCheck();
+
+        if ($locale == null) { // Use current locale.
+            usort($this->data, fn($a, $b) => strcoll($a, $b));
+        } else {
+            static $localeDefault;
+            if ($localeDefault === null) { // Get & cache.
+                $localeDefault = setlocale(LC_COLLATE, 0);
+            }
+
+            setlocale(LC_COLLATE, $locale);
+            usort($this->data, fn($a, $b) => strcoll($a, $b));
+            if ($localeDefault !== null) { // Restore.
+                setlocale(LC_COLLATE, $localeDefault);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sort natural.
+     * @param  bool $noCase
+     * @return self
+     * @since  4.0
+     */
+    public function sortNatural(bool $noCase = false): self
+    {
+        $this->readOnlyCheck();
+
+        !$noCase ? natsort($this->data) : natcasesort($this->data);
 
         return $this;
     }
