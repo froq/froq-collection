@@ -242,11 +242,15 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        if (is_array($key)) {
-            @ [$key, $value] = $key;
+        @ [$key, $value] = is_array($key) ? $key : [$key, $value];
+
+        if (isset($this->data[$key])) {
+            $this->data[$key] = Arrays::flatten([$this->data[$key], $value]);
+        } else {
+            $this->data[$key] = $value;
         }
 
-        return $this->set($key, $value);
+        return $this;
     }
 
     /**
@@ -341,6 +345,20 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Unique.
+     * @return self
+     * @since  4.0
+     */
+    public function unique(): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_unique($this->data, SORT_REGULAR);
+
+        return $this;
+    }
+
+    /**
      * Search.
      * @param  any  $value
      * @param  bool $strict
@@ -377,6 +395,33 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Random.
+     * @param  int  $size
+     * @param  bool $pack Return [key,value] pairs.
+     * @return any|null
+     * @since  4.0
+     */
+    public function random(int $size = 1, bool $pack = false)
+    {
+        return Arrays::random($this->data, $size, $pack);
+    }
+
+    /**
+     * Shuffle.
+     * @param  bool $keepKeys
+     * @return self
+     * @since  4.0
+     */
+    public function shuffle(bool $keepKeys = false)
+    {
+        $this->readOnlyCheck();
+
+        Arrays::shuffle($this->data, $keepKeys);
+
+        return $this;
+    }
+
+    /**
      * Sort.
      * @param  callable|null $func
      * @param  callable|null $ufunc
@@ -385,6 +430,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function sort(callable $func = null, callable $ufunc = null, int $flags = 0): self
     {
+        $this->readOnlyCheck();
+
         Arrays::sort($this->data, $func, $ufunc, $flags);
 
         return $this;
