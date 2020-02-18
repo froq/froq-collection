@@ -151,6 +151,34 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Pull.
+     * @param  int|string $key
+     * @param  any        $valueDefault
+     * @return any
+     * @since  3.0
+     */
+    public function pull($key, $valueDefault = null)
+    {
+        $this->readOnlyCheck();
+
+        return Arrays::pull($this->data, $key, $valueDefault);
+    }
+
+    /**
+     * Pull all.
+     * @param  array<int|string> $keys
+     * @param  any               $valueDefault
+     * @return any
+     * @since  3.0
+     */
+    public function pullAll(array $keys, $valueDefault = null): array
+    {
+        $this->readOnlyCheck();
+
+        return Arrays::pullAll($this->data, $keys, $valueDefault);
+    }
+
+    /**
      * Isset.
      * @param  int|string $key
      * @return bool
@@ -201,34 +229,6 @@ class Collection extends AbstractCollection implements ArrayAccess
     public function hasValue($value, bool $strict = true): bool
     {
         return in_array($value, $this->data, $strict);
-    }
-
-    /**
-     * Pull.
-     * @param  int|string $key
-     * @param  any        $valueDefault
-     * @return any
-     * @since  3.0
-     */
-    public function pull($key, $valueDefault = null)
-    {
-        $this->readOnlyCheck();
-
-        return Arrays::pull($this->data, $key, $valueDefault);
-    }
-
-    /**
-     * Pull all.
-     * @param  array<int|string> $keys
-     * @param  any               $valueDefault
-     * @return any
-     * @since  3.0
-     */
-    public function pullAll(array $keys, $valueDefault = null): array
-    {
-        $this->readOnlyCheck();
-
-        return Arrays::pullAll($this->data, $keys, $valueDefault);
     }
 
     /**
@@ -287,7 +287,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @return self
      * @since  4.0
      */
-    function unpop(array $data): self
+    public function unpop(array $data): self
     {
         $this->readOnlyCheck();
 
