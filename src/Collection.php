@@ -282,7 +282,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Unpop.
+     * Unpop (aka push).
      * @param  array<int|string, any> $data
      * @return self
      * @since  4.0
@@ -356,6 +356,48 @@ class Collection extends AbstractCollection implements ArrayAccess
         $this->data = array_unique($this->data, SORT_REGULAR);
 
         return $this;
+    }
+
+    /**
+     * Slice.
+     * @param  int      $offset
+     * @param  int|null $length
+     * @param  bool     $preserveKeys
+     * @return self
+     */
+    public function slice(int $offset, int $length = null, bool $preserveKeys = false): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_slice($this->data, $offset, $length, $preserveKeys);
+
+        return $this;
+    }
+
+    /**
+     * Merge.
+     * @param  iterable $data
+     * @return self (static)
+     * @since  4.0
+     */
+    public function merge(iterable $data): self
+    {
+        foreach ($data as $key => $value) {
+            $this->data[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Merge with.
+     * @param  self (static) $collection
+     * @return self (static)
+     * @since  4.0
+     */
+    public function mergeWith(self $collection): self
+    {
+        return $this->merge($collection);
     }
 
     /**
