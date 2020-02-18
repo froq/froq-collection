@@ -263,7 +263,7 @@ class Collection extends AbstractCollection implements ArrayAccess
         $this->readOnlyCheck();
 
         foreach ((array) $key as $key) {
-            $this->unset($key);
+            unset($this->$data[$key]);
         }
 
         return $this;
