@@ -364,6 +364,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @param  int|null $length
      * @param  bool     $preserveKeys
      * @return self
+     * @since  4.0
      */
     public function slice(int $offset, int $length = null, bool $preserveKeys = false): self
     {
@@ -372,6 +373,33 @@ class Collection extends AbstractCollection implements ArrayAccess
         $this->data = array_slice($this->data, $offset, $length, $preserveKeys);
 
         return $this;
+    }
+
+    /**
+     * Split.
+     * @param  int  $size
+     * @param  bool $preserveKeys
+     * @return self
+     * @since  4.0
+     */
+    public function split(int $size, bool $preserveKeys = false): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_chunk($this->data, $size, $preserveKeys);
+
+        return $this;
+    }
+
+    /**
+     * Join.
+     * @param  string $glue
+     * @return string
+     * @since  4.0
+     */
+    public function join(string $glue): string
+    {
+        return join($glue, $this->data);
     }
 
     /**
