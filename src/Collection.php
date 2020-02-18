@@ -83,7 +83,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function __isset($key)
     {
-        return $this->isset($key);
+        return $this->has($key);
     }
 
     /**
@@ -93,7 +93,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function __unset($key)
     {
-        $this->unset($key);
+        $this->remove($key);
     }
 
     /**
@@ -179,35 +179,13 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Isset.
-     * @param  int|string $key
-     * @return bool
-     */
-    public function isset($key): bool
-    {
-        return isset($this->data[$key]);
-    }
-
-    /**
-     * Unset.
-     * @param  int|string $key
-     * @return void
-     */
-    public function unset($key): void
-    {
-        $this->readOnlyCheck();
-
-        unset($this->data[$key]);
-    }
-
-    /**
      * Check.
      * @param  int|string $key
      * @return bool
      */
     public function has($key): bool
     {
-        return $this->isset($key);
+        return isset($this->data[$key]);
     }
 
     /**
