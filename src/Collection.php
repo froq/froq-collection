@@ -432,17 +432,6 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Select.
-     * @param  callable $func
-     * @return array
-     * @since  4.0
-     */
-    public function select(callable $func): array
-    {
-        return Arrays::select($this->data, $func);
-    }
-
-    /**
      * Random.
      * @param  int  $size
      * @param  bool $pack Return [key,value] pairs.
