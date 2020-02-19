@@ -240,9 +240,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        foreach ((array) $key as $key) {
-            unset($this->$data[$key]);
-        }
+        Arrays::removeAll($this->$data, (array) $key);
 
         return $this;
     }
