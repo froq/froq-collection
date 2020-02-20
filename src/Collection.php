@@ -97,6 +97,32 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Set data.
+     * @param  array $data
+     * @return self (static)
+     * @throws froq\collection\CollectionException
+     * @since  4.0
+     * @override
+     */
+    public final function setData(array $data): self
+    {
+        foreach (array_keys($data) as $key) {
+            if ($key === '') {
+                throw new CollectionException('Only int keys are accepted for "%s" object, '.
+                    'empty string (probably null key) given', [static::class]);
+            }
+            if (!is_int($key) || !is_string($key)) {
+                throw new CollectionException('Only int & string keys are accepted for "%s" object, '.
+                    '"%s" given', [static::class, gettype($key)]);
+            }
+        }
+
+        $this->readOnlyCheck();
+
+        return parent::setData($data);
+    }
+
+    /**
      * Set.
      * @param  int|string|null $key
      * @param  any             $value

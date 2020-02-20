@@ -102,6 +102,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
      * @param  array<string, any> $data
      * @return self (static)
      * @throws froq\collection\CollectionException
+     * @since  4.0
      * @override
      */
     public final function setData(array $data): self
