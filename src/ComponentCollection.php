@@ -68,7 +68,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
      */
     public function __construct(array $names, bool $throws = true)
     {
-        self::$names = $names;
+        self::$names  = $names;
         self::$throws = $throws;
 
         parent::__construct(null);
