@@ -108,10 +108,10 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         foreach (array_keys($data) as $key) {
             if ($key === '') {
-                throw new CollectionException('Only int keys are accepted for "%s" object, '.
+                throw new CollectionException('Only int & string keys are accepted for "%s" object, '.
                     'empty string (probably null key) given', [static::class]);
             }
-            if (!is_int($key) || !is_string($key)) {
+            if (!is_int($key) && !is_string($key)) {
                 throw new CollectionException('Only int & string keys are accepted for "%s" object, '.
                     '"%s" given', [static::class, gettype($key)]);
             }
