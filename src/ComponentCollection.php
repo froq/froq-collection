@@ -115,7 +115,11 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
                 throw new CollectionException('Only string names are accepted for "%s" object, '.
                     '"%s" given', [static::class, gettype($name)]);
             }
+
+            $this->nameCheck($name);
         }
+
+        $this->readOnlyCheck();
 
         return parent::setData($data);
     }

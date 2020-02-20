@@ -80,6 +80,8 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
             }
         }
 
+        $this->readOnlyCheck();
+
         return parent::setData($data);
     }
 
