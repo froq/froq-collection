@@ -420,6 +420,21 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Sweep.
+     * @param  array|null $ignoredKeys
+     * @return self
+     * @since  4.0
+     */
+    public function sweep(array $ignoredKeys = null): self
+    {
+        $this->readOnlyCheck();
+
+        Arrays::sweep($this->data);
+
+        return $this;
+    }
+
+    /**
      * Search.
      * @param  any  $value
      * @param  bool $strict
