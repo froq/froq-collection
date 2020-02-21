@@ -93,7 +93,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
         throw new CollectionException('Invalid method call as "%s()" (tip: "%s" object is a '.
             'component collection and only set/get prefixed methods can be called via __call() '.
             'if method not exists)',
-            [$method, $class]);
+            [$method, static::class]);
     }
 
     /**
