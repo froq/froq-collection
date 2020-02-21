@@ -33,7 +33,7 @@ use ArrayAccess;
  * Component Collection.
  *
  * Represents a named array structure that restricts all access and mutation operations considering
- * given names only.
+ * given names only, also provides calls via `__call()` magic for given names.
  *
  * @package froq\collection
  * @object  froq\collection\ComponentCollection
@@ -83,17 +83,16 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
      */
     public function __call(string $method, array $methodArgs = [])
     {
-        $cmd  = substr($method, 0, 3);
-        $name = substr($method, 3);
-
-        if ($cmd == 'set') {
-            return $this->set(lcfirst($name), $methodArgs[0]);
-        } elseif ($cmd == 'get') {
-            return $this->get(lcfirst($name));
+        // Eg: setFoo('bar') => set('foo', 'bar') or getFoo() => get('foo').
+        if (strpos($method, 'set') === 0) {
+            return $this->set(lcfirst(substr($method, 3)), $methodArgs[0]);
+        } elseif (strpos($method, 'get') === 0) {
+            return $this->get(lcfirst(substr($method, 3)));
         }
 
-        throw new CollectionException('Invalid method call as "%s" (tip: only set/get prefixed '.
-            'methods can be called via "%s::__call()" if called method not exists)',
+        throw new CollectionException('Invalid method call as "%s" (tip: "%s" object is a '.
+            'component collection and only set/get prefixed methods can be called via __call() '.
+            'if method not exists)',
             [$method, static::class]);
     }
 
