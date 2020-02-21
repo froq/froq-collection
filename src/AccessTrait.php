@@ -43,24 +43,26 @@ use froq\collection\AccessException;
 trait AccessTrait
 {
     /**
-     * Read-only.
-     * @var ?bool
+     * Read-only states.
+     * @var array
      */
-    private ?bool $readOnly = null;
+    private static array $__readOnlyStates;
 
     /**
      * Read-only setter/getter.
-     * @param  bool|null $readOnly
+     * @param  bool|null $state
      * @return ?bool
      */
-    public final function readOnly(bool $readOnly = null): ?bool
+    public final function readOnly(bool $state = null): ?bool
     {
-        // Set $readOnly property for once, so it cannot be modified anymore calling readOnly().
-        if ($readOnly !== null && $this->readOnly === null) {
-            $this->readOnly = $readOnly;
+        $id = spl_object_id($this);
+
+        // Set state for once, so it cannot be modified anymore calling readOnly().
+        if ($state !== null && !isset(self::$__readOnlyStates[$id])) {
+            self::$__readOnlyStates[$id] = $state;
         }
 
-        return $this->readOnly;
+        return self::$__readOnlyStates[$id] ?? null;
     }
 
     /**
@@ -70,7 +72,7 @@ trait AccessTrait
      */
     public final function readOnlyCheck(): void
     {
-        if ($this->readOnly) {
+        if ($this->readOnly()) {
             throw new AccessException('Cannot modify read-only "%s" object', [static::class]);
         }
     }

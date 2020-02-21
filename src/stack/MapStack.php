@@ -60,7 +60,7 @@ class MapStack extends AbstractCollection implements ArrayAccess
     {
         parent::__construct($data);
 
-        $this->readOnly = $readOnly;
+        $this->readOnly($readOnly);
     }
 
     /**
