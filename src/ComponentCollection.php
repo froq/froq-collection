@@ -90,7 +90,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
             return $this->get(lcfirst(substr($method, 3)));
         }
 
-        throw new CollectionException('Invalid method call as "%s" (tip: "%s" object is a '.
+        throw new CollectionException('Invalid method call as "%s()" (tip: "%s" object is a '.
             'component collection and only set/get prefixed methods can be called via __call() '.
             'if method not exists)',
             [$method, static::class]);
