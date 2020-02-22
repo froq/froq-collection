@@ -124,6 +124,16 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Has index.
+     * @param  int $index
+     * @return bool
+     */
+    public final function hasIndex(int $index): bool
+    {
+        return array_key_exists($index, $this->data);
+    }
+
+    /**
      * Add.
      * @param  any $item
      * @return self

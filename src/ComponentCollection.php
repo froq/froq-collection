@@ -153,6 +153,16 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Has name.
+     * @param  string $name
+     * @return bool
+     */
+    public final function hasName(string $name): bool
+    {
+        return in_array($name, self::$names);
+    }
+
+    /**
      * Set.
      * @param  string $name
      * @param  any    $value
