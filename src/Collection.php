@@ -266,7 +266,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        Arrays::removeAll($this->$data, (array) $key);
+        Arrays::removeAll($this->data, (array) $key);
 
         return $this;
     }
