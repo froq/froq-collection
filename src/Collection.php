@@ -498,6 +498,37 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Flip.
+     * @return self
+     * @since  4.0
+     */
+    public function flip(): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_flip($this->data);
+
+        return $this;
+    }
+
+    /**
+     * Fill.
+     * @param  any $value
+     * @return self
+     * @since  4.0
+     */
+    public function fill($value): self
+    {
+        $this->readOnlyCheck();
+
+        foreach (array_keys($this->data) as $key) {
+            $this->data[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * Sort.
      * @param  string|null $funcName
      * @param  int         $flags
