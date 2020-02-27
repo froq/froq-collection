@@ -124,84 +124,49 @@ class Collection extends AbstractCollection implements ArrayAccess
 
     /**
      * Set.
-     * @param  int|string|null $key
-     * @param  any             $value
+     * @param  int|string|array<int|string>|null $key
+     * @param  any|null                          $value
      * @return self
      */
-    public function set($key, $value): self
+    public function set($key, $value = null): self
     {
         $this->readOnlyCheck();
 
         if ($key === null) { // From conventions like: $a[] = 1.
             $this->data[] = $value;
         } else {
-            Arrays::set($this->data, $key, $value);
+            is_array($key) ? Arrays::setAll($this->data, $key)
+                           : Arrays::set($this->data, $key, $value);
         }
 
         return $this;
     }
 
     /**
-     * Set all.
-     * @param  array<int|string, any> $data
-     * @return self
-     * @since  4.0
-     */
-    public function setAll(array $data): self
-    {
-        $this->readOnlyCheck();
-
-        Arrays::setAll($this->data, $data);
-    }
-
-    /**
      * Get.
-     * @param  int|string $key
-     * @param  any        $valueDefault
-     * @return any
+     * @param  int|string|array<int|string> $key
+     * @param  any|null                     $valueDefault
+     * @return any|null
      */
     public function get($key, $valueDefault = null)
     {
-        return Arrays::get($this->data, $key, $valueDefault);
-    }
-
-    /**
-     * Get all.
-     * @param  array<int|string> $keys
-     * @param  any               $valueDefault
-     * @return array
-     */
-    public function getAll($keys, $valueDefault = null): array
-    {
-        return Arrays::getAll($this->data, $keys, $valueDefault);
+        return is_array($key) ? Arrays::getAll($this->data, $key, $valueDefault)
+                              : Arrays::get($this->data, $key, $valueDefault);
     }
 
     /**
      * Pull.
-     * @param  int|string $key
-     * @param  any        $valueDefault
-     * @return any
+     * @param  int|string|array<int|string> $key
+     * @param  any|null                     $valueDefault
+     * @return any|null
      * @since  3.0
      */
     public function pull($key, $valueDefault = null)
     {
         $this->readOnlyCheck();
 
-        return Arrays::pull($this->data, $key, $valueDefault);
-    }
-
-    /**
-     * Pull all.
-     * @param  array<int|string> $keys
-     * @param  any               $valueDefault
-     * @return any
-     * @since  3.0
-     */
-    public function pullAll(array $keys, $valueDefault = null): array
-    {
-        $this->readOnlyCheck();
-
-        return Arrays::pullAll($this->data, $keys, $valueDefault);
+        return is_array($key) ? Arrays::pullAll($this->data, $key, $valueDefault)
+                              : Arrays::pull($this->data, $key, $valueDefault);
     }
 
     /**
