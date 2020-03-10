@@ -612,6 +612,18 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Index.
+     * @param  any  $value
+     * @param  bool $strict
+     * @return int|string|null
+     * @since  4.0
+     */
+    public function index($value, bool $strict = true)
+    {
+        return Arrays::index($value, $this->data, $strict);
+    }
+
+    /**
      * First.
      * @return any|null
      * @since  4.0
