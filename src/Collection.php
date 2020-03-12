@@ -372,14 +372,33 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Merge.
      * @param  iterable $data
-     * @return self (static)
+     * @return self
      * @since  4.0
      */
     public function merge(iterable $data): self
     {
+        $this->readOnlyCheck();
+
         foreach ($data as $key => $value) {
             $this->data[$key] = $value;
         }
+
+        return $this;
+    }
+
+    /**
+     * Flatten.
+     * @param  bool $useKeys
+     * @param  bool $fixKeys
+     * @param  bool $oneDimension
+     * @return self
+     * @since  4.0
+     */
+    public function flatten(bool $useKeys = false, bool $fixKeys = false, bool $oneDimension = false): array
+    {
+        $this->readOnlyCheck();
+
+        $this->data = Arrays::flatten($this->data, $useKeys, $fixKeys, $oneDimension);
 
         return $this;
     }
@@ -394,7 +413,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        Arrays::sweep($this->data);
+        $this->data = Arrays::sweep($this->data, $ignoredKeys);
 
         return $this;
     }
@@ -406,11 +425,9 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @return int|string|null
      * @since  4.0
      */
-    public function search($value, bool $strict = true)
+    public function search($value, bool $strict = false)
     {
-        $key = array_search($value, $this->data, $strict);
-
-        return ($key !== false) ? $key : null;
+        return Arrays::index($value, $this->data, $strict);
     }
 
     /**
