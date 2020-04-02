@@ -159,6 +159,6 @@ class Stack extends AbstractCollection implements ArrayAccess
      */
     public final function hasValue($value, bool $strict = true): bool
     {
-        return $this->_hasValue($key, $strict);
+        return $this->_hasValue($value, $strict);
     }
 }
