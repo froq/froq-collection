@@ -422,12 +422,14 @@ class Collection extends AbstractCollection implements ArrayAccess
      * Search.
      * @param  any  $value
      * @param  bool $strict
-     * @return int|string|null
+     * @return bool
      * @since  4.0
      */
-    public function search($value, bool $strict = false)
+    public function search($value, bool $strict = true): bool
     {
-        return Arrays::index($value, $this->data, $strict);
+        $key = array_search($value, $this->data, $strict);
+
+        return ($key !== false);
     }
 
     /**
@@ -637,7 +639,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function index($value, bool $strict = true)
     {
-        return Arrays::index($value, $this->data, $strict);
+        return Arrays::index($this->data, $value, $strict);
     }
 
     /**
