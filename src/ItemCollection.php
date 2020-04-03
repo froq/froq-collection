@@ -124,13 +124,14 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Has index.
-     * @param  int $index
+     * Has value.
+     * @param  any  $value
+     * @param  bool $strict
      * @return bool
      */
-    public final function hasIndex(int $index): bool
+    public final function hasValue($value, bool $strict = true): bool
     {
-        return array_key_exists($index, $this->data);
+        return in_array($value, $this->data, $strict);
     }
 
     /**

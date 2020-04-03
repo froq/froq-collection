@@ -115,6 +115,17 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
+     * Has value.
+     * @param  any  $value
+     * @param  bool $strict
+     * @return bool
+     */
+    public final function hasValue($value, bool $strict = true): bool
+    {
+        return in_array($value, $this->data, $strict);
+    }
+
+    /**
      * Set.
      * @param  int|string $key
      * @param  any        $value
