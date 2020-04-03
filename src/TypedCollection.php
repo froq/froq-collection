@@ -115,6 +115,16 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
+     * Has key.
+     * @param  int|string $key
+     * @return bool
+     */
+    public function hasKey($key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    /**
      * Has value.
      * @param  any  $value
      * @param  bool $strict
