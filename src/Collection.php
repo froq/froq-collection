@@ -27,7 +27,8 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\util\Arrays;
-use froq\util\interfaces\{Arrayable, Objectable, Loopable};
+use froq\collection\{AbstractCollection, CollectionException, AccessTrait};
+use ArrayAccess;
 
 /**
  * Collection.
@@ -36,25 +37,26 @@ use froq\util\interfaces\{Arrayable, Objectable, Loopable};
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   1.0
  */
-class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
+class Collection extends AbstractCollection implements ArrayAccess
 {
     /**
-     * Data.
-     * @var array
+     * Access Trait.
+     * @see froq\collection\AccessTrait
+     * @since 4.0
      */
-    protected $data = [];
+    use AccessTrait;
 
     /**
      * Constructor.
-     * @param array $data
+     * @param array<int|string, any>|null $data
      */
     public function __construct(array $data = null)
     {
-        $this->setData($data ?? []);
+        parent::__construct($data);
     }
 
     /**
-     * Set magic.
+     * Set.
      * @param  int|string $key
      * @param  any        $value
      * @return self
@@ -65,7 +67,7 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
     }
 
     /**
-     * Get magic.
+     * Get.
      * @param  int|string $key
      * @return any
      */
@@ -75,91 +77,13 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
     }
 
     /**
-     * Isset magic.
+     * Isset.
      * @param  int|string $key
      * @return bool
      */
     public function __isset($key)
     {
-        return $this->isset($key);
-    }
-
-    /**
-     * Unset magic.
-     * @param  int|string $key
-     * @return void
-     */
-    public function __unset($key)
-    {
-        $this->unset($key);
-    }
-
-    /**
-     * Set data.
-     * @param  array $data
-     * @return void
-     */
-    public function setData(array $data): void
-    {
-        $this->data = $data;
-    }
-
-    /**
-     * Get data.
-     * @return array
-     */
-    public function getData(): array
-    {
-        return $this->data;
-    }
-
-    /**
-     * Set.
-     * @param  int|string|null $key
-     * @param  any             $value
-     * @return self
-     */
-    public function set($key, $value): self
-    {
-        if ($key === null) { // eg: $x[] = ..
-            $this->data[] = $value;
-        } else {
-            Arrays::set($this->data, $key, $value);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get.
-     * @param  int|string $key
-     * @param  any        $valueDefault
-     * @return any
-     */
-    public function get($key, $valueDefault = null)
-    {
-        return Arrays::get($this->data, $key, $valueDefault);
-    }
-
-    /**
-     * Get all.
-     * @param  array $keys
-     * @param  any   $valueDefault
-     * @return array
-     */
-    public function getAll($keys, $valueDefault = null): array
-    {
-        return Arrays::getAll($this->data, $keys, $valueDefault);
-    }
-
-    /**
-     * Isset.
-     * @param  int|string $key
-     * @return bool
-     */
-    public function isset($key): bool
-    {
-        return isset($this->data[$key]);
+        return $this->has($key);
     }
 
     /**
@@ -167,45 +91,82 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
      * @param  int|string $key
      * @return void
      */
-    public function unset($key): void
+    public function __unset($key)
     {
-        unset($this->data[$key]);
+        $this->remove($key);
     }
 
     /**
-     * Empty.
-     * @return void
+     * Set data.
+     * @param  array $data
+     * @return self (static)
+     * @throws froq\collection\CollectionException
+     * @since  4.0
+     * @override
      */
-    public final function empty(): void
+    public final function setData(array $data): self
     {
-        $this->data = [];
+        foreach (array_keys($data) as $key) {
+            if ($key === '') {
+                throw new CollectionException('Only int & string keys are accepted for "%s" object, '.
+                    'empty string (probably null key) given', [static::class]);
+            }
+            if (!is_int($key) && !is_string($key)) {
+                throw new CollectionException('Only int & string keys are accepted for "%s" object, '.
+                    '"%s" given', [static::class, gettype($key)]);
+            }
+        }
+
+        $this->readOnlyCheck();
+
+        return parent::setData($data);
     }
 
     /**
-     * Is empty.
-     * @return bool
+     * Set.
+     * @param  int|string|array<int|string>|null $key
+     * @param  any|null                          $value
+     * @return self
      */
-    public final function isEmpty(): bool
+    public function set($key, $value = null): self
     {
-        return empty($this->data);
+        $this->readOnlyCheck();
+
+        if ($key === null) { // From conventions like: $a[] = 1.
+            $this->data[] = $value;
+        } else {
+            is_array($key) ? Arrays::setAll($this->data, $key)
+                           : Arrays::set($this->data, $key, $value);
+        }
+
+        return $this;
     }
 
     /**
-     * Keys.
-     * @return array
+     * Get.
+     * @param  int|string|array<int|string> $key
+     * @param  any|null                     $valueDefault
+     * @return any|null
      */
-    public final function keys(): array
+    public function get($key, $valueDefault = null)
     {
-        return array_keys($this->data);
+        return is_array($key) ? Arrays::getAll($this->data, $key, $valueDefault)
+                              : Arrays::get($this->data, $key, $valueDefault);
     }
 
     /**
-     * Values.
-     * @return array
+     * Pull.
+     * @param  int|string|array<int|string> $key
+     * @param  any|null                     $valueDefault
+     * @return any|null
+     * @since  3.0
      */
-    public final function values(): array
+    public function pull($key, $valueDefault = null)
     {
-        return array_values($this->data);
+        $this->readOnlyCheck();
+
+        return is_array($key) ? Arrays::pullAll($this->data, $key, $valueDefault)
+                              : Arrays::pull($this->data, $key, $valueDefault);
     }
 
     /**
@@ -215,7 +176,7 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
      */
     public function has($key): bool
     {
-        return $this->isset($key);
+        return isset($this->data[$key]);
     }
 
     /**
@@ -240,57 +201,235 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
     }
 
     /**
-     * Pull.
-     * @param  int|string $key
-     * @param  any        $valueDefault
-     * @return any
-     * @since  3.0
-     */
-    public function pull($key, $valueDefault = null)
-    {
-        return Arrays::pull($this->data, $key, $valueDefault);
-    }
-
-    /**
-     * Pull all.
-     * @param  array  $keys
-     * @param  any    $valueDefault
-     * @return any
-     * @since  3.0
-     */
-    public function pullAll(array $keys, $valueDefault = null): array
-    {
-        return Arrays::pullAll($this->data, $keys, $valueDefault);
-    }
-
-    /**
      * Add.
-     * @param  int|string|array|null $key
-     * @param  any                   $value
+     * @param  int|string|array<int|string, any> $key
+     * @param  any|null                          $value
      * @return self
      * @since  3.0
      */
-    public function add($key, $value): self
+    public function add($key, $value = null): self
     {
-        if (is_array($key)) {
-            @ [$key, $value] = $key;
+        $this->readOnlyCheck();
+
+        @ [$key, $value] = is_array($key) ? $key : [$key, $value];
+
+        if (isset($this->data[$key])) {
+            $this->data[$key] = Arrays::flatten([$this->data[$key], $value]);
+        } else {
+            $this->data[$key] = $value;
         }
 
-        return $this->set($key, $value);
+        return $this;
     }
 
     /**
      * Remove.
-     * @param  int|string|array $key
+     * @param  int|string|array<int|string> $key
      * @return self
      */
     public function remove($key): self
     {
-        foreach ((array) $key as $key) {
-            $this->unset($key);
+        $this->readOnlyCheck();
+
+        Arrays::removeAll($this->data, (array) $key);
+
+        return $this;
+    }
+
+    /**
+     * Pop.
+     * @return any
+     * @since  4.0
+     */
+    public function pop()
+    {
+        $this->readOnlyCheck();
+
+        return array_pop($this->data);
+    }
+
+    /**
+     * Unpop (aka push).
+     * @param  array<int|string, any> $data
+     * @return self
+     * @since  4.0
+     */
+    public function unpop(array $data): self
+    {
+        $this->readOnlyCheck();
+
+        foreach ($data as $key => $value) {
+            // Drop olds, so prevent in-place replace.
+            if (isset($this->data[$key])) {
+                unset($this->data[$key]);
+            }
+            $this->data[$key] = $value;
         }
 
         return $this;
+    }
+
+    /**
+     * Shift.
+     * @return any
+     * @since  4.0
+     */
+    public function shift()
+    {
+        $this->readOnlyCheck();
+
+        return array_shift($this->data);
+    }
+
+    /**
+     * Unshift.
+     * @param  array<int|string, any> $data
+     * @return self
+     * @since  4.0
+     */
+    public function unshift(array $data): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = $data + $this->data;
+
+        return $this;
+    }
+
+    /**
+     * Reverse.
+     * @param  bool $preserveKeys
+     * @return self
+     * @since  4.0
+     */
+    public function reverse(bool $preserveKeys = false): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_reverse($this->data, $preserveKeys);
+
+        return $this;
+    }
+
+    /**
+     * Unique.
+     * @return self
+     * @since  4.0
+     */
+    public function unique(): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_unique($this->data, SORT_REGULAR);
+
+        return $this;
+    }
+
+    /**
+     * Slice.
+     * @param  int      $offset
+     * @param  int|null $length
+     * @param  bool     $preserveKeys
+     * @return self
+     * @since  4.0
+     */
+    public function slice(int $offset, int $length = null, bool $preserveKeys = false): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_slice($this->data, $offset, $length, $preserveKeys);
+
+        return $this;
+    }
+
+    /**
+     * Split.
+     * @param  int  $size
+     * @param  bool $preserveKeys
+     * @return self
+     * @since  4.0
+     */
+    public function split(int $size, bool $preserveKeys = false): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_chunk($this->data, $size, $preserveKeys);
+
+        return $this;
+    }
+
+    /**
+     * Join.
+     * @param  string $glue
+     * @return string
+     * @since  4.0
+     */
+    public function join(string $glue): string
+    {
+        return join($glue, $this->data);
+    }
+
+    /**
+     * Merge.
+     * @param  iterable $data
+     * @return self
+     * @since  4.0
+     */
+    public function merge(iterable $data): self
+    {
+        $this->readOnlyCheck();
+
+        foreach ($data as $key => $value) {
+            $this->data[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Flatten.
+     * @param  bool $useKeys
+     * @param  bool $fixKeys
+     * @param  bool $oneDimension
+     * @return self
+     * @since  4.0
+     */
+    public function flatten(bool $useKeys = false, bool $fixKeys = false, bool $oneDimension = false): array
+    {
+        $this->readOnlyCheck();
+
+        $this->data = Arrays::flatten($this->data, $useKeys, $fixKeys, $oneDimension);
+
+        return $this;
+    }
+
+    /**
+     * Sweep.
+     * @param  array|null $ignoredKeys
+     * @return self
+     * @since  4.0
+     */
+    public function sweep(array $ignoredKeys = null): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = Arrays::sweep($this->data, $ignoredKeys);
+
+        return $this;
+    }
+
+    /**
+     * Search.
+     * @param  any  $value
+     * @param  bool $strict
+     * @return bool
+     * @since  4.0
+     */
+    public function search($value, bool $strict = true): bool
+    {
+        $key = array_search($value, $this->data, $strict);
+
+        return ($key !== false);
     }
 
     /**
@@ -316,15 +455,149 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
     }
 
     /**
-     * Sort.
-     * @param  callable|null $func
-     * @param  callable|null $ufunc
-     * @param  int           $flags
-     * @return self
+     * Random.
+     * @param  int  $size
+     * @param  bool $pack Return [key,value] pairs.
+     * @return any|null
+     * @since  4.0
      */
-    public function sort(callable $func = null, callable $ufunc = null, int $flags = 0): self
+    public function random(int $size = 1, bool $pack = false)
     {
-        Arrays::sort($this->data, $func, $ufunc, $flags);
+        return Arrays::random($this->data, $size, $pack);
+    }
+
+    /**
+     * Shuffle.
+     * @param  bool $keepKeys
+     * @return self
+     * @since  4.0
+     */
+    public function shuffle(bool $keepKeys = false)
+    {
+        $this->readOnlyCheck();
+
+        Arrays::shuffle($this->data, $keepKeys);
+
+        return $this;
+    }
+
+    /**
+     * Flip.
+     * @return self
+     * @since  4.0
+     */
+    public function flip(): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_flip($this->data);
+
+        return $this;
+    }
+
+    /**
+     * Fill.
+     * @param  any $value
+     * @return self
+     * @since  4.0
+     */
+    public function fill($value): self
+    {
+        $this->readOnlyCheck();
+
+        foreach (array_keys($this->data) as $key) {
+            $this->data[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sort.
+     * @param  string|null $funcName
+     * @param  int         $flags
+     * @return self
+     * @throws froq\collection\CollectionException
+     */
+    public function sort(string $funcName = null, int $flags = 0): self
+    {
+        $this->readOnlyCheck();
+
+        static $funcNames = ['rsort', 'asort', 'arsort', 'ksort', 'krsort'];
+
+        if ($funcName && !in_array($funcName, $funcNames)) {
+            throw new CollectionException('Invalid sort function "%s", valids are: %s and null',
+                [$funcName, join(', ', $funcNames)]);
+        }
+
+        call_user_func_array($funcName ?: 'sort', [&$this->data, $flags]);
+
+        return $this;
+    }
+
+    /**
+     * USort.
+     * @param  callable    $func
+     * @param  string|null $funcName
+     * @return self
+     * @throws froq\collection\CollectionException
+     * @since  4.0
+     */
+    public function usort(callable $func, string $funcName = null): self
+    {
+        $this->readOnlyCheck();
+
+        static $funcNames = ['uasort', 'uksort'];
+
+        if ($funcName && !in_array($funcName, $funcNames)) {
+            throw new CollectionException('Invalid usort function "%s", valids are: %s and null',
+                [$funcName, join(', ', $funcNames)]);
+        }
+
+        call_user_func_array($funcName ?: 'usort', [&$this->data, $func]);
+
+        return $this;
+    }
+
+    /**
+     * Sort locale.
+     * @param  string|null $locale
+     * @return self
+     * @since  4.0
+     */
+    public function sortLocale(string $locale = null): self
+    {
+        $this->readOnlyCheck();
+
+        if ($locale == null) { // Use current locale.
+            usort($this->data, fn($a, $b) => strcoll($a, $b));
+        } else {
+            static $localeDefault;
+            if ($localeDefault === null) { // Get & cache.
+                $localeDefault = setlocale(LC_COLLATE, 0);
+            }
+
+            setlocale(LC_COLLATE, $locale);
+            usort($this->data, fn($a, $b) => strcoll($a, $b));
+            if ($localeDefault !== null) { // Restore.
+                setlocale(LC_COLLATE, $localeDefault);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sort natural.
+     * @param  bool $noCase
+     * @return self
+     * @since  4.0
+     */
+    public function sortNatural(bool $noCase = false): self
+    {
+        $this->readOnlyCheck();
+
+        !$noCase ? natsort($this->data) : natcasesort($this->data);
 
         return $this;
     }
@@ -340,105 +613,76 @@ class Collection implements Arrayable, Objectable, Loopable, \ArrayAccess
     }
 
     /**
-     * Item first.
-     * @return any
-     */
-    public function itemFirst()
-    {
-        return Arrays::first($this->data);
-    }
-
-    /**
-     * Item last.
-     * @return any
-     */
-    public function itemLast()
-    {
-        return Arrays::last($this->data);
-    }
-
-    /**
      * Items.
-     * @param  array|null $keys
+     * @param  array<int|string>|null $keys
      * @return array
      */
     public function items(array $keys = null): array
     {
-        if ($keys != null) {
-            $return = [];
-            foreach ($keys as $key) {
-                $return[$key] = $this->get($key);
-            }
-        } else {
-            $return = $this->data;
+        if ($keys == null) {
+            return $this->data;
         }
 
-        return $return;
-    }
-
-    // Inherits.
-
-    /**
-     * @inheritDoc froq\util\interfaces\Arrayable
-     */
-    public function toArray(): array
-    {
-        return $this->getData();
+        $items = [];
+        foreach ($keys as $key) {
+            $items[$key] = $this->get($key);
+        }
+        return $items;
     }
 
     /**
-     * @inheritDoc froq\util\interfaces\Objectable
+     * Index.
+     * @param  any  $value
+     * @param  bool $strict
+     * @return int|string|null
+     * @since  4.0
      */
-    public function toObject(): object
+    public function index($value, bool $strict = true)
     {
-        return (object) $this->toArray();
+        return Arrays::index($this->data, $value, $strict);
     }
 
     /**
-     * @inheritDoc froq\util\interfaces\Loopable > Countable
+     * First.
+     * @return any|null
+     * @since  4.0
      */
-    public final function count()
+    public function first()
     {
-        return count($this->data);
+        $key = $this->firstKey();
+
+        return ($key !== null) ?  $this->data[$key] : null;
     }
 
     /**
-     * @inheritDoc froq\util\interfaces\Loopable > IteratorAggregate
+     * First key.
+     * @return int|string
+     * @since  4.0
      */
-    public final function getIterator()
+    public function firstKey()
     {
-        return new \ArrayIterator($this->data);
+        return array_key_first($this->data);
     }
 
     /**
-     * @inheritDoc ArrayAccess
+     * Last.
+     * @return any|null
+     * @since  4.0
      */
-    public final function offsetSet($key, $value)
+    public function last()
     {
-        return $this->set($key, $value);
+        $key = $this->lastKey();
+
+        return ($key !== null) ? $this->data[$key] : null;
     }
 
     /**
-     * @inheritDoc ArrayAccess
+     * Last key.
+     * @return int|string
+     * @since  4.0
      */
-    public final function offsetGet($key)
+    public function lastKey()
     {
-        return $this->get($key);
-    }
-
-    /**
-     * @inheritDoc ArrayAccess
-     */
-    public final function offsetUnset($key)
-    {
-        $this->unset($key);
-    }
-
-    /**
-     * @inheritDoc ArrayAccess
-     */
-    public final function offsetExists($key)
-    {
-        return $this->isset($key);
+        return array_key_last($this->data);
     }
 }

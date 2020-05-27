@@ -26,129 +26,188 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\util\interfaces\Loopable;
+use froq\collection\{AbstractCollection, CollectionException};
 
 /**
- * TypedCollection.
+ * Typed Collection.
+ *
+ * Represents a typed array structure that accepts strict values only which indicated with
+ * `$dataType` property.
+ *
  * @package froq\collection
  * @object  froq\collection\TypedCollection
  * @author  Kerem Güneş <k-gun@mail.com>
- * @since   3.4
+ * @since   4.0
  */
-class TypedCollection implements Loopable
+class TypedCollection extends AbstractCollection
 {
     /**
-     * Items.
-     * @var array
-     */
-    protected $items = [];
-
-    /**
-     * Items type.
+     * Data type.
      * @var string
      */
-    protected $itemsType;
+    protected string $dataType;
 
     /**
      * Constructor.
-     * @param  array|null  $items
-     * @param  string|null $itemsType
+     * @param  array|null  $data
+     * @param  string|null $dataType
+     * @throws froq\collection\CollectionException
      */
-    public function __construct(array $items = null, string $itemsType = null)
+    public function __construct(array $data = null, string $dataType = null)
     {
-        $this->items = $items ?? [];
-        $this->itemsType = $itemsType ?? 'any'; // @default
-
-        if ($this->item != null && $this->itemType != null) {
-            foreach ($this->items as $this->item) {
-                $this->checkItemType($this->item, $this->itemsType);
-            }
+        // Data type might be defined in extender class.
+        $this->dataType = $dataType ?? $this->dataType ?? null;
+        if ($this->dataType == null) {
+            throw new CollectionException('Data type is required, it must be defined like '.
+                '"protected string $dataType = \'int\';" or given at constructor calls as '.
+                'second argument');
         }
+
+        parent::__construct($data);
     }
 
     /**
-     * Item.
-     * @param  int $index
-     * @return any|null
-     */
-    public final function item(int $index)
-    {
-        return $this->items[$index] ?? null;
-    }
-
-    /**
-     * Items.
-     * @return array
-     */
-    public final function items(): array
-    {
-        return $this->items;
-    }
-
-    /**
-     * Items type.
+     * Get data type.
      * @return string
      */
-    public final function itemsType(): string
+    public final function getDataType(): string
     {
-        return $this->itemsType;
+        return $this->dataType;
+    }
+
+    /**
+     * Set data.
+     * @param  array $data
+     * @return self (static)
+     * @override
+     */
+    public function setData(array $data): self
+    {
+        foreach ($data as $key => $value) {
+            $this->typeCheck($value);
+        }
+
+        return parent::setData($data);
     }
 
     /**
      * Add.
-     * @param  any $item
-     * @return void
+     * @param  any $value
+     * @return self
      */
-    public final function add($item): void
+    public final function add($value): self
     {
-        $this->checkItemType($item, $this->itemsType);
+        $this->typeCheck($value);
 
-        $this->items[] = $item;
+        $this->data[] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Has.
+     * @param  int|string $key
+     * @return bool
+     */
+    public final function has($key): bool
+    {
+        return isset($this->data[$key]);
+    }
+
+    /**
+     * Has key.
+     * @param  int|string $key
+     * @return bool
+     */
+    public function hasKey($key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    /**
+     * Has value.
+     * @param  any  $value
+     * @param  bool $strict
+     * @return bool
+     */
+    public final function hasValue($value, bool $strict = true): bool
+    {
+        return in_array($value, $this->data, $strict);
+    }
+
+    /**
+     * Set.
+     * @param  int|string $key
+     * @param  any        $value
+     * @return self
+     */
+    public final function set($key, $value): self
+    {
+        $this->typeCheck($value);
+
+        $this->data[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get.
+     * @param  int|string $key
+     * @return any|null
+     */
+    public final function get($key)
+    {
+        return $this->data[$key] ?? null;
     }
 
     /**
      * Remove.
-     * @param  int $index
+     * @param  int|string $key
      * @return void
      */
-    public final function remove(int $index): void
+    public final function remove($key): void
     {
-        unset($this->items[$index]);
+        unset($this->data[$key]);
     }
 
     /**
-     * @inheritDoc froq\util\interfaces\Loopable > Countable
-     */
-    public final function count()
-    {
-        return count($this->items);
-    }
-
-    /**
-     * @inheritDoc froq\util\interfaces\Loopable > IteratorAggregate
-     */
-    public final function getIterator()
-    {
-        return new \ArrayIterator($this->items);
-    }
-
-    /**
-     * Check item type.
-     * @param  any    $item
-     * @param  string $itemType
+     * Check data type.
+     * @param  any $value
      * @return void
      * @throws froq\collection\CollectionException
      */
-    private final function checkItemType($item, string $itemType): void
+    private final function typeCheck($value): void
     {
-        if ($item && $itemType && $itemType != 'any') {
-            if (is_object($item) && !is_a($item, $itemType)) {
-                throw new CollectionException(sprintf('Each item must be type of %s, %s given',
-                    $itemType, get_class($item)));
-            } elseif (is_scalar($item) && gettype($item) != $itemType) {
-                throw new CollectionException(sprintf('Each item must be type of %s, %s given',
-                    $itemType, gettype($item)));
+        $type = gettype($value);
+
+        // Objects.
+        if ($type == 'object') {
+            // All objects.
+            if ($this->dataType == 'object') {
+                return;
             }
+            if ($value instanceof $this->dataType) {
+                return;
+            }
+
+            // Anonymous classes contain 0 bytes and verbosed file path etc.
+            $class = substr($class = get_class($value), 0, strpos($class, "\0") ?: strlen($class));
+
+            throw new CollectionException(sprintf('Each value must be type of %s, %s given',
+                $this->dataType, $class));
+        }
+
+        // Types to check & translate.
+        static $types = ['int', 'float', 'string', 'bool', 'array', 'resource'];
+        static $typer = ['integer' => 'int', 'double' => 'float', 'boolean' => 'bool'];
+
+        // Shorter types must be used (in constructor or extender class).
+        $type = strtr($type, $typer);
+
+        // Others.
+        if ($type != $this->dataType && in_array($type, $types)) {
+            throw new CollectionException(sprintf('Each value must be type of %s, %s given',
+                $this->dataType, $type));
         }
     }
 }

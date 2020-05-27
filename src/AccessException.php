@@ -26,14 +26,14 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\common\Exception;
+use froq\collection\CollectionException;
 
 /**
- * Collection Exception.
+ * Access Exception.
  * @package froq\collection
- * @object  froq\collection\CollectionException
+ * @object  froq\collection\AccessException
  * @author  Kerem Güneş <k-gun@mail.com>
- * @since   1.0
+ * @since   4.0
  */
-class CollectionException extends Exception
+final class AccessException extends CollectionException
 {}

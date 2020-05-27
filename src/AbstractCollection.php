@@ -26,14 +26,14 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\common\Exception;
+use froq\common\objects\AbstractArray;
 
 /**
- * Collection Exception.
+ * Abstract Collection.
  * @package froq\collection
- * @object  froq\collection\CollectionException
+ * @object  froq\collection\AbstractCollection
  * @author  Kerem Güneş <k-gun@mail.com>
- * @since   1.0
+ * @since   4.0
  */
-class CollectionException extends Exception
+abstract class AbstractCollection extends AbstractArray
 {}
