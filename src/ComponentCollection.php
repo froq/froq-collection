@@ -216,7 +216,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
             return;
         }
 
-        throw new CollectionException('Invalid component name "%s" given, valid are: %s',
-            [$name, join(', ', self::$names)]);
+        throw new CollectionException('Invalid component name "%s" given to "%s" object, valids are: %s',
+            [$name, static::class, join(', ', self::$names)]);
     }
 }
