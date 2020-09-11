@@ -58,7 +58,7 @@ trait AccessTrait
         $id = spl_object_id($this);
 
         // Set state for once, so it cannot be modified anymore calling readOnly().
-        if ($state !== null && !isset(self::$__readOnlyStates[$id])) {
+        if (isset($state) && !isset(self::$__readOnlyStates[$id])) {
             self::$__readOnlyStates[$id] = $state;
         }
 
