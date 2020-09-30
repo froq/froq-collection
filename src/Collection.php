@@ -56,47 +56,6 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Set.
-     * @param  int|string $key
-     * @param  any        $value
-     * @return self
-     */
-    public function __set($key, $value)
-    {
-        return $this->set($key, $value);
-    }
-
-    /**
-     * Get.
-     * @param  int|string $key
-     * @return any
-     */
-    public function __get($key)
-    {
-        return $this->get($key);
-    }
-
-    /**
-     * Isset.
-     * @param  int|string $key
-     * @return bool
-     */
-    public function __isset($key)
-    {
-        return $this->has($key);
-    }
-
-    /**
-     * Unset.
-     * @param  int|string $key
-     * @return void
-     */
-    public function __unset($key)
-    {
-        $this->remove($key);
-    }
-
-    /**
      * Set data.
      * @param  array $data
      * @return self (static)

@@ -78,34 +78,75 @@ trait AccessTrait
     }
 
     /**
-     * @inheritDoc ArrayAccess
+     * Set.
+     * @param  int|string $key
+     * @param  any        $value
+     * @return self
      */
-    public final function offsetExists($offset)
+    public function __set($key, $value)
     {
-        return $this->has($offset);
+        return $this->set($key, $value);
+    }
+
+    /**
+     * Get.
+     * @param  int|string $key
+     * @return any
+     */
+    public function __get($key)
+    {
+        return $this->get($key);
+    }
+
+    /**
+     * Isset.
+     * @param  int|string $key
+     * @return bool
+     */
+    public function __isset($key)
+    {
+        return $this->has($key);
+    }
+
+    /**
+     * Unset.
+     * @param  int|string $key
+     * @return void
+     */
+    public function __unset($key)
+    {
+        $this->remove($key);
     }
 
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetGet($offset)
+    public final function offsetExists($key)
     {
-        return $this->get($offset);
+        return $this->has($key);
     }
 
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetSet($offset, $value)
+    public final function offsetSet($key, $value)
     {
-        $this->set($offset, $value);
+        return $this->set($key, $value);
     }
 
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetUnset($offset)
+    public final function offsetGet($key)
     {
-        $this->remove($offset);
+        return $this->get($key);
+    }
+
+    /**
+     * @inheritDoc ArrayAccess
+     */
+    public final function offsetUnset($key)
+    {
+        return $this->remove($key);
     }
 }
