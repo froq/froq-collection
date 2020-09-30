@@ -119,6 +119,50 @@ trait AccessTrait
     }
 
     /**
+     * Get int.
+     * @param  int|string $key
+     * @return int
+     * @since  4.2
+     */
+    public final function getInt($key): int
+    {
+        return (int) $this->get($key);
+    }
+
+    /**
+     * Get float.
+     * @param  int|string $key
+     * @return float
+     * @since  4.2
+     */
+    public final function getFloat($key): float
+    {
+        return (float) $this->get($key);
+    }
+
+    /**
+     * Get string.
+     * @param  int|string $key
+     * @return string
+     * @since  4.2
+     */
+    public final function getString($key): string
+    {
+        return (string) $this->get($key);
+    }
+
+    /**
+     * Get bool.
+     * @param  int|string $key
+     * @return bool
+     * @since  4.2
+     */
+    public final function getBool($key): bool
+    {
+        return (bool) $this->get($key);
+    }
+
+    /**
      * @inheritDoc ArrayAccess
      */
     public final function offsetExists($key)
