@@ -83,7 +83,7 @@ trait AccessTrait
      * @param  any        $value
      * @return self
      */
-    public function __set($key, $value)
+    public final function __set($key, $value)
     {
         return $this->set($key, $value);
     }
@@ -93,7 +93,7 @@ trait AccessTrait
      * @param  int|string $key
      * @return any
      */
-    public function __get($key)
+    public final function __get($key)
     {
         return $this->get($key);
     }
@@ -103,7 +103,7 @@ trait AccessTrait
      * @param  int|string $key
      * @return bool
      */
-    public function __isset($key)
+    public final function __isset($key)
     {
         return $this->has($key);
     }
@@ -113,7 +113,7 @@ trait AccessTrait
      * @param  int|string $key
      * @return void
      */
-    public function __unset($key)
+    public final function __unset($key)
     {
         $this->remove($key);
     }
