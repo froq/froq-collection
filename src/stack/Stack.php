@@ -66,11 +66,12 @@ class Stack extends AbstractCollection implements ArrayAccess
     /**
      * Set data.
      * @param  array $data
+     * @param  bool  $override
      * @return self (static)
      * @throws froq\collection\stack\StackException
      * @override
      */
-    public final function setData(array $data): self
+    public final function setData(array $data, bool $override = true): self
     {
         foreach (array_keys($data) as $key) {
             if ($key === '') {
@@ -85,7 +86,7 @@ class Stack extends AbstractCollection implements ArrayAccess
 
         $this->readOnlyCheck();
 
-        return parent::setData($data);
+        return parent::setData($data, $override);
     }
 
     /**

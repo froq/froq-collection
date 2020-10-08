@@ -99,12 +99,13 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     /**
      * Set data.
      * @param  array<string, any> $data
+     * @param  bool               $override
      * @return self (static)
      * @throws froq\collection\CollectionException
      * @since  4.0
      * @override
      */
-    public final function setData(array $data): self
+    public final function setData(array $data, bool $override = true): self
     {
         foreach (array_keys($data) as $name) {
             if ($name === '') {
@@ -121,7 +122,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
 
         $this->readOnlyCheck();
 
-        return parent::setData($data);
+        return parent::setData($data, $override);
     }
 
     /**

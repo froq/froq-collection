@@ -78,16 +78,17 @@ class TypedCollection extends AbstractCollection
     /**
      * Set data.
      * @param  array $data
+     * @param  bool  $override
      * @return self (static)
      * @override
      */
-    public function setData(array $data): self
+    public function setData(array $data, bool $override = true): self
     {
         foreach ($data as $key => $value) {
             $this->typeCheck($value);
         }
 
-        return parent::setData($data);
+        return parent::setData($data, $override);
     }
 
     /**
