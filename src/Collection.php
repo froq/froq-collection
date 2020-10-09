@@ -64,7 +64,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @since  4.0
      * @override
      */
-    public final function setData(array $data, bool $override = true): self
+    public function setData(array $data, bool $override = true): self
     {
         foreach (array_keys($data) as $key) {
             if ($key === '') {

@@ -86,7 +86,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
         return parent::setData($data, $override);
     }
 
-     /**
+    /**
      * Item.
      * @param  int $index
      * @return any|null
@@ -129,7 +129,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
      * @param  int $index
      * @return bool
      */
-    public function hasIndex(int $index): bool
+    public final function hasIndex(int $index): bool
     {
         return array_key_exists($index, $this->data);
     }

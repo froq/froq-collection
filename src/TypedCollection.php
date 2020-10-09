@@ -82,7 +82,7 @@ class TypedCollection extends AbstractCollection
      * @return self (static)
      * @override
      */
-    public function setData(array $data, bool $override = true): self
+    public final function setData(array $data, bool $override = true): self
     {
         foreach ($data as $key => $value) {
             $this->typeCheck($value);
@@ -120,7 +120,7 @@ class TypedCollection extends AbstractCollection
      * @param  int|string $key
      * @return bool
      */
-    public function hasKey($key): bool
+    public final function hasKey($key): bool
     {
         return array_key_exists($key, $this->data);
     }
