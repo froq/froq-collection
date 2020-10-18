@@ -415,6 +415,29 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Find.
+     * @param  callable $func
+     * @return any|null
+     * @since  4.3
+     */
+    public function find(callable $func)
+    {
+        return Arrays::find($this->data, $func);
+    }
+
+    /**
+     * Find all.
+     * @param  callable $func
+     * @param  bool     $useKeys
+     * @return array
+     * @since  4.3
+     */
+    public function findAll(callable $func, bool $useKeys = false): array
+    {
+        return Arrays::findAll($this->data, $func, $useKeys);
+    }
+
+    /**
      * Random.
      * @param  int  $size
      * @param  bool $pack Return [key,value] pairs.
