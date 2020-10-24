@@ -555,15 +555,14 @@ class Collection extends AbstractCollection implements ArrayAccess
         if ($locale == null) { // Use current locale.
             usort($this->data, fn($a, $b) => strcoll($a, $b));
         } else {
-            static $localeDefault;
-            if ($localeDefault === null) { // Get & cache.
-                $localeDefault = setlocale(LC_COLLATE, 0);
-            }
+            // Get & cache.
+            static $default; $default ??= setlocale(LC_COLLATE, 0);
 
             setlocale(LC_COLLATE, $locale);
             usort($this->data, fn($a, $b) => strcoll($a, $b));
-            if ($localeDefault !== null) { // Restore.
-                setlocale(LC_COLLATE, $localeDefault);
+
+            if ($default !== null) { // Restore.
+                setlocale(LC_COLLATE, $default);
             }
         }
 
