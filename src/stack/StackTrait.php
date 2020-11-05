@@ -48,7 +48,7 @@ trait StackTrait
      * @param  any        $value
      * @return self
      */
-    private final function _add($key, $value): self
+    private function _add($key, $value): self
     {
         $this->readOnlyCheck();
 
@@ -67,7 +67,7 @@ trait StackTrait
      * @param  any        $value
      * @return self
      */
-    private final function _set($key, $value): self
+    private function _set($key, $value): self
     {
         $this->readOnlyCheck();
 
@@ -82,7 +82,7 @@ trait StackTrait
      * @param  any|null   $valueDefault
      * @return any|null
      */
-    private final function _get($key, $valueDefault = null)
+    private function _get($key, $valueDefault = null)
     {
         return $this->data[$key] ?? $valueDefault;
     }
@@ -92,7 +92,7 @@ trait StackTrait
      * @param  int|string $key
      * @return bool
      */
-    private final function _remove($key): bool
+    private function _remove($key): bool
     {
         $this->readOnlyCheck();
 
@@ -108,7 +108,7 @@ trait StackTrait
      * @param  int|string $key
      * @return bool
      */
-    private final function _has($key): bool
+    private function _has($key): bool
     {
         return isset($this->data[$key]);
     }
@@ -118,7 +118,7 @@ trait StackTrait
      * @param  int|string $key
      * @return bool
      */
-    private final function _hasKey($key): bool
+    private function _hasKey($key): bool
     {
         return array_key_exists($key, $this->data);
     }
@@ -129,8 +129,8 @@ trait StackTrait
      * @param  bool $strict
      * @return bool
      */
-    private final function _hasValue($value, bool $strict = true): bool
+    private function _hasValue($value, bool $strict = true): bool
     {
-        return in_array($value, $this->data, $strict);
+        return array_value_exists($value, $this->data, $strict);
     }
 }
