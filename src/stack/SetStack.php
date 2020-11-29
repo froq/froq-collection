@@ -56,12 +56,12 @@ class SetStack extends AbstractCollection implements ArrayAccess
     {
         foreach (array_keys($data) as $key) {
             if ($key === '') {
-                throw new StackException('Only int keys are accepted for "%s" stack, '.
-                    'empty string (probably null key) given', [static::class]);
+                throw new StackException("Only int keys are accepted for '%s' stack, "
+                    . "empty string (probably null key) given", [static::class]);
             }
             if (!is_int($key)) {
-                throw new StackException('Only int keys are accepted for "%s" stack, '.
-                    '"%s" given', [static::class, gettype($key)]);
+                throw new StackException("Only int keys are accepted for '%s' stack, "
+                    . "'%s' given", [static::class, gettype($key)]);
             }
         }
 

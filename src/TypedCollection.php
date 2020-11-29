@@ -38,10 +38,11 @@ class TypedCollection extends AbstractCollection
     {
         // Data type might be defined in extender class.
         $this->dataType = $dataType ?? $this->dataType ?? null;
+
         if ($this->dataType == null) {
-            throw new CollectionException('Data type is required, it must be defined like '.
-                '"protected string $dataType = \'int\';" or given at constructor calls as '.
-                'second argument');
+            throw new CollectionException("Data type is required, it must be defined like "
+                . "protected string \$dataType = 'int';' or given at constructor calls as "
+                . "second argument");
         }
 
         parent::__construct($data);
@@ -173,10 +174,11 @@ class TypedCollection extends AbstractCollection
             }
 
             // Anonymous classes contain 0 bytes and verbosed file path etc.
-            $class = substr($class = get_class($value), 0, strpos($class, "\0") ?: strlen($class));
+            $class = substr($class = get_class($value), 0,
+                        strpos($class, "\0") ?: strlen($class));
 
-            throw new CollectionException(sprintf('Each value must be type of %s, %s given',
-                $this->dataType, $class));
+            throw new CollectionException("Each value must be type of '%s', '%s' given",
+                [$this->dataType, $class]);
         }
 
         // Types to check & translate.
@@ -188,8 +190,8 @@ class TypedCollection extends AbstractCollection
 
         // Others.
         if ($type != $this->dataType && in_array($type, $types)) {
-            throw new CollectionException(sprintf('Each value must be type of %s, %s given',
-                $this->dataType, $type));
+            throw new CollectionException("Each value must be type of '%s', '%s' given",
+                [$this->dataType, $type]);
         }
     }
 }

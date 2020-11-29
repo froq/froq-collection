@@ -54,7 +54,7 @@ trait AccessTrait
     public final function readOnlyCheck(): void
     {
         if ($this->readOnly()) {
-            throw new AccessException('Cannot modify read-only "%s" object', [static::class]);
+            throw new AccessException("Cannot modify read-only '%s' object", [static::class]);
         }
     }
 

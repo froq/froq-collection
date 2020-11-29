@@ -71,10 +71,9 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
             return $this->get(lcfirst(substr($method, 3)));
         }
 
-        throw new CollectionException('Invalid method call as "%s()" (tip: "%s" object is a '.
-            'component collection and only set/get prefixed methods can be called via __call() '.
-            'if method not exists)',
-            [$method, static::class]);
+        throw new CollectionException("Invalid method call as '%s()' (tip: '%s' object is a "
+            . "component collection and only set/get prefixed methods can be called via __call() "
+            . "if method not exists)", [$method, static::class]);
     }
 
     /**
@@ -90,12 +89,12 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     {
         foreach (array_keys($data) as $name) {
             if ($name === '') {
-                throw new CollectionException('Only string names are accepted for "%s" object, '.
-                    'empty string (probably null name) given', [static::class]);
+                throw new CollectionException("Only string names are accepted for '%s' object, "
+                    . "empty string (probably null name) given", [static::class]);
             }
             if (!is_string($name)) {
-                throw new CollectionException('Only string names are accepted for "%s" object, '.
-                    '"%s" given', [static::class, gettype($name)]);
+                throw new CollectionException("Only string names are accepted for '%s' object, "
+                    . "'%s' given", [static::class, gettype($name)]);
             }
 
             $this->nameCheck($name);
@@ -198,7 +197,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
             return;
         }
 
-        throw new CollectionException('Invalid component name "%s" given to "%s" object, valids are: %s',
+        throw new CollectionException("Invalid component name '%s' given to '%s' object, valids are: %s",
             [$name, static::class, join(', ', self::$names)]);
     }
 }

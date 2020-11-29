@@ -53,12 +53,12 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         foreach (array_keys($data) as $key) {
             if ($key === '') {
-                throw new CollectionException('Only int & string keys are accepted for "%s" object, '.
-                    'empty string (probably null key) given', [static::class]);
+                throw new CollectionException("Only int|string keys are accepted for '%s' object, "
+                    . "empty string (probably null key) given", [static::class]);
             }
             if (!is_int($key) && !is_string($key)) {
-                throw new CollectionException('Only int & string keys are accepted for "%s" object, '.
-                    '"%s" given', [static::class, gettype($key)]);
+                throw new CollectionException("Only int|string keys are accepted for '%s' object, "
+                    . "'%s' given", [static::class, gettype($key)]);
             }
         }
 
@@ -494,7 +494,7 @@ class Collection extends AbstractCollection implements ArrayAccess
         static $funcNames = ['rsort', 'asort', 'arsort', 'ksort', 'krsort'];
 
         if ($funcName && !in_array($funcName, $funcNames)) {
-            throw new CollectionException('Invalid sort function "%s", valids are: %s and null',
+            throw new CollectionException("Invalid sort function '%s', valids are: %s and null",
                 [$funcName, join(', ', $funcNames)]);
         }
 
@@ -518,7 +518,7 @@ class Collection extends AbstractCollection implements ArrayAccess
         static $funcNames = ['uasort', 'uksort'];
 
         if ($funcName && !in_array($funcName, $funcNames)) {
-            throw new CollectionException('Invalid usort function "%s", valids are: %s and null',
+            throw new CollectionException("Invalid usort function '%s', valids are: %s and null",
                 [$funcName, join(', ', $funcNames)]);
         }
 

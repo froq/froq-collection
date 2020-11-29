@@ -53,12 +53,12 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     {
         foreach (array_keys($data) as $key) {
             if ($key === '') {
-                throw new CollectionException('Only int keys are accepted for "%s" object, '.
-                    'empty string (probably null key) given', [static::class]);
+                throw new CollectionException("Only int keys are accepted for '%s' object, "
+                    . "empty string (probably null key) given", [static::class]);
             }
             if (!is_int($key)) {
-                throw new CollectionException('Only int keys are accepted for "%s" object, '.
-                    '"%s" given', [static::class, gettype($key)]);
+                throw new CollectionException("Only int keys are accepted for '%s' object, "
+                    . "'%s' given", [static::class, gettype($key)]);
             }
         }
 
