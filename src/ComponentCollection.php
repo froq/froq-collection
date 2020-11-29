@@ -19,7 +19,7 @@ use ArrayAccess;
  * @package froq\collection
  * @object  froq\collection\ComponentCollection
  * @author  Kerem Güneş <k-gun@mail.com>
- * @since   3.5, 4.0
+ * @since   3.5
  */
 class ComponentCollection extends AbstractCollection implements ArrayAccess
 {

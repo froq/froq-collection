@@ -17,5 +17,5 @@ use froq\collection\CollectionException;
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   4.0
  */
-final class StackException extends CollectionException
+class StackException extends CollectionException
 {}
