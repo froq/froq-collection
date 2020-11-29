@@ -70,7 +70,7 @@ class WeightedCollection extends AbstractCollection
      * @param  callable $calback
      * @return ?array
      */
-    private final function filterize(callable $calback): ?array
+    private function filterize(callable $calback): ?array
     {
         $items = array_filter($this->data, $calback);
         $itemsCount = count($items);

@@ -158,7 +158,7 @@ class TypedCollection extends AbstractCollection
      * @return void
      * @throws froq\collection\CollectionException
      */
-    private final function typeCheck($value): void
+    private function typeCheck($value): void
     {
         $type = gettype($value);
 

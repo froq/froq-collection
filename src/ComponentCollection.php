@@ -189,7 +189,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
      * @return void
      * @throws froq\collection\CollectionException
      */
-    private final function nameCheck(string $name): void
+    private function nameCheck(string $name): void
     {
         if (!self::$throws) {
             return;
