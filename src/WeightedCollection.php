@@ -54,10 +54,10 @@ class WeightedCollection extends AbstractCollection
             }
 
             $weight = (float) $item['weight'];
-            if ($minWeight && $weight < $minWeight) {
+            if ($minWeight !== null && $weight < $minWeight) {
                 return false;
             }
-            if ($maxWeight && $weight > $maxWeight) {
+            if ($maxWeight !== null && $weight > $maxWeight) {
                 return false;
             }
 
