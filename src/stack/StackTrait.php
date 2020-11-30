@@ -60,12 +60,12 @@ trait StackTrait
     /**
      * Get.
      * @param  int|string $key
-     * @param  any|null   $valueDefault
+     * @param  any|null   $default
      * @return any|null
      */
-    private function _get($key, $valueDefault = null)
+    private function _get($key, $default = null)
     {
-        return $this->data[$key] ?? $valueDefault;
+        return $this->data[$key] ?? $default;
     }
 
     /**

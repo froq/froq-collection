@@ -95,12 +95,12 @@ class SetStack extends AbstractCollection implements ArrayAccess
     /**
      * Get.
      * @param  int      $key
-     * @param  any|null $valueDefault
+     * @param  any|null $default
      * @return any|null
      */
-    public final function get(int $key, $valueDefault = null)
+    public final function get(int $key, $default = null)
     {
-        return $this->_get($key, $valueDefault);
+        return $this->_get($key, $default);
     }
 
     /**

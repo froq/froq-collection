@@ -90,28 +90,28 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Get.
      * @param  int|string|array<int|string> $key
-     * @param  any|null                     $valueDefault
+     * @param  any|null                     $default
      * @return any|null
      */
-    public function get($key, $valueDefault = null)
+    public function get($key, $default = null)
     {
-        return is_array($key) ? Arrays::getAll($this->data, $key, $valueDefault)
-                              : Arrays::get($this->data, $key, $valueDefault);
+        return is_array($key) ? Arrays::getAll($this->data, $key, $default)
+                              : Arrays::get($this->data, $key, $default);
     }
 
     /**
      * Pull.
      * @param  int|string|array<int|string> $key
-     * @param  any|null                     $valueDefault
+     * @param  any|null                     $default
      * @return any|null
      * @since  3.0
      */
-    public function pull($key, $valueDefault = null)
+    public function pull($key, $default = null)
     {
         $this->readOnlyCheck();
 
-        return is_array($key) ? Arrays::pullAll($this->data, $key, $valueDefault)
-                              : Arrays::pull($this->data, $key, $valueDefault);
+        return is_array($key) ? Arrays::pullAll($this->data, $key, $default)
+                              : Arrays::pull($this->data, $key, $default);
     }
 
     /**
