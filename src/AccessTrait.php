@@ -12,8 +12,7 @@ use froq\collection\AccessException;
 /**
  * Access Trait.
  *
- * Represents an access trait that used in `froq\collection` internally for stacks and collection
- * objects.
+ * Represents an access trait that used in `froq\collection` internally for stack and collection objects.
  *
  * @package  froq\collection
  * @object   froq\collection\AccessTrait
@@ -23,14 +22,12 @@ use froq\collection\AccessException;
  */
 trait AccessTrait
 {
-    /**
-     * Read-only states.
-     * @var array
-     */
+    /** @var array */
     private static array $__readOnlyStates;
 
     /**
-     * Read-only setter/getter.
+     * Set/get read-only state.
+     *
      * @param  bool|null $state
      * @return ?bool
      */
@@ -38,7 +35,7 @@ trait AccessTrait
     {
         $id = spl_object_id($this);
 
-        // Set state for once, so it cannot be modified anymore calling readOnly().
+        // Set state for once, so it cannot be modified calling readOnly() anymore.
         if (isset($state) && !isset(self::$__readOnlyStates[$id])) {
             self::$__readOnlyStates[$id] = $state;
         }
@@ -47,19 +44,21 @@ trait AccessTrait
     }
 
     /**
-     * Read-only checker.
+     * Check read-only state, throw an `AccessException` if object is read-only.
+     *
      * @return void
-     * @throws froq\stack\StackException
+     * @throws froq\stack\AccessException
      */
     public final function readOnlyCheck(): void
     {
         if ($this->readOnly()) {
-            throw new AccessException("Cannot modify read-only '%s' object", [static::class]);
+            throw new AccessException("Cannot modify read-only '%s' object", static::class);
         }
     }
 
     /**
-     * Set.
+     * Magic - set.
+     *
      * @param  int|string $key
      * @param  any        $value
      * @return self
@@ -70,7 +69,8 @@ trait AccessTrait
     }
 
     /**
-     * Get.
+     * Magic - get.
+     *
      * @param  int|string $key
      * @return any
      */
@@ -80,7 +80,8 @@ trait AccessTrait
     }
 
     /**
-     * Isset.
+     * Magic - isset.
+     *
      * @param  int|string $key
      * @return bool
      */
@@ -90,7 +91,8 @@ trait AccessTrait
     }
 
     /**
-     * Unset.
+     * Magic - unset.
+     *
      * @param  int|string $key
      * @return void
      */
@@ -100,7 +102,8 @@ trait AccessTrait
     }
 
     /**
-     * Get int.
+     * Get a value as int.
+     *
      * @param  int|string $key
      * @return int
      * @since  4.2
@@ -111,7 +114,8 @@ trait AccessTrait
     }
 
     /**
-     * Get float.
+     * Get a value as float.
+     *
      * @param  int|string $key
      * @return float
      * @since  4.2
@@ -122,7 +126,8 @@ trait AccessTrait
     }
 
     /**
-     * Get string.
+     * Get a value as string.
+     *
      * @param  int|string $key
      * @return string
      * @since  4.2
@@ -133,7 +138,8 @@ trait AccessTrait
     }
 
     /**
-     * Get bool.
+     * Get a value as bool.
+     *
      * @param  int|string $key
      * @return bool
      * @since  4.2
