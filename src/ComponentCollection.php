@@ -41,7 +41,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
      * Throws (name errors).
      * @var bool
      */
-    protected static bool $throws = true;
+    protected static bool $throws;
 
     /**
      * Constructor.
@@ -63,45 +63,35 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
      * @return self|any
      * @throws froq\collection\CollectionException
      */
-    public function __call(string $method, array $methodArgs = [])
+    public final function __call(string $method, array $methodArgs = [])
     {
         // Eg: setFoo('bar') => set('foo', 'bar') or getFoo() => get('foo').
-        if (strpos($method, 'set') === 0) {
+        if (str_starts_with($method, 'set')) {
             return $this->set(lcfirst(substr($method, 3)), $methodArgs[0]);
-        } elseif (strpos($method, 'get') === 0) {
+        } elseif (str_starts_with($method, 'get')) {
             return $this->get(lcfirst(substr($method, 3)));
         }
 
         throw new CollectionException("Invalid method call as '%s()' (tip: '%s' object is a "
             . "component collection and only set/get prefixed methods can be called via __call() "
-            . "if method not exists)", [$method, static::class]);
+            . "if not exist)", [$method, static::class]);
     }
 
     /**
      * Set data.
      * @param  array<string, any> $data
-     * @param  bool               $override
+     * @param  bool               $reset
      * @return self (static)
-     * @throws froq\collection\CollectionException
      * @since  4.0
      * @override
      */
-    public final function setData(array $data, bool $override = true): self
+    public final function setData(array $data, bool $reset = true): self
     {
         foreach (array_keys($data) as $name) {
-            if ($name === '') {
-                throw new CollectionException("Only string names are accepted for '%s' object, "
-                    . "empty string (probably null name) given", [static::class]);
-            }
-            if (!is_string($name)) {
-                throw new CollectionException("Only string names are accepted for '%s' object, "
-                    . "'%s' given", [static::class, gettype($name)]);
-            }
-
-            $this->nameCheck($name);
+            $this->nameCheck((string) $name);
         }
 
-        return parent::setData($data, $override);
+        return parent::setData($data, $reset);
     }
 
     /**

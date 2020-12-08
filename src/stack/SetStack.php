@@ -53,26 +53,14 @@ class SetStack extends AbstractCollection implements ArrayAccess
 
     /**
      * Set data.
-     * @param  array $data
-     * @param  bool  $override
+     * @param  array<int, any> $data
+     * @param  bool            $reset
      * @return self (static)
-     * @throws froq\collection\stack\StackException
      * @override
      */
-    public final function setData(array $data, bool $override = true): self
+    public final function setData(array $data, bool $reset = true): self
     {
-        foreach (array_keys($data) as $key) {
-            if ($key === '') {
-                throw new StackException("Only int keys are accepted for '%s' stack, "
-                    . "empty string (probably null key) given", [static::class]);
-            }
-            if (!is_int($key)) {
-                throw new StackException("Only int keys are accepted for '%s' stack, "
-                    . "'%s' given", [static::class, gettype($key)]);
-            }
-        }
-
-        return parent::setData($data, $override);
+        return parent::setData($data, $reset);
     }
 
     /**

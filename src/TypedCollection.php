@@ -37,11 +37,11 @@ class TypedCollection extends AbstractCollection
     public function __construct(array $data = null, string $dataType = null)
     {
         // Data type might be defined in extender class.
-        $this->dataType = $dataType ?? $this->dataType ?? null;
+        $this->dataType = $dataType ?? $this->dataType ?? '';
 
-        if ($this->dataType == null) {
+        if ($this->dataType == '') {
             throw new CollectionException("Data type is required, it must be defined like "
-                . "protected string \$dataType = 'int';' or given at constructor calls as "
+                . "`protected string \$dataType = 'int'` or given at constructor calls as "
                 . "second argument");
         }
 
@@ -59,18 +59,18 @@ class TypedCollection extends AbstractCollection
 
     /**
      * Set data.
-     * @param  array $data
-     * @param  bool  $override
+     * @param  array<int|string, any> $data
+     * @param  bool                   $reset
      * @return self (static)
      * @override
      */
-    public final function setData(array $data, bool $override = true): self
+    public final function setData(array $data, bool $reset = true): self
     {
-        foreach ($data as $key => $value) {
+        foreach ($data as $value) {
             $this->typeCheck($value);
         }
 
-        return parent::setData($data, $override);
+        return parent::setData($data, $reset);
     }
 
     /**
@@ -161,36 +161,25 @@ class TypedCollection extends AbstractCollection
      */
     private function typeCheck($value): void
     {
-        $type = gettype($value);
-
-        // Objects.
-        if ($type == 'object') {
+        if (is_object($value)) {
             // All objects.
-            if ($this->dataType == 'object') {
-                return;
-            }
-            if ($value instanceof $this->dataType) {
+            if ($this->dataType == 'object' || $value instanceof $this->dataType) {
                 return;
             }
 
-            // Anonymous classes contain 0 bytes and verbosed file path etc.
-            $class = substr($class = get_class($value), 0,
-                        strpos($class, "\0") ?: strlen($class));
-
-            throw new CollectionException("Each value must be type of '%s', '%s' given",
-                [$this->dataType, $class]);
+            throw new CollectionException('Each value must be type of %s, %s given',
+                [$this->dataType, get_class_name($value, false)]);
         }
 
-        // Types to check & translate.
-        static $types = ['int', 'float', 'string', 'bool', 'array', 'resource'];
-        static $typer = ['integer' => 'int', 'double' => 'float', 'boolean' => 'bool'];
+        if (($this->dataType == 'scalar' && is_scalar($value))
+            || ($this->dataType == 'number' && is_number($value))) {
+            return;
+        }
 
-        // Shorter types must be used (in constructor or extender class).
-        $type = strtr($type, $typer);
+        $type = get_type($value);
 
-        // Others.
-        if ($type != $this->dataType && in_array($type, $types)) {
-            throw new CollectionException("Each value must be type of '%s', '%s' given",
+        if ($type != $this->dataType) {
+            throw new CollectionException('Each value must be type of %s, %s given',
                 [$this->dataType, $type]);
         }
     }

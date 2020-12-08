@@ -78,18 +78,18 @@ class WeightedCollection extends AbstractCollection
         if ($itemsCount == 0) return null;
         if ($itemsCount == 1) return $items[0];
 
-        $totalWeight = 0.00;
+        $totalWeight = 0.0;
         foreach ($items as $item) {
             $totalWeight += (float) $item['weight'];
         }
 
         // No total weight no items to select.
-        if ($totalWeight == 0.00) {
+        if ($totalWeight == 0.0) {
             return null;
         }
 
-        $accWeight = 0.00;
-        $rndWeight = $this->randomize(0.00, $totalWeight);
+        $accWeight = 0.0;
+        $rndWeight = $this->randomize(0.0, $totalWeight);
 
         foreach ($items as $item) {
             $accWeight += (float) $item['weight'];
