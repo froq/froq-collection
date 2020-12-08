@@ -47,7 +47,7 @@ trait AccessTrait
      * Check read-only state, throw an `AccessException` if object is read-only.
      *
      * @return void
-     * @throws froq\stack\AccessException
+     * @throws froq\collection\AccessException
      */
     public final function readOnlyCheck(): void
     {
