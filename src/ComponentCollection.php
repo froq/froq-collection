@@ -101,8 +101,6 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
             $this->nameCheck($name);
         }
 
-        $this->readOnlyCheck();
-
         return parent::setData($data, $override);
     }
 
