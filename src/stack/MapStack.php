@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection\stack;
 
-use froq\collection\{AbstractCollection, AccessTrait};
+use froq\collection\{AbstractCollection, AccessTrait, AccessMagicTrait};
 use froq\collection\stack\{StackException, StackTrait};
 use ArrayAccess;
 
@@ -26,11 +26,18 @@ use ArrayAccess;
 class MapStack extends AbstractCollection implements ArrayAccess
 {
     /**
-     * Access & Stack Trait.
+     * Access & Access Magic Trait.
      * @see froq\collection\AccessTrait
+     * @see froq\collection\AccessMagicTrait
+     * @since 4.0, 5.0
+     */
+    use AccessTrait, AccessMagicTrait;
+
+    /**
+     * Stack Trait.
      * @see froq\collection\stack\StackTrait
      */
-    use AccessTrait, StackTrait;
+    use StackTrait;
 
     /**
      * Constructor.

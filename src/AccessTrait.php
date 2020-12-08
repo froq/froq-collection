@@ -18,7 +18,7 @@ use froq\collection\AccessException;
  * @object   froq\collection\AccessTrait
  * @author   Kerem Güneş <k-gun@mail.com>
  * @since    4.0
- * @internal Used in froq\collection only.
+ * @internal
  */
 trait AccessTrait
 {
@@ -29,9 +29,9 @@ trait AccessTrait
      * Set/get read-only state.
      *
      * @param  bool|null $state
-     * @return ?bool
+     * @return bool|null
      */
-    public final function readOnly(bool $state = null): ?bool
+    public final function readOnly(bool $state = null): bool|null
     {
         $id = spl_object_id($this);
 
@@ -52,53 +52,8 @@ trait AccessTrait
     public final function readOnlyCheck(): void
     {
         if ($this->readOnly()) {
-            throw new AccessException("Cannot modify read-only '%s' object", static::class);
+            throw new AccessException('Cannot modify read-only object ' . static::class);
         }
-    }
-
-    /**
-     * Magic - set.
-     *
-     * @param  int|string $key
-     * @param  any        $value
-     * @return self
-     */
-    public final function __set($key, $value)
-    {
-        return $this->set($key, $value);
-    }
-
-    /**
-     * Magic - get.
-     *
-     * @param  int|string $key
-     * @return any
-     */
-    public final function __get($key)
-    {
-        return $this->get($key);
-    }
-
-    /**
-     * Magic - isset.
-     *
-     * @param  int|string $key
-     * @return bool
-     */
-    public final function __isset($key)
-    {
-        return $this->has($key);
-    }
-
-    /**
-     * Magic - unset.
-     *
-     * @param  int|string $key
-     * @return void
-     */
-    public final function __unset($key)
-    {
-        $this->remove($key);
     }
 
     /**
