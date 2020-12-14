@@ -11,7 +11,7 @@ use froq\collection\{AbstractCollection, CollectionException, AccessTrait, Acces
 use ArrayAccess;
 
 /**
- * ItemCollection.
+ * Item Collection.
  *
  * Represents a simple array structure that accepts int keys only, and also prevents modifications
  * in read-only mode. Inspired by JavaScript's DOMTokenList.
@@ -146,12 +146,12 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     /**
      * Get.
      * @param  int      $index
-     * @param  any|null $itemDefault
+     * @param  any|null $default
      * @return any|null
      */
-    public final function get(int $index, $itemDefault = null)
+    public final function get(int $index, $default = null)
     {
-        return $this->data[$index] ?? $itemDefault;
+        return $this->data[$index] ?? $default;
     }
 
     /**
