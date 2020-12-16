@@ -115,7 +115,7 @@ class TypedCollection extends AbstractCollection
      */
     public final function hasValue($value, bool $strict = true): bool
     {
-        return in_array($value, $this->data, $strict);
+        return array_value_exists($value, $this->data, $strict);
     }
 
     /**
@@ -179,6 +179,13 @@ class TypedCollection extends AbstractCollection
         $type = get_type($value);
 
         if ($type != $this->dataType) {
+            $types = explode('|', $this->type);
+
+            // @fix, @todo: Make namespace resolution for short class names.
+            if (in_array($type, $types)) {
+                return;
+            }
+
             throw new CollectionException('Each value must be type of %s, %s given',
                 [$this->dataType, $type]);
         }
