@@ -168,7 +168,7 @@ class TypedCollection extends AbstractCollection
             }
 
             throw new CollectionException('Each value must be type of %s, %s given',
-                [$this->dataType, get_class($value)]);
+                [$this->dataType, $value::class]);
         }
 
         if (($this->dataType == 'scalar' && is_scalar($value))
