@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\common\objects\XArray;
+use froq\common\object\XArray;
 
 /**
  * Abstract Collection.
