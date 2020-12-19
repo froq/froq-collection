@@ -468,7 +468,7 @@ class Collection extends AbstractCollection implements ArrayAccess
         static $funcNames = ['rsort', 'asort', 'arsort', 'ksort', 'krsort'];
 
         if ($funcName && !in_array($funcName, $funcNames)) {
-            throw new CollectionException("Invalid sort function '%s', valids are: %s and null",
+            throw new CollectionException('Invalid sort function %s, valids are: %s, null',
                 [$funcName, join(', ', $funcNames)]);
         }
 
@@ -492,7 +492,7 @@ class Collection extends AbstractCollection implements ArrayAccess
         static $funcNames = ['uasort', 'uksort'];
 
         if ($funcName && !in_array($funcName, $funcNames)) {
-            throw new CollectionException("Invalid usort function '%s', valids are: %s and null",
+            throw new CollectionException('Invalid usort function %s, valids are: %s, null',
                 [$funcName, join(', ', $funcNames)]);
         }
 
@@ -530,15 +530,15 @@ class Collection extends AbstractCollection implements ArrayAccess
 
     /**
      * Sort natural.
-     * @param  bool $noCase
+     * @param  bool $icase
      * @return self
      * @since  4.0
      */
-    public function sortNatural(bool $noCase = false): self
+    public function sortNatural(bool $icase = false): self
     {
         $this->readOnlyCheck();
 
-        !$noCase ? natsort($this->data) : natcasesort($this->data);
+        !$icase ? natsort($this->data) : natcasesort($this->data);
 
         return $this;
     }

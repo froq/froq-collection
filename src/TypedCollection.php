@@ -40,9 +40,9 @@ class TypedCollection extends AbstractCollection
         $this->dataType = $dataType ?? $this->dataType ?? '';
 
         if ($this->dataType == '') {
-            throw new CollectionException("Data type is required, it must be defined like "
-                . "`protected string \$dataType = 'int'` or given at constructor calls as "
-                . "second argument");
+            throw new CollectionException('Data type is required, it must be defined like'
+                . ' `protected string $dataType = \'int\'` or given at constructor calls as'
+                . ' second argument');
         }
 
         parent::__construct($data);

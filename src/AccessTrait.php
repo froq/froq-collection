@@ -51,9 +51,9 @@ trait AccessTrait
      */
     public final function readOnlyCheck(): void
     {
-        if ($this->readOnly()) {
-            throw new AccessException('Cannot modify read-only object ' . static::class);
-        }
+        $this->readOnly() && throw new AccessException(
+            'Cannot modify read-only object ' . static::class
+        );
     }
 
     /**
@@ -63,7 +63,7 @@ trait AccessTrait
      * @return int
      * @since  4.2
      */
-    public final function getInt($key): int
+    public final function getInt(int|string $key): int
     {
         return (int) $this->get($key);
     }
@@ -75,7 +75,7 @@ trait AccessTrait
      * @return float
      * @since  4.2
      */
-    public final function getFloat($key): float
+    public final function getFloat(int|string $key): float
     {
         return (float) $this->get($key);
     }
@@ -87,7 +87,7 @@ trait AccessTrait
      * @return string
      * @since  4.2
      */
-    public final function getString($key): string
+    public final function getString(int|string $key): string
     {
         return (string) $this->get($key);
     }
@@ -99,7 +99,7 @@ trait AccessTrait
      * @return bool
      * @since  4.2
      */
-    public final function getBool($key): bool
+    public final function getBool(int|string $key): bool
     {
         return (bool) $this->get($key);
     }
