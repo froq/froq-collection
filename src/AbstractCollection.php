@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\common\objects\AbstractArray;
+use froq\common\objects\XArray;
 
 /**
  * Abstract Collection.
@@ -17,5 +17,5 @@ use froq\common\objects\AbstractArray;
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   4.0
  */
-abstract class AbstractCollection extends AbstractArray
+abstract class AbstractCollection extends XArray
 {}
