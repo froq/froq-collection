@@ -12,8 +12,7 @@ use froq\collection\{AbstractCollection, CollectionException};
 /**
  * Typed Collection.
  *
- * Represents a typed array structure that accepts strict values only which indicated with
- * `$dataType` property.
+ * Represents a typed array structure that accepts strict values only which forced with `$dataType` property.
  *
  * @package froq\collection
  * @object  froq\collection\TypedCollection
@@ -22,14 +21,12 @@ use froq\collection\{AbstractCollection, CollectionException};
  */
 class TypedCollection extends AbstractCollection
 {
-    /**
-     * Data type.
-     * @var string
-     */
+    /** @var string */
     protected string $dataType;
 
     /**
      * Constructor.
+     *
      * @param  array|null  $data
      * @param  string|null $dataType
      * @throws froq\collection\CollectionException
@@ -50,6 +47,7 @@ class TypedCollection extends AbstractCollection
 
     /**
      * Get data type.
+     *
      * @return string
      */
     public final function getDataType(): string
@@ -59,6 +57,7 @@ class TypedCollection extends AbstractCollection
 
     /**
      * Set data.
+     *
      * @param  array<int|string, any> $data
      * @param  bool                   $reset
      * @return self
@@ -74,7 +73,42 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Add.
+     * Check whether a keyed/indexed item exists in data stack.
+     *
+     * @param  int|string $key
+     * @return bool
+     */
+    public final function has(int|string $key): bool
+    {
+        return isset($this->data[$key]);
+    }
+
+    /**
+     * Check whether a key/index exists in data stack.
+     *
+     * @param  int|string $key
+     * @return bool
+     */
+    public final function hasKey(int|string $key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    /**
+     * Check with/without strict mode whether data stack has given value.
+     *
+     * @param  any  $value
+     * @param  bool $strict
+     * @return bool
+     */
+    public final function hasValue($value, bool $strict = true): bool
+    {
+        return array_value_exists($value, $this->data, $strict);
+    }
+
+    /**
+     * Add (append) an item to data stack.
+     *
      * @param  any $value
      * @return self
      */
@@ -88,43 +122,13 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Has.
-     * @param  int|string $key
-     * @return bool
-     */
-    public final function has($key): bool
-    {
-        return isset($this->data[$key]);
-    }
-
-    /**
-     * Has key.
-     * @param  int|string $key
-     * @return bool
-     */
-    public final function hasKey($key): bool
-    {
-        return array_key_exists($key, $this->data);
-    }
-
-    /**
-     * Has value.
-     * @param  any  $value
-     * @param  bool $strict
-     * @return bool
-     */
-    public final function hasValue($value, bool $strict = true): bool
-    {
-        return array_value_exists($value, $this->data, $strict);
-    }
-
-    /**
-     * Set.
+     * Put an item by given key/index to data stack.
+     *
      * @param  int|string $key
      * @param  any        $value
      * @return self
      */
-    public final function set($key, $value): self
+    public final function set(int|string $key, $value): self
     {
         $this->typeCheck($value);
 
@@ -134,33 +138,42 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Get.
+     * Get an item by given key/index from data stack.
+     *
      * @param  int|string $key
+     * @param  any|null   $default
      * @return any|null
      */
-    public final function get($key)
+    public final function get(int|string $key, $default = null)
     {
-        return $this->data[$key] ?? null;
+        return $this->data[$key] ?? $default;
     }
 
     /**
-     * Remove.
+     * Remove an item by given key/index from data stack.
+     *
      * @param  int|string $key
      * @return void
      */
-    public final function remove($key): void
+    public final function remove(int|string $key): void
     {
         unset($this->data[$key]);
     }
 
     /**
      * Check data type.
+     *
      * @param  any $value
      * @return void
      * @throws froq\collection\CollectionException
      */
     private function typeCheck($value): void
     {
+        // Any type?
+        if ($this->dataType == 'any') {
+            return;
+        }
+
         if (is_object($value)) {
             // All objects.
             if ($this->dataType == 'object' || $value instanceof $this->dataType) {
@@ -179,7 +192,7 @@ class TypedCollection extends AbstractCollection
         $type = get_type($value);
 
         if ($type != $this->dataType) {
-            $types = explode('|', $this->type);
+            $types = explode('|', $this->dataType);
 
             // @fix, @todo: Make namespace resolution for short class names.
             if (in_array($type, $types)) {

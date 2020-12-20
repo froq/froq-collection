@@ -24,27 +24,21 @@ use ArrayAccess;
 class ComponentCollection extends AbstractCollection implements ArrayAccess
 {
     /**
-     * Access & Access Magic Trait.
      * @see froq\collection\AccessTrait
      * @see froq\collection\AccessMagicTrait
      * @since 4.0, 5.0
      */
     use AccessTrait, AccessMagicTrait;
 
-    /**
-     * Names (settable/gettable names).
-     * @var array
-     */
+    /** @var array */
     protected static array $names = [];
 
-    /**
-     * Throws (name errors).
-     * @var bool
-     */
+    /** @var bool */
     protected static bool $throws;
 
     /**
      * Constructor.
+     *
      * @param array<string> $names
      * @param bool          $throws
      */
@@ -57,7 +51,8 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Call.
+     * Magic call for a non-existing method but an existing component.
+     *
      * @param  string $method
      * @param  array  $methodArgs
      * @return self|any
@@ -80,6 +75,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
 
     /**
      * Set data.
+     *
      * @param  array<string, any> $data
      * @param  bool               $reset
      * @return self
@@ -96,7 +92,8 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Names.
+     * Get names.
+     *
      * @return array<string>
      */
     public final function names(): array
@@ -105,7 +102,8 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Throws.
+     * Get throws state.
+     *
      * @return bool
      */
     public final function throws(): bool
@@ -114,7 +112,8 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Has.
+     * Check whether a component exists in data stack with given name.
+     *
      * @param  string $name
      * @return bool
      */
@@ -124,7 +123,8 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Has name.
+     * Check whether a name exists in data stack.
+     *
      * @param  string $name
      * @return bool
      */
@@ -134,7 +134,8 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Set.
+     * Put a component by given name to data stack.
+     *
      * @param  string $name
      * @param  any    $value
      * @return self
@@ -149,7 +150,8 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get.
+     * Get a component by given name from data stack.
+     *
      * @param  string $name
      * @return any|null
      */
@@ -161,7 +163,8 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Remove.
+     * Remove a component from data stack by given name.
+     *
      * @param  string $name
      * @return void
      */
@@ -173,7 +176,8 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Name check.
+     * Name check for a valid component name.
+     *
      * @param  string $name
      * @return void
      * @throws froq\collection\CollectionException

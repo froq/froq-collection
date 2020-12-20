@@ -23,6 +23,7 @@ class WeightedCollection extends AbstractCollection
 {
     /**
      * Constructor.
+     *
      * @param array|null $data
      */
     public function __construct(array $data = null)
@@ -31,16 +32,18 @@ class WeightedCollection extends AbstractCollection
     }
 
     /**
-     * Select.
-     * @return ?array
+     * Select items by default.
+     *
+     * @return array|null
      */
-    public final function select(): ?array
+    public final function select(): array|null
     {
         return $this->selectBy(null, null);
     }
 
     /**
-     * Select by.
+     * Select items by optionally given min-weight / max-weight.
+     *
      * @param  float|null $minWeight
      * @param  float|null $maxWeight
      * @return ?array
@@ -66,17 +69,18 @@ class WeightedCollection extends AbstractCollection
     }
 
     /**
-     * Filterize.
+     * Filter self data items with given callback.
+     *
      * @param  callable $calback
-     * @return ?array
+     * @return array|null
      */
-    private function filterize(callable $calback): ?array
+    private function filterize(callable $calback): array|null
     {
         $items = array_filter($this->data, $calback);
-        $itemsCount = count($items);
+        $count = count($items);
 
-        if ($itemsCount == 0) return null;
-        if ($itemsCount == 1) return $items[0];
+        if ($count == 0) return null;
+        if ($count == 1) return $items[0];
 
         $totalWeight = 0.0;
         foreach ($items as $item) {
@@ -102,7 +106,8 @@ class WeightedCollection extends AbstractCollection
     }
 
     /**
-     * Randomize.
+     * Get a random number by given min/max directives.
+     *
      * @param  float $min
      * @param  float $max
      * @return float

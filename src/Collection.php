@@ -25,7 +25,6 @@ use ArrayAccess;
 class Collection extends AbstractCollection implements ArrayAccess
 {
     /**
-     * Access & Access Magic Trait.
      * @see froq\collection\AccessTrait
      * @see froq\collection\AccessMagicTrait
      * @since 4.0, 5.0
@@ -34,6 +33,7 @@ class Collection extends AbstractCollection implements ArrayAccess
 
     /**
      * Constructor.
+     *
      * @param array<int|string, any>|null $data
      */
     public function __construct(array $data = null)
@@ -42,12 +42,47 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Set.
+     * Check whether an item set in data stack.
+     *
+     * @param  int|string $key
+     * @return bool
+     */
+    public function has(int|string $key): bool
+    {
+        return isset($this->data[$key]);
+    }
+
+    /**
+     * Check whether a key/index exists in data stack.
+     *
+     * @param  int|string $key
+     * @return bool
+     */
+    public function hasKey(int|string $key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    /**
+     * Check with/without strict mode whether data stack has given value.
+     *
+     * @param  any  $value
+     * @param  bool $strict
+     * @return bool
+     */
+    public function hasValue($value, bool $strict = true): bool
+    {
+        return array_value_exists($value, $this->data, $strict);
+    }
+
+    /**
+     * Put an item/items into data stack.
+     *
      * @param  int|string|array<int|string>|null $key
      * @param  any|null                          $value
      * @return self
      */
-    public function set($key, $value = null): self
+    public function set(int|string|array $key, $value = null): self
     {
         $this->readOnlyCheck();
 
@@ -62,25 +97,27 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get.
+     * Get an item/items from data stack.
+     *
      * @param  int|string|array<int|string> $key
      * @param  any|null                     $default
      * @return any|null
      */
-    public function get($key, $default = null)
+    public function get(int|string|array $key, $default = null)
     {
         return is_array($key) ? Arrays::getAll($this->data, $key, $default)
                               : Arrays::get($this->data, $key, $default);
     }
 
     /**
-     * Pull.
+     * Pull an item/items from data stack.
+     *
      * @param  int|string|array<int|string> $key
      * @param  any|null                     $default
      * @return any|null
      * @since  3.0
      */
-    public function pull($key, $default = null)
+    public function pull(int|string|array $key, $default = null)
     {
         $this->readOnlyCheck();
 
@@ -89,44 +126,14 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check.
-     * @param  int|string $key
-     * @return bool
-     */
-    public function has($key): bool
-    {
-        return isset($this->data[$key]);
-    }
-
-    /**
-     * Has key.
-     * @param  int|string $key
-     * @return bool
-     */
-    public function hasKey($key): bool
-    {
-        return array_key_exists($key, $this->data);
-    }
-
-    /**
-     * Has value.
-     * @param  any  $value
-     * @param  bool $strict
-     * @return bool
-     */
-    public function hasValue($value, bool $strict = true): bool
-    {
-        return in_array($value, $this->data, $strict);
-    }
-
-    /**
-     * Add.
+     * Add (append) an item to data stack, flatten if already exists.
+     *
      * @param  int|string|array<int|string, any> $key
      * @param  any|null                          $value
      * @return self
      * @since  3.0
      */
-    public function add($key, $value = null): self
+    public function add(int|string|array $key, $value = null): self
     {
         $this->readOnlyCheck();
 
@@ -142,11 +149,12 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Remove.
+     * Remove an item/items from data stack.
+     *
      * @param  int|string|array<int|string> $key
      * @return self
      */
-    public function remove($key): self
+    public function remove(int|string|array $key): self
     {
         $this->readOnlyCheck();
 
@@ -156,7 +164,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Pop.
+     * Pop an item.
+     *
      * @return any
      * @since  4.0
      */
@@ -168,7 +177,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Unpop (aka push).
+     * Unpop an item (aka push).
+     *
      * @param  array<int|string, any> $data
      * @return self
      * @since  4.0
@@ -189,7 +199,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Shift.
+     * Shift an item.
+     *
      * @return any
      * @since  4.0
      */
@@ -201,7 +212,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Unshift.
+     * Unshift an item.
+     *
      * @param  array<int|string, any> $data
      * @return self
      * @since  4.0
@@ -216,22 +228,24 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Reverse.
-     * @param  bool $preserveKeys
+     * Reverse data stack.
+     *
+     * @param  bool $keepKeys
      * @return self
      * @since  4.0
      */
-    public function reverse(bool $preserveKeys = false): self
+    public function reverse(bool $keepKeys = false): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_reverse($this->data, $preserveKeys);
+        $this->data = array_reverse($this->data, $keepKeys);
 
         return $this;
     }
 
     /**
-     * Unique.
+     * Reset data stack with unique items.
+     *
      * @return self
      * @since  4.0
      */
@@ -245,40 +259,43 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Slice.
-     * @param  int      $offset
-     * @param  int|null $length
-     * @param  bool     $preserveKeys
+     * Slice data stack.
+     *
+     * @param  int      $start
+     * @param  int|null $end
+     * @param  bool     $keepKeys
      * @return self
      * @since  4.0
      */
-    public function slice(int $offset, int $length = null, bool $preserveKeys = false): self
+    public function slice(int $start, int $end = null, bool $keepKeys = false): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_slice($this->data, $offset, $length, $preserveKeys);
+        $this->data = array_slice($this->data, $start, $end, $keepKeys);
 
         return $this;
     }
 
     /**
-     * Split.
-     * @param  int  $size
-     * @param  bool $preserveKeys
+     * Split data stack.
+     *
+     * @param  int  $limit
+     * @param  bool $keepKeys
      * @return self
      * @since  4.0
      */
-    public function split(int $size, bool $preserveKeys = false): self
+    public function split(int $limit, bool $keepKeys = false): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_chunk($this->data, $size, $preserveKeys);
+        $this->data = array_chunk($this->data, $limit, $keepKeys);
 
         return $this;
     }
 
     /**
-     * Join.
+     * Join all items with given delimiter.
+     *
      * @param  string $glue
      * @return string
      * @since  4.0
@@ -289,12 +306,13 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Merge.
-     * @param  iterable $data
+     * Merge data stack with given data.
+     *
+     * @param  array $data
      * @return self
      * @since  4.0
      */
-    public function merge(iterable $data): self
+    public function merge(array $data): self
     {
         $this->readOnlyCheck();
 
@@ -306,7 +324,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Flatten.
+     * Flatten data stack.
+     *
      * @param  bool $useKeys
      * @param  bool $fixKeys
      * @param  bool $oneDimension
@@ -323,7 +342,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Sweep.
+     * Sweep data stack dropping empty items those null, '' or [].
+     *
      * @param  array|null $ignoredKeys
      * @return self
      * @since  4.0
@@ -338,7 +358,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Search.
+     * Search a value with boolean mode.
+     *
      * @param  any  $value
      * @param  bool $strict
      * @return bool
@@ -352,7 +373,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Test (like JavaScript Array.some()).
+     * Test, like JavaScript Array.some().
+     *
      * @param  callable $func
      * @return bool
      * @since  3.0
@@ -363,7 +385,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Test all (like JavaScript Array.every()).
+     * Test all, like JavaScript Array.every().
+     *
      * @param  callable $func
      * @return bool
      * @since  3.0
@@ -374,7 +397,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Find.
+     * Find, like JavaScript Array.find().
+     *
      * @param  callable $func
      * @return any|null
      * @since  4.3
@@ -385,7 +409,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Find all.
+     * Find all, kinda filter.
+     *
      * @param  callable $func
      * @param  bool     $useKeys
      * @return array
@@ -397,19 +422,21 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Random.
-     * @param  int  $size
-     * @param  bool $pack Return [key,value] pairs.
+     * Randomize data stack returning [key,value] pairs.
+     *
+     * @param  int  $limit
+     * @param  bool $pack
      * @return any|null
      * @since  4.0
      */
-    public function random(int $size = 1, bool $pack = false)
+    public function random(int $limit = 1, bool $pack = false)
     {
-        return Arrays::random($this->data, $size, $pack);
+        return Arrays::random($this->data, $limit, $pack);
     }
 
     /**
-     * Shuffle.
+     * Shuffle data stack.
+     *
      * @param  bool $keepKeys
      * @return self
      * @since  4.0
@@ -424,7 +451,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Flip.
+     * Flip data stack.
+     *
      * @return self
      * @since  4.0
      */
@@ -438,7 +466,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Fill.
+     * Fill data stack with given value.
+     *
      * @param  any $value
      * @return self
      * @since  4.0
@@ -447,15 +476,14 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        foreach (array_keys($this->data) as $key) {
-            $this->data[$key] = $value;
-        }
+        $this->data = array_fill_keys(array_keys($this->data), $value);
 
         return $this;
     }
 
     /**
-     * Sort.
+     * Apply a sort on data stack.
+     *
      * @param  string|null $funcName
      * @param  int         $flags
      * @return self
@@ -478,7 +506,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * USort.
+     * Apply a usort on data stack.
+     *
      * @param  callable    $func
      * @param  string|null $funcName
      * @return self
@@ -502,7 +531,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Sort locale.
+     * Apply a locale sort on data stack.
+     *
      * @param  string|null $locale
      * @return self
      * @since  4.0
@@ -529,7 +559,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Sort natural.
+     * Apply a natural sort on data stack.
+     *
      * @param  bool $icase
      * @return self
      * @since  4.0
@@ -544,17 +575,19 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Item.
+     * Get an item from data stack with given key/index.
+     *
      * @param  int|string $key
      * @return any
      */
-    public function item($key)
+    public function item(int|string $key)
     {
         return $this->get($key);
     }
 
     /**
-     * Items.
+     * Get all items from data stack with/without given keys.
+     *
      * @param  array<int|string>|null $keys
      * @return array
      */
@@ -572,19 +605,32 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Index.
+     * Find key of given value with/without strict mode.
+     *
+     * @alias of index()
+     * @since 5.0
+     */
+    public function key(...$args)
+    {
+        return $this->index(...$args);
+    }
+
+    /**
+     * Find key/index of given value with/without strict mode.
+     *
      * @param  any  $value
      * @param  bool $strict
      * @return int|string|null
      * @since  4.0
      */
-    public function index($value, bool $strict = true)
+    public function index($value, bool $strict = true): int|string|null
     {
         return Arrays::index($this->data, $value, $strict);
     }
 
     /**
-     * First.
+     * Get first item or return null if no items on data stack.
+     *
      * @return any|null
      * @since  4.0
      */
@@ -596,17 +642,19 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * First key.
-     * @return int|string
+     * Find first key/index or return null if no items data stack.
+     *
+     * @return int|string|null
      * @since  4.0
      */
-    public function firstKey()
+    public function firstKey(): int|string|null
     {
         return array_key_first($this->data);
     }
 
     /**
-     * Last.
+     * Get last item or return null if no items on data stack.
+     *
      * @return any|null
      * @since  4.0
      */
@@ -618,11 +666,12 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Last key.
-     * @return int|string
+     * Find last key/index or return null if no items data stack.
+     *
+     * @return int|string|null
      * @since  4.0
      */
-    public function lastKey()
+    public function lastKey(): int|string|null
     {
         return array_key_last($this->data);
     }
