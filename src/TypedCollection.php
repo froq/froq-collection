@@ -61,7 +61,7 @@ class TypedCollection extends AbstractCollection
      * Set data.
      * @param  array<int|string, any> $data
      * @param  bool                   $reset
-     * @return self (static)
+     * @return self
      * @override
      */
     public final function setData(array $data, bool $reset = true): self

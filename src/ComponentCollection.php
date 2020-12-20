@@ -82,7 +82,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
      * Set data.
      * @param  array<string, any> $data
      * @param  bool               $reset
-     * @return self (static)
+     * @return self
      * @since  4.0
      * @override
      */

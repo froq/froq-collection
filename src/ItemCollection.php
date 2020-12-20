@@ -47,7 +47,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
      * Set data.
      * @param  array<int, any> $data
      * @param  bool            $reset
-     * @return self (static)
+     * @return self
      * @override
      */
     public final function setData(array $data, bool $reset = true): self
