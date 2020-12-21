@@ -12,8 +12,7 @@ use froq\util\Arrays;
 /**
  * Stack Trait.
  *
- * Represents a trait that used in `froq\collection\stack` internally for stacks to avoid code
- * repetition.
+ * Represents a trait that used in `froq\collection\stack` internally for stacks to avoid code repetition.
  *
  * @package  froq\collection\stack
  * @object   froq\collection\stack\StackTrait
@@ -24,12 +23,13 @@ use froq\util\Arrays;
 trait StackTrait
 {
     /**
-     * Add.
+     * Add (append) an item to data stack with given key/index.
+     *
      * @param  int|string $key
      * @param  any        $value
      * @return self
      */
-    private function _add($key, $value): self
+    private function _add(int|string $key, $value): self
     {
         $this->readOnlyCheck();
 
@@ -43,12 +43,13 @@ trait StackTrait
     }
 
     /**
-     * Set.
+     * Put an item to data stack with given key/index.
+     *
      * @param  int|string $key
      * @param  any        $value
      * @return self
      */
-    private function _set($key, $value): self
+    private function _set(int|string $key, $value): self
     {
         $this->readOnlyCheck();
 
@@ -58,22 +59,24 @@ trait StackTrait
     }
 
     /**
-     * Get.
+     * Get an item from data stack by given key/index.
+     *
      * @param  int|string $key
      * @param  any|null   $default
      * @return any|null
      */
-    private function _get($key, $default = null)
+    private function _get(int|string $key, $default = null)
     {
         return $this->data[$key] ?? $default;
     }
 
     /**
-     * Remove.
+     * Remove an item from data stack by given key/index.
+     *
      * @param  int|string $key
      * @return bool
      */
-    private function _remove($key): bool
+    private function _remove(int|string $key): bool
     {
         $this->readOnlyCheck();
 
@@ -85,27 +88,30 @@ trait StackTrait
     }
 
     /**
-     * Has.
+     * Check whether an item was set in data stack with given key/index.
+     *
      * @param  int|string $key
      * @return bool
      */
-    private function _has($key): bool
+    private function _has(int|string $key): bool
     {
         return isset($this->data[$key]);
     }
 
     /**
-     * Has key.
+     * Check whether given key/index exists in data stack.
+     *
      * @param  int|string $key
      * @return bool
      */
-    private function _hasKey($key): bool
+    private function _hasKey(int|string $key): bool
     {
         return array_key_exists($key, $this->data);
     }
 
     /**
-     * Has value.
+     * Check with/without strict mode whether data stack has given value.
+     *
      * @param  any  $value
      * @param  bool $strict
      * @return bool

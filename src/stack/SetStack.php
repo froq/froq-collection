@@ -25,19 +25,15 @@ use ArrayAccess;
  */
 class SetStack extends AbstractCollection implements ArrayAccess
 {
+    /** @see froq\collection\stack\StackTrait */
+    use StackTrait;
+
     /**
-     * Access & Access Magic Trait.
      * @see froq\collection\AccessTrait
      * @see froq\collection\AccessMagicTrait
      * @since 4.0, 5.0
      */
     use AccessTrait, AccessMagicTrait;
-
-    /**
-     * Stack Trait.
-     * @see froq\collection\stack\StackTrait
-     */
-    use StackTrait;
 
     /**
      * Constructor.
@@ -53,6 +49,7 @@ class SetStack extends AbstractCollection implements ArrayAccess
 
     /**
      * Set data.
+     *
      * @param  array<int, any> $data
      * @param  bool            $reset
      * @return self
@@ -64,7 +61,8 @@ class SetStack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Add.
+     * Add (append) an item to data stack with given key.
+     *
      * @param  int $key
      * @param  any  $value
      * @return self
@@ -75,7 +73,8 @@ class SetStack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Set.
+     * Put an item to data stack with given key.
+     *
      * @param  int $key
      * @param  any $value
      * @return self
@@ -86,7 +85,8 @@ class SetStack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get.
+     * Get an item from data stack by given key.
+     *
      * @param  int      $key
      * @param  any|null $default
      * @return any|null
@@ -97,7 +97,8 @@ class SetStack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Remove.
+     * Remove an item from data stack by given key.
+     *
      * @param  int $key
      * @return bool
      */
@@ -107,7 +108,8 @@ class SetStack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Has.
+     * Check whether an item was set in data stack with given key.
+     *
      * @param  int $key
      * @return bool
      */
@@ -117,7 +119,8 @@ class SetStack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Has key.
+     * Check whether given key exists in data stack.
+     *
      * @param  int $key
      * @return bool
      */
@@ -127,7 +130,8 @@ class SetStack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Has value.
+     * Check with/without strict mode whether data stack has given value.
+     *
      * @param  any  $value
      * @param  bool $strict
      * @return bool

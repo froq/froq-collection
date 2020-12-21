@@ -25,8 +25,10 @@ use ArrayAccess;
  */
 class Stack extends AbstractCollection implements ArrayAccess
 {
+    /** @see froq\collection\stack\StackTrait */
+    use StackTrait;
+
     /**
-     * Access & Access Magic Trait.
      * @see froq\collection\AccessTrait
      * @see froq\collection\AccessMagicTrait
      * @since 4.0, 5.0
@@ -34,13 +36,8 @@ class Stack extends AbstractCollection implements ArrayAccess
     use AccessTrait, AccessMagicTrait;
 
     /**
-     * Stack Trait.
-     * @see froq\collection\stack\StackTrait
-     */
-    use StackTrait;
-
-    /**
      * Constructor.
+     *
      * @param  array<int|string, any>|null $data
      * @param  bool|null                   $readOnly
      */
@@ -53,6 +50,7 @@ class Stack extends AbstractCollection implements ArrayAccess
 
     /**
      * Set data.
+     *
      * @param  array<int|string, any> $data
      * @param  bool                   $reset
      * @return self
@@ -64,70 +62,77 @@ class Stack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Add.
+     * Add (append) an item to data stack with given key.
+     *
      * @param  int|string $key
      * @param  any        $value
      * @return self
      */
-    public final function add($key, $value): self
+    public final function add(int|string $key, $value): self
     {
         return $this->_add($key, $value);
     }
 
     /**
-     * Set.
+     * Put an item to data stack with given key.
+     *
      * @param  int|string $key
      * @param  any        $value
      * @return self
      */
-    public final function set($key, $value): self
+    public final function set(int|string $key, $value): self
     {
         return $this->_set($key, $value);
     }
 
     /**
-     * Get.
+     * Get an item from data stack by given key.
+     *
      * @param  int|string $key
      * @param  any|null   $default
      * @return any|null
      */
-    public final function get($key, $default = null)
+    public final function get(int|string $key, $default = null)
     {
         return $this->_get($key, $default);
     }
 
     /**
-     * Remove.
+     * Remove an item from data stack by given key.
+     *
      * @param  int|string $key
      * @return bool
      */
-    public final function remove($key): bool
+    public final function remove(int|string $key): bool
     {
         return $this->_remove($key);
     }
 
     /**
-     * Has.
+     * Check whether an item was set in data stack with given key.
+     *
      * @param  int|string $key
      * @return bool
      */
-    public final function has($key): bool
+    public final function has(int|string $key): bool
     {
         return $this->_has($key);
     }
 
     /**
-     * Has key.
+     * Check whether given key exists in data stack.
+     *
      * @param  int|string $key
      * @return bool
      */
-    public final function hasKey($key): bool
+    public final function hasKey(int|string $key): bool
     {
         return $this->_hasKey($key);
     }
 
     /**
-     * Has value.
+     *  Check with/without strict mode whether data stack has given value.
+     *
      * @param  any  $value
      * @param  bool $strict
      * @return bool

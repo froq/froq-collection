@@ -87,7 +87,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether an indexed item exists in data stack.
+     * Check whether an indexed item was set in data stack.
      *
      * @param  int $index
      * @return bool

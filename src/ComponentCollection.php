@@ -112,7 +112,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether a component exists in data stack with given name.
+     * Check whether a component was set in data stack with given name.
      *
      * @param  string $name
      * @return bool

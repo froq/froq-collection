@@ -73,7 +73,7 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Check whether a keyed/indexed item exists in data stack.
+     * Check whether a keyed/indexed item was set in data stack.
      *
      * @param  int|string $key
      * @return bool
