@@ -57,6 +57,21 @@ trait AccessTrait
     }
 
     /**
+     * Get a value as given type.
+     *
+     * @param  int|string $key
+     * @return string     $type
+     * @return any
+     * @since  5.0
+     */
+    public final function getAs($key, string $type)
+    {
+        $value = $this->get($key);
+        settype($value, $type);
+        return $value;
+    }
+
+    /**
      * Get a value as int.
      *
      * @param  int|string $key
