@@ -34,7 +34,7 @@ trait StackTrait
         $this->readOnlyCheck();
 
         if (isset($this->data[$key])) {
-            $this->data[$key] = Arrays::flatten([$this->data[$key], $value]);
+            $this->data[$key] = Arrays::flat([$this->data[$key], $value]);
         } else {
             $this->data[$key] = $value;
         }

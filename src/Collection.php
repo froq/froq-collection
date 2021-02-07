@@ -126,7 +126,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Add (append) an item to data stack, flatten if already exists.
+     * Add (append) an item to data stack, flat if already exists.
      *
      * @param  int|string|array<int|string, any> $key
      * @param  any|null                          $value
@@ -140,7 +140,7 @@ class Collection extends AbstractCollection implements ArrayAccess
         @ [$key, $value] = is_array($key) ? $key : [$key, $value];
 
         if (isset($this->data[$key])) {
-            $this->data[$key] = Arrays::flatten([$this->data[$key], $value]);
+            $this->data[$key] = Arrays::flat([$this->data[$key], $value]);
         } else {
             $this->data[$key] = $value;
         }
@@ -324,7 +324,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Flatten data stack.
+     * Flat data stack.
      *
      * @param  bool $useKeys
      * @param  bool $fixKeys
@@ -332,11 +332,11 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @return self
      * @since  4.0
      */
-    public function flatten(bool $useKeys = false, bool $fixKeys = false, bool $oneDimension = false): self
+    public function flat(bool $useKeys = false, bool $fixKeys = false, bool $oneDimension = false): self
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::flatten($this->data, $useKeys, $fixKeys, $oneDimension);
+        $this->data = Arrays::flat($this->data, $useKeys, $fixKeys, $oneDimension);
 
         return $this;
     }
