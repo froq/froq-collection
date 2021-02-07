@@ -332,7 +332,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @return self
      * @since  4.0
      */
-    public function flatten(bool $useKeys = false, bool $fixKeys = false, bool $oneDimension = false): array
+    public function flatten(bool $useKeys = false, bool $fixKeys = false, bool $oneDimension = false): self
     {
         $this->readOnlyCheck();
 
