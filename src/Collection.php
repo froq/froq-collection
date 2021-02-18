@@ -244,16 +244,50 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Reset data stack with unique items.
+     * Reset data stack with uniq items.
      *
      * @return self
      * @since  4.0
      */
-    public function unique(): self
+    public function uniq(): self
     {
         $this->readOnlyCheck();
 
         $this->data = array_unique($this->data, SORT_REGULAR);
+
+        return $this;
+    }
+
+    /**
+     * Pad data stack by given length.
+     *
+     * @param  int      $length
+     * @param  any|null $value
+     * @return self
+     * @since  5.0
+     */
+    public function pad(int $length, $value = null)
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_pad($this->data, $length, $value);
+
+        return $this;
+    }
+
+    /**
+     * Pad data stack by given keys if not set on.
+     *
+     * @param  array    $keys
+     * @param  any|null $value
+     * @return self
+     * @since  5.0
+     */
+    public function padKeys(array $keys, $value = null)
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_pad_keys($this->data, $keys, $value);
 
         return $this;
     }
