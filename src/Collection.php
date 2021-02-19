@@ -293,6 +293,37 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Select an item/items from data stack by given key(s).
+     *
+     * @param  int|string|array<int|string> $key
+     * @param  bool                         $combine (AKA keep-keys directive).
+     * @return static
+     * @since  5.0
+     */
+    public function select(int|string|array $key, bool $combine = true): static
+    {
+        $data = array_select($this->data, $key, combine: $combine);
+
+        return new static((array) $data);
+    }
+
+    /**
+     * Delete an item/items from data stack by given value(s).
+     *
+     * @param  ... $values
+     * @return self
+     * @since  5.0
+     */
+    public function delete(...$values): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_delete($this->data, ...$values);
+
+        return $this;
+    }
+
+    /**
      * Slice data stack.
      *
      * @param  int      $start
