@@ -228,6 +228,38 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Append given values to data stack.
+     *
+     * @param  ... $values
+     * @return self
+     * @since  5.0
+     */
+    public function append(...$values): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_append($this->data, ...$values);
+
+        return $this;
+    }
+
+    /**
+     * Prepend given values to data stack.
+     *
+     * @param  ... $values
+     * @return self
+     * @since  5.0
+     */
+    public function prepend(...$values): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_prepend($this->data, ...$values);
+
+        return $this;
+    }
+
+    /**
      * Reverse data stack.
      *
      * @param  bool $keepKeys
