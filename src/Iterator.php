@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\collection\CollectionException;
+use froq\common\interface\Arrayable;
 use IteratorAggregate, Countable, Throwable, Generator, ReflectionMethod, ReflectionFunction;
 
 /**
@@ -20,7 +21,7 @@ use IteratorAggregate, Countable, Throwable, Generator, ReflectionMethod, Reflec
  * @author  Kerem Güneş
  * @since   5.0
  */
-class Iterator implements IteratorAggregate, Countable
+class Iterator implements IteratorAggregate, Countable, Arrayable
 {
     /** @var callable */
     private $generator;
@@ -85,6 +86,14 @@ class Iterator implements IteratorAggregate, Countable
     public final function count(): int
     {
         return iterator_count($this->generate());
+    }
+
+    /**
+     * @inheritDoc froq\common\interface\Arrayable
+     */
+    public function toArray(): array
+    {
+        return iterator_to_array($this->generate());
     }
 
     /**
