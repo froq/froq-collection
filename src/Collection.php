@@ -343,6 +343,20 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Select item columns from data stack by given key.
+     *
+     * @param  int|string $key
+     * @return static
+     * @since  5.0
+     */
+    public function selects(int|string $key): static
+    {
+        $data = array_column($this->data, $key);
+
+        return new static((array) $data);
+    }
+
+    /**
      * Delete an item/items from data stack by given value(s).
      *
      * @param  ... $values
