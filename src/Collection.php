@@ -290,6 +290,9 @@ class Collection extends AbstractCollection implements ArrayAccess
         return $this;
     }
 
+    /** @alias of uniq() */
+    public function unique() { return $this->uniq(); }
+
     /**
      * Pad data stack by given length.
      *
@@ -353,6 +356,34 @@ class Collection extends AbstractCollection implements ArrayAccess
         $this->data = array_delete($this->data, ...$values);
 
         return $this;
+    }
+
+    /**
+     * Gather mutual items from given data stack over own data stack.
+     *
+     * @param  ... $datas
+     * @return static
+     * @since  5.0
+     */
+    public function mutual(...$datas): static
+    {
+        $data = array_intersect($this->data, ...$datas);
+
+        return new static($data);
+    }
+
+    /**
+     * Gather unmutual items from given data stack over own data stack.
+     *
+     * @param  ... $datas
+     * @return static
+     * @since  5.0
+     */
+    public function unmutual(...$datas): static
+    {
+        $data = array_diff($this->data, ...$datas);
+
+        return new static($data);
     }
 
     /**
