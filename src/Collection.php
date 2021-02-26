@@ -448,19 +448,33 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Merge data stack with given data.
+     * Merge data stack with given data stack.
      *
-     * @param  array $data
+     * @param  array ...$datas
      * @return self
      * @since  4.0
      */
-    public function merge(array $data): self
+    public function merge(array ...$datas): self
     {
         $this->readOnlyCheck();
 
-        foreach ($data as $key => $value) {
-            $this->data[$key] = $value;
-        }
+        $this->data = array_merge($this->data, ...$datas);
+
+        return $this;
+    }
+
+    /**
+     * Replace data stack with given data stack.
+     *
+     * @param  array ...$datas
+     * @return self
+     * @since  5.0
+     */
+    public function replace(array ...$datas): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_replace($this->data, ...$datas);
 
         return $this;
     }
