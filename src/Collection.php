@@ -276,24 +276,6 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Reset data stack with uniq items.
-     *
-     * @return self
-     * @since  4.0
-     */
-    public function uniq(): self
-    {
-        $this->readOnlyCheck();
-
-        $this->data = array_unique($this->data, SORT_REGULAR);
-
-        return $this;
-    }
-
-    /** @alias of uniq() */
-    public function unique() { return $this->uniq(); }
-
-    /**
      * Pad data stack by given length.
      *
      * @param  int      $length
@@ -301,7 +283,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @return self
      * @since  5.0
      */
-    public function pad(int $length, $value = null)
+    public function pad(int $length, $value = null): self
     {
         $this->readOnlyCheck();
 
@@ -318,7 +300,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @return self
      * @since  5.0
      */
-    public function padKeys(array $keys, $value = null)
+    public function padKeys(array $keys, $value = null): self
     {
         $this->readOnlyCheck();
 
@@ -349,7 +331,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @return static
      * @since  5.0
      */
-    public function selects(int|string $key): static
+    public function selectColumn(int|string $key): static
     {
         $data = array_column($this->data, $key);
 
@@ -401,21 +383,35 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Get unique items from data stack.
+     *
+     * @return static
+     * @since  4.0
+     */
+    public function unique(): static
+    {
+        $data = array_unique($this->data, SORT_REGULAR);
+
+        return new static($data);
+    }
+
+    /** @alias of unique() */
+    public function uniq() { return $this->unique(); }
+
+    /**
      * Slice data stack.
      *
      * @param  int      $start
      * @param  int|null $end
      * @param  bool     $keepKeys
-     * @return self
+     * @return static
      * @since  4.0
      */
-    public function slice(int $start, int $end = null, bool $keepKeys = false): self
+    public function slice(int $start, int $end = null, bool $keepKeys = false): static
     {
-        $this->readOnlyCheck();
+        $data = array_slice($this->data, $start, $end, $keepKeys);
 
-        $this->data = array_slice($this->data, $start, $end, $keepKeys);
-
-        return $this;
+        return new static($data);
     }
 
     /**
@@ -423,16 +419,14 @@ class Collection extends AbstractCollection implements ArrayAccess
      *
      * @param  int  $limit
      * @param  bool $keepKeys
-     * @return self
+     * @return static
      * @since  4.0
      */
-    public function split(int $limit, bool $keepKeys = false): self
+    public function split(int $limit, bool $keepKeys = false): static
     {
-        $this->readOnlyCheck();
+        $data = array_chunk($this->data, $limit, $keepKeys);
 
-        $this->data = array_chunk($this->data, $limit, $keepKeys);
-
-        return $this;
+        return new static($data);
     }
 
     /**
