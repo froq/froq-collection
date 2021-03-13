@@ -339,7 +339,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /** @alias of selectColumn() */
-    public function column() { return $this->selectColumn(); }
+    public function column($key) { return $this->selectColumn($key); }
 
     /**
      * Delete an item/items from data stack by given value(s).
