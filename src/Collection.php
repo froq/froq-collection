@@ -338,6 +338,9 @@ class Collection extends AbstractCollection implements ArrayAccess
         return new static((array) $data);
     }
 
+    /** @alias of selectColumn() */
+    public function column() { return $this->column(); }
+
     /**
      * Delete an item/items from data stack by given value(s).
      *
