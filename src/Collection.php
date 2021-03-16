@@ -518,7 +518,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @return bool
      * @since  4.0
      */
-    public function search($value, bool $strict = true): bool
+    public function search($value, bool $strict = false): bool
     {
         $key = array_search($value, $this->data, $strict);
 
@@ -758,8 +758,6 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Find key of given value with/without strict mode.
-     *
      * @alias of index()
      * @since 5.0
      */
@@ -789,9 +787,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function first()
     {
-        $key = $this->firstKey();
-
-        return ($key !== null) ?  $this->data[$key] : null;
+        return array_first($this->data);
     }
 
     /**
@@ -813,9 +809,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function last()
     {
-        $key = $this->lastKey();
-
-        return ($key !== null) ? $this->data[$key] : null;
+        return array_last($this->data);
     }
 
     /**
