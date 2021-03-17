@@ -164,6 +164,40 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Compact given key(s) with value(s).
+     *
+     * @param  int|string|array  $key
+     * @param  ...               $value
+     * @return self
+     * @since  5.0
+     */
+    public function compact(int|string|array $key, ...$value): self
+    {
+        foreach ((array) $key as $i => $key) {
+            $this->data[$key] = $value[$i] ?? null;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Extract given key(s) onto value(s) with ref(s).
+     *
+     * @param  int|string|array  $key
+     * @param  ...               $value
+     * @return self
+     * @since  5.0
+     */
+    public function extract(int|string|array $key, &...$value): self
+    {
+        foreach ((array) $key as $i => $key) {
+            $value[$i] = $this->data[$key] ?? null;
+        }
+
+        return $this;
+    }
+
+    /**
      * Pop an item.
      *
      * @return any
