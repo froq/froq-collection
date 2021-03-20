@@ -669,6 +669,23 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Fill data stack with given keys & value.
+     *
+     * @param  array<int|string> $keys
+     * @param  any               $value
+     * @return self
+     * @since  5.0
+     */
+    public function fillKeys(array $keys, $value): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_fill_keys($keys, $value);
+
+        return $this;
+    }
+
+    /**
      * Apply a sort on data stack.
      *
      * @param  string|null $funcName
