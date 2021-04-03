@@ -68,6 +68,7 @@ trait AccessTrait
     {
         $value = $this->get($key);
         settype($value, $type);
+
         return $value;
     }
 
