@@ -60,7 +60,7 @@ trait AccessTrait
      * Get a value as given type.
      *
      * @param  int|string $key
-     * @return string     $type
+     * @param  string     $type
      * @return any
      * @since  5.0
      */
