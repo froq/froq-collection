@@ -142,7 +142,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
      */
     public final function set(string $name, $value): self
     {
-        $this->nameCheck($name) || $this->readOnlyCheck();
+        $this->nameCheck($name); $this->readOnlyCheck();
 
         $this->data[$name] = $value;
 
@@ -170,7 +170,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
      */
     public final function remove(string $name): void
     {
-        $this->nameCheck($name) || $this->readOnlyCheck();
+        $this->nameCheck($name); $this->readOnlyCheck();
 
         unset($this->data[$name]);
     }
