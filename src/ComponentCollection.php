@@ -152,14 +152,15 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     /**
      * Get a component by given name from data stack.
      *
-     * @param  string $name
+     * @param  string   $name
+     * @param  any|null $default
      * @return any|null
      */
-    public final function get(string $name)
+    public final function get(string $name, $default = null)
     {
         $this->nameCheck($name);
 
-        return $this->data[$name] ?? null;
+        return $this->data[$name] ?? $default;
     }
 
     /**
