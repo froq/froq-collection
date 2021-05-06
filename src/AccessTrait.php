@@ -156,6 +156,9 @@ trait AccessTrait
      */
     public final function offsetSet($key, $value)
     {
+        // For "items[] = item" calls.
+        $key ??= $this->count();
+
         return $this->set($key, $value);
     }
 
