@@ -117,7 +117,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
      */
     public final function hasValue($value, bool $strict = true): bool
     {
-        return in_array($value, $this->data, $strict);
+        return array_value_exists($value, $this->data, $strict);
     }
 
     /**
