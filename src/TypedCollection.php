@@ -1,26 +1,7 @@
 <?php
 /**
- * MIT License <https://opensource.org/licenses/mit>
- *
- * Copyright (c) 2015 Kerem Güneş
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Copyright (c) 2015 · Kerem Güneş
+ * Apache License 2.0 · http://github.com/froq/froq-collection
  */
 declare(strict_types=1);
 
@@ -31,24 +12,21 @@ use froq\collection\{AbstractCollection, CollectionException};
 /**
  * Typed Collection.
  *
- * Represents a typed array structure that accepts strict values only which indicated with
- * `$dataType` property.
+ * Represents a typed array structure that accepts strict values only which forced with `$dataType` property.
  *
  * @package froq\collection
  * @object  froq\collection\TypedCollection
- * @author  Kerem Güneş <k-gun@mail.com>
+ * @author  Kerem Güneş
  * @since   4.0
  */
 class TypedCollection extends AbstractCollection
 {
-    /**
-     * Data type.
-     * @var string
-     */
+    /** @var string */
     protected string $dataType;
 
     /**
      * Constructor.
+     *
      * @param  array|null  $data
      * @param  string|null $dataType
      * @throws froq\collection\CollectionException
@@ -56,11 +34,12 @@ class TypedCollection extends AbstractCollection
     public function __construct(array $data = null, string $dataType = null)
     {
         // Data type might be defined in extender class.
-        $this->dataType = $dataType ?? $this->dataType ?? null;
-        if ($this->dataType == null) {
-            throw new CollectionException('Data type is required, it must be defined like '.
-                '"protected string $dataType = \'int\';" or given at constructor calls as '.
-                'second argument');
+        $this->dataType = $dataType ?? $this->dataType ?? '';
+
+        if ($this->dataType == '') {
+            throw new CollectionException('Data type is required, it must be defined like'
+                . ' `protected string $dataType = \'int\'` or given at constructor calls as'
+                . ' second argument');
         }
 
         parent::__construct($data);
@@ -68,6 +47,7 @@ class TypedCollection extends AbstractCollection
 
     /**
      * Get data type.
+     *
      * @return string
      */
     public final function getDataType(): string
@@ -77,22 +57,58 @@ class TypedCollection extends AbstractCollection
 
     /**
      * Set data.
-     * @param  array $data
-     * @param  bool  $override
-     * @return self (static)
+     *
+     * @param  array<int|string, any> $data
+     * @param  bool                   $reset
+     * @return self
      * @override
      */
-    public final function setData(array $data, bool $override = true): self
+    public final function setData(array $data, bool $reset = true): self
     {
-        foreach ($data as $key => $value) {
+        foreach ($data as $value) {
             $this->typeCheck($value);
         }
 
-        return parent::setData($data, $override);
+        return parent::setData($data, $reset);
     }
 
     /**
-     * Add.
+     * Check whether a keyed/indexed item was set in data stack.
+     *
+     * @param  int|string $key
+     * @return bool
+     */
+    public final function has(int|string $key): bool
+    {
+        return isset($this->data[$key]);
+    }
+
+    /**
+     * Check whether a key/index exists in data stack.
+     *
+     * @param  int|string $key
+     * @return bool
+     */
+    public final function hasKey(int|string $key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    /**
+     * Check with/without strict mode whether data stack has given value.
+     *
+     * @param  any  $value
+     * @param  bool $strict
+     * @return bool
+     */
+    public final function hasValue($value, bool $strict = true): bool
+    {
+        return array_value_exists($value, $this->data, $strict);
+    }
+
+    /**
+     * Add (append) an item to data stack.
+     *
      * @param  any $value
      * @return self
      */
@@ -106,43 +122,13 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Has.
-     * @param  int|string $key
-     * @return bool
-     */
-    public final function has($key): bool
-    {
-        return isset($this->data[$key]);
-    }
-
-    /**
-     * Has key.
-     * @param  int|string $key
-     * @return bool
-     */
-    public final function hasKey($key): bool
-    {
-        return array_key_exists($key, $this->data);
-    }
-
-    /**
-     * Has value.
-     * @param  any  $value
-     * @param  bool $strict
-     * @return bool
-     */
-    public final function hasValue($value, bool $strict = true): bool
-    {
-        return in_array($value, $this->data, $strict);
-    }
-
-    /**
-     * Set.
+     * Put an item by given key/index to data stack.
+     *
      * @param  int|string $key
      * @param  any        $value
      * @return self
      */
-    public final function set($key, $value): self
+    public final function set(int|string $key, $value): self
     {
         $this->typeCheck($value);
 
@@ -152,63 +138,69 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Get.
+     * Get an item by given key/index from data stack.
+     *
      * @param  int|string $key
+     * @param  any|null   $default
      * @return any|null
      */
-    public final function get($key)
+    public final function get(int|string $key, $default = null)
     {
-        return $this->data[$key] ?? null;
+        return $this->data[$key] ?? $default;
     }
 
     /**
-     * Remove.
+     * Remove an item by given key/index from data stack.
+     *
      * @param  int|string $key
      * @return void
      */
-    public final function remove($key): void
+    public final function remove(int|string $key): void
     {
         unset($this->data[$key]);
     }
 
     /**
      * Check data type.
+     *
      * @param  any $value
      * @return void
      * @throws froq\collection\CollectionException
      */
-    private final function typeCheck($value): void
+    private function typeCheck($value): void
     {
-        $type = gettype($value);
-
-        // Objects.
-        if ($type == 'object') {
-            // All objects.
-            if ($this->dataType == 'object') {
-                return;
-            }
-            if ($value instanceof $this->dataType) {
-                return;
-            }
-
-            // Anonymous classes contain 0 bytes and verbosed file path etc.
-            $class = substr($class = get_class($value), 0, strpos($class, "\0") ?: strlen($class));
-
-            throw new CollectionException(sprintf('Each value must be type of %s, %s given',
-                $this->dataType, $class));
+        // Any type?
+        if ($this->dataType == 'any') {
+            return;
         }
 
-        // Types to check & translate.
-        static $types = ['int', 'float', 'string', 'bool', 'array', 'resource'];
-        static $typer = ['integer' => 'int', 'double' => 'float', 'boolean' => 'bool'];
+        if (is_object($value)) {
+            // All objects.
+            if ($this->dataType == 'object' || $value instanceof $this->dataType) {
+                return;
+            }
 
-        // Shorter types must be used (in constructor or extender class).
-        $type = strtr($type, $typer);
+            throw new CollectionException('Each value must be type of %s, %s given',
+                [$this->dataType, $value::class]);
+        }
 
-        // Others.
-        if ($type != $this->dataType && in_array($type, $types)) {
-            throw new CollectionException(sprintf('Each value must be type of %s, %s given',
-                $this->dataType, $type));
+        if (($this->dataType == 'scalar' && is_scalar($value))
+            || ($this->dataType == 'number' && is_number($value))) {
+            return;
+        }
+
+        $type = get_type($value);
+
+        if ($type != $this->dataType) {
+            $types = explode('|', $this->dataType);
+
+            // @fix, @todo: Make namespace resolution for short class names.
+            if (in_array($type, $types)) {
+                return;
+            }
+
+            throw new CollectionException('Each value must be type of %s, %s given',
+                [$this->dataType, $type]);
         }
     }
 }

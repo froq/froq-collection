@@ -1,26 +1,7 @@
 <?php
 /**
- * MIT License <https://opensource.org/licenses/mit>
- *
- * Copyright (c) 2015 Kerem Güneş
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Copyright (c) 2015 · Kerem Güneş
+ * Apache License 2.0 · http://github.com/froq/froq-collection
  */
 declare(strict_types=1);
 
@@ -31,133 +12,133 @@ use froq\collection\AccessException;
 /**
  * Access Trait.
  *
- * Represents an access trait that used in `froq\collection` internally for stacks and collection
- * objects.
+ * Represents an access trait that used in `froq\collection` internally for stack and collection objects.
  *
  * @package  froq\collection
  * @object   froq\collection\AccessTrait
- * @author   Kerem Güneş <k-gun@mail.com>
+ * @author   Kerem Güneş
  * @since    4.0
- * @internal Used in froq\collection only.
+ * @internal
  */
 trait AccessTrait
 {
-    /**
-     * Read-only states.
-     * @var array
-     */
-    private static array $__readOnlyStates;
+    /** @var array */
+    private static array $__READ_ONLY_STATES;
 
     /**
-     * Read-only setter/getter.
+     * Set/get read-only state.
+     *
      * @param  bool|null $state
-     * @return ?bool
+     * @return bool|null
      */
-    public final function readOnly(bool $state = null): ?bool
+    public final function readOnly(bool $state = null): bool|null
     {
         $id = spl_object_id($this);
 
-        // Set state for once, so it cannot be modified anymore calling readOnly().
-        if (isset($state) && !isset(self::$__readOnlyStates[$id])) {
-            self::$__readOnlyStates[$id] = $state;
+        if ($state !== null) {
+            self::$__READ_ONLY_STATES[$id] = $state;
         }
 
-        return self::$__readOnlyStates[$id] ?? null;
+        return self::$__READ_ONLY_STATES[$id] ?? null;
     }
 
     /**
-     * Read-only checker.
+     * Check read-only state, throw an `AccessException` if object is read-only.
+     *
      * @return void
-     * @throws froq\stack\StackException
+     * @throws froq\collection\AccessException
      */
     public final function readOnlyCheck(): void
     {
-        if ($this->readOnly()) {
-            throw new AccessException('Cannot modify read-only "%s" object', [static::class]);
-        }
+        $this->readOnly() && throw new AccessException(
+            'Cannot modify read-only object ' . static::class
+        );
     }
 
     /**
-     * Set.
-     * @param  int|string $key
-     * @param  any        $value
-     * @return self
+     * Lock, read-only state as true.
+     *
+     * @return static
      */
-    public final function __set($key, $value)
+    public final function lock(): static
     {
-        return $this->set($key, $value);
+        $this->readOnly(true);
+
+        return $this;
     }
 
     /**
-     * Get.
+     * Unlock, read-only state as true.
+     *
+     * @return static
+     */
+    public final function unlock(): static
+    {
+        $this->readOnly(false);
+
+        return $this;
+    }
+
+    /**
+     * Get a value as given type.
+     *
      * @param  int|string $key
+     * @param  string     $type
      * @return any
+     * @since  5.0
      */
-    public final function __get($key)
+    public final function getAs(int|string $key, string $type)
     {
-        return $this->get($key);
+        $value = $this->get($key);
+        settype($value, $type);
+
+        return $value;
     }
 
     /**
-     * Isset.
-     * @param  int|string $key
-     * @return bool
-     */
-    public final function __isset($key)
-    {
-        return $this->has($key);
-    }
-
-    /**
-     * Unset.
-     * @param  int|string $key
-     * @return void
-     */
-    public final function __unset($key)
-    {
-        $this->remove($key);
-    }
-
-    /**
-     * Get int.
+     * Get a value as int.
+     *
      * @param  int|string $key
      * @return int
      * @since  4.2
      */
-    public final function getInt($key): int
+    public final function getInt(int|string $key): int
     {
         return (int) $this->get($key);
     }
 
     /**
-     * Get float.
+     * Get a value as float.
+     *
      * @param  int|string $key
      * @return float
      * @since  4.2
      */
-    public final function getFloat($key): float
+    public final function getFloat(int|string $key): float
     {
         return (float) $this->get($key);
     }
 
     /**
-     * Get string.
+     * Get a value as string.
+     *
      * @param  int|string $key
      * @return string
      * @since  4.2
      */
-    public final function getString($key): string
+    public final function getString(int|string $key): string
     {
         return (string) $this->get($key);
     }
 
     /**
-     * Get bool.
+     * Get a value as bool.
+     *
      * @param  int|string $key
      * @return bool
      * @since  4.2
      */
-    public final function getBool($key): bool
+    public final function getBool(int|string $key): bool
     {
         return (bool) $this->get($key);
     }
@@ -175,6 +156,9 @@ trait AccessTrait
      */
     public final function offsetSet($key, $value)
     {
+        // For "items[] = item" calls.
+        $key ??= $this->count();
+
         return $this->set($key, $value);
     }
 

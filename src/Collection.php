@@ -1,53 +1,39 @@
 <?php
 /**
- * MIT License <https://opensource.org/licenses/mit>
- *
- * Copyright (c) 2015 Kerem Güneş
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Copyright (c) 2015 · Kerem Güneş
+ * Apache License 2.0 · http://github.com/froq/froq-collection
  */
 declare(strict_types=1);
 
 namespace froq\collection;
 
+use froq\collection\{AbstractCollection, CollectionException, AccessTrait, AccessMagicTrait};
 use froq\util\Arrays;
-use froq\collection\{AbstractCollection, CollectionException, AccessTrait};
 use ArrayAccess;
 
 /**
  * Collection.
+ *
+ * Represents a collection entity that contains a bunch of utility methods and behaves like a simple
+ * object.
+ *
  * @package froq\collection
  * @object  froq\collection\Collection
- * @author  Kerem Güneş <k-gun@mail.com>
+ * @author  Kerem Güneş
  * @since   1.0
  */
 class Collection extends AbstractCollection implements ArrayAccess
 {
     /**
-     * Access Trait.
      * @see froq\collection\AccessTrait
-     * @since 4.0
+     * @see froq\collection\AccessMagicTrait
+     * @since 4.0, 5.0
      */
-    use AccessTrait;
+    use AccessTrait, AccessMagicTrait;
 
     /**
      * Constructor.
+     *
      * @param array<int|string, any>|null $data
      */
     public function __construct(array $data = null)
@@ -56,39 +42,47 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Set data.
-     * @param  array $data
-     * @param  bool  $override
-     * @return self (static)
-     * @throws froq\collection\CollectionException
-     * @since  4.0
-     * @override
+     * Check whether an item set in data stack.
+     *
+     * @param  int|string $key
+     * @return bool
      */
-    public function setData(array $data, bool $override = true): self
+    public function has(int|string $key): bool
     {
-        foreach (array_keys($data) as $key) {
-            if ($key === '') {
-                throw new CollectionException('Only int & string keys are accepted for "%s" object, '.
-                    'empty string (probably null key) given', [static::class]);
-            }
-            if (!is_int($key) && !is_string($key)) {
-                throw new CollectionException('Only int & string keys are accepted for "%s" object, '.
-                    '"%s" given', [static::class, gettype($key)]);
-            }
-        }
-
-        $this->readOnlyCheck();
-
-        return parent::setData($data, $override);
+        return isset($this->data[$key]);
     }
 
     /**
-     * Set.
+     * Check whether a key/index exists in data stack.
+     *
+     * @param  int|string $key
+     * @return bool
+     */
+    public function hasKey(int|string $key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    /**
+     * Check with/without strict mode whether data stack has given value.
+     *
+     * @param  any  $value
+     * @param  bool $strict
+     * @return bool
+     */
+    public function hasValue($value, bool $strict = true): bool
+    {
+        return array_value_exists($value, $this->data, $strict);
+    }
+
+    /**
+     * Put an item/items into data stack.
+     *
      * @param  int|string|array<int|string>|null $key
      * @param  any|null                          $value
      * @return self
      */
-    public function set($key, $value = null): self
+    public function set(int|string|array $key, $value = null): self
     {
         $this->readOnlyCheck();
 
@@ -103,78 +97,50 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get.
+     * Get an item/items from data stack.
+     *
      * @param  int|string|array<int|string> $key
-     * @param  any|null                     $valueDefault
+     * @param  any|null                     $default
      * @return any|null
      */
-    public function get($key, $valueDefault = null)
+    public function get(int|string|array $key, $default = null)
     {
-        return is_array($key) ? Arrays::getAll($this->data, $key, $valueDefault)
-                              : Arrays::get($this->data, $key, $valueDefault);
+        return is_array($key) ? Arrays::getAll($this->data, $key, $default)
+                              : Arrays::get($this->data, $key, $default);
     }
 
     /**
-     * Pull.
+     * Pull an item/items from data stack.
+     *
      * @param  int|string|array<int|string> $key
-     * @param  any|null                     $valueDefault
+     * @param  any|null                     $default
      * @return any|null
      * @since  3.0
      */
-    public function pull($key, $valueDefault = null)
+    public function pull(int|string|array $key, $default = null)
     {
         $this->readOnlyCheck();
 
-        return is_array($key) ? Arrays::pullAll($this->data, $key, $valueDefault)
-                              : Arrays::pull($this->data, $key, $valueDefault);
+        return is_array($key) ? Arrays::pullAll($this->data, $key, $default)
+                              : Arrays::pull($this->data, $key, $default);
     }
 
     /**
-     * Check.
-     * @param  int|string $key
-     * @return bool
-     */
-    public function has($key): bool
-    {
-        return isset($this->data[$key]);
-    }
-
-    /**
-     * Has key.
-     * @param  int|string $key
-     * @return bool
-     */
-    public function hasKey($key): bool
-    {
-        return array_key_exists($key, $this->data);
-    }
-
-    /**
-     * Has value.
-     * @param  any  $value
-     * @param  bool $strict
-     * @return bool
-     */
-    public function hasValue($value, bool $strict = true): bool
-    {
-        return in_array($value, $this->data, $strict);
-    }
-
-    /**
-     * Add.
+     * Add (append) an item to data stack, flat if already exists.
+     *
      * @param  int|string|array<int|string, any> $key
      * @param  any|null                          $value
      * @return self
      * @since  3.0
      */
-    public function add($key, $value = null): self
+    public function add(int|string|array $key, $value = null): self
     {
         $this->readOnlyCheck();
 
         @ [$key, $value] = is_array($key) ? $key : [$key, $value];
 
         if (isset($this->data[$key])) {
-            $this->data[$key] = Arrays::flatten([$this->data[$key], $value]);
+            $this->data[$key] = Arrays::flat([$this->data[$key], $value]);
         } else {
             $this->data[$key] = $value;
         }
@@ -183,11 +149,12 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Remove.
+     * Remove an item/items from data stack.
+     *
      * @param  int|string|array<int|string> $key
      * @return self
      */
-    public function remove($key): self
+    public function remove(int|string|array $key): self
     {
         $this->readOnlyCheck();
 
@@ -197,7 +164,42 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Pop.
+     * Compact given key(s) with value(s).
+     *
+     * @param  int|string|array  $key
+     * @param  ...               $value
+     * @return self
+     * @since  5.0
+     */
+    public function compact(int|string|array $key, ...$value): self
+    {
+        foreach ((array) $key as $i => $key) {
+            $this->data[$key] = $value[$i] ?? null;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Extract given key(s) onto value(s) with ref(s).
+     *
+     * @param  int|string|array  $key
+     * @param  ...               $value
+     * @return self
+     * @since  5.0
+     */
+    public function extract(int|string|array $key, &...$value): self
+    {
+        foreach ((array) $key as $i => $key) {
+            $value[$i] = $this->data[$key] ?? null;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Pop an item.
+     *
      * @return any
      * @since  4.0
      */
@@ -209,7 +211,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Unpop (aka push).
+     * Unpop an item (aka push).
+     *
      * @param  array<int|string, any> $data
      * @return self
      * @since  4.0
@@ -230,7 +233,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Shift.
+     * Shift an item.
+     *
      * @return any
      * @since  4.0
      */
@@ -242,7 +246,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Unshift.
+     * Unshift an item.
+     *
      * @param  array<int|string, any> $data
      * @return self
      * @since  4.0
@@ -257,69 +262,214 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Reverse.
-     * @param  bool $preserveKeys
+     * Append given values to data stack.
+     *
+     * @param  ... $values
      * @return self
-     * @since  4.0
+     * @since  5.0
      */
-    public function reverse(bool $preserveKeys = false): self
+    public function append(...$values): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_reverse($this->data, $preserveKeys);
+        $this->data = array_append($this->data, ...$values);
 
         return $this;
     }
 
     /**
-     * Unique.
+     * Prepend given values to data stack.
+     *
+     * @param  ... $values
      * @return self
-     * @since  4.0
+     * @since  5.0
      */
-    public function unique(): self
+    public function prepend(...$values): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_unique($this->data, SORT_REGULAR);
+        $this->data = array_prepend($this->data, ...$values);
 
         return $this;
     }
 
     /**
-     * Slice.
-     * @param  int      $offset
-     * @param  int|null $length
-     * @param  bool     $preserveKeys
+     * Reverse data stack.
+     *
+     * @param  bool $keepKeys
      * @return self
      * @since  4.0
      */
-    public function slice(int $offset, int $length = null, bool $preserveKeys = false): self
+    public function reverse(bool $keepKeys = false): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_slice($this->data, $offset, $length, $preserveKeys);
+        $this->data = array_reverse($this->data, $keepKeys);
 
         return $this;
     }
 
     /**
-     * Split.
-     * @param  int  $size
-     * @param  bool $preserveKeys
+     * Pad data stack by given length.
+     *
+     * @param  int      $length
+     * @param  any|null $value
      * @return self
-     * @since  4.0
+     * @since  5.0
      */
-    public function split(int $size, bool $preserveKeys = false): self
+    public function pad(int $length, $value = null): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_chunk($this->data, $size, $preserveKeys);
+        $this->data = array_pad($this->data, $length, $value);
 
         return $this;
     }
 
     /**
-     * Join.
+     * Pad data stack by given keys if not set on.
+     *
+     * @param  array    $keys
+     * @param  any|null $value
+     * @return self
+     * @since  5.0
+     */
+    public function padKeys(array $keys, $value = null): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_pad_keys($this->data, $keys, $value);
+
+        return $this;
+    }
+
+    /**
+     * Select an item/items from data stack by given key(s).
+     *
+     * @param  int|string|array<int|string> $key
+     * @param  bool                         $combine (AKA keep-keys directive).
+     * @return static
+     * @since  5.0
+     */
+    public function select(int|string|array $key, bool $combine = true): static
+    {
+        $data = array_select($this->data, $key, combine: $combine);
+
+        return new static((array) $data);
+    }
+
+    /**
+     * Select item columns from data stack by given key, optionally index by given index argument.
+     *
+     * @param  int|string      $key
+     * @param  int|string|null $index
+     * @return static
+     * @since  5.0
+     */
+    public function selectColumn(int|string $key, int|string $index = null): static
+    {
+        $data = array_column($this->data, $key, $index);
+
+        return new static((array) $data);
+    }
+
+    /** @alias of selectColumn() */
+    public function column(...$args) { return $this->selectColumn(...$args); }
+
+    /**
+     * Delete an item/items from data stack by given value(s).
+     *
+     * @param  ... $values
+     * @return self
+     * @since  5.0
+     */
+    public function delete(...$values): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_delete($this->data, ...$values);
+
+        return $this;
+    }
+
+    /**
+     * Gather mutual items from given data stack over own data stack.
+     *
+     * @param  ... $datas
+     * @return static
+     * @since  5.0
+     */
+    public function mutual(...$datas): static
+    {
+        $data = array_intersect($this->data, ...$datas);
+
+        return new static($data);
+    }
+
+    /**
+     * Gather unmutual items from given data stack over own data stack.
+     *
+     * @param  ... $datas
+     * @return static
+     * @since  5.0
+     */
+    public function unmutual(...$datas): static
+    {
+        $data = array_diff($this->data, ...$datas);
+
+        return new static($data);
+    }
+
+    /**
+     * Get unique items from data stack.
+     *
+     * @return static
+     * @since  4.0
+     */
+    public function unique(): static
+    {
+        $data = array_unique($this->data, SORT_REGULAR);
+
+        return new static($data);
+    }
+
+    /** @alias of unique() */
+    public function uniq() { return $this->unique(); }
+
+    /**
+     * Slice data stack.
+     *
+     * @param  int      $start
+     * @param  int|null $end
+     * @param  bool     $keepKeys
+     * @return static
+     * @since  4.0
+     */
+    public function slice(int $start, int $end = null, bool $keepKeys = false): static
+    {
+        $data = array_slice($this->data, $start, $end, $keepKeys);
+
+        return new static($data);
+    }
+
+    /**
+     * Split data stack.
+     *
+     * @param  int  $limit
+     * @param  bool $keepKeys
+     * @return static
+     * @since  4.0
+     */
+    public function split(int $limit, bool $keepKeys = false): static
+    {
+        $data = array_chunk($this->data, $limit, $keepKeys);
+
+        return new static($data);
+    }
+
+    /**
+     * Join all items with given delimiter.
+     *
      * @param  string $glue
      * @return string
      * @since  4.0
@@ -330,41 +480,58 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Merge.
-     * @param  iterable $data
+     * Merge data stack with given data stack.
+     *
+     * @param  array ...$datas
      * @return self
      * @since  4.0
      */
-    public function merge(iterable $data): self
+    public function merge(array ...$datas): self
     {
         $this->readOnlyCheck();
 
-        foreach ($data as $key => $value) {
-            $this->data[$key] = $value;
-        }
+        $this->data = array_merge($this->data, ...$datas);
 
         return $this;
     }
 
     /**
-     * Flatten.
+     * Replace data stack with given data stack.
+     *
+     * @param  array ...$datas
+     * @return self
+     * @since  5.0
+     */
+    public function replace(array ...$datas): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_replace($this->data, ...$datas);
+
+        return $this;
+    }
+
+    /**
+     * Flat data stack.
+     *
      * @param  bool $useKeys
      * @param  bool $fixKeys
-     * @param  bool $oneDimension
+     * @param  bool $multi
      * @return self
      * @since  4.0
      */
-    public function flatten(bool $useKeys = false, bool $fixKeys = false, bool $oneDimension = false): array
+    public function flat(bool $useKeys = false, bool $fixKeys = false, bool $multi = true): self
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::flatten($this->data, $useKeys, $fixKeys, $oneDimension);
+        $this->data = Arrays::flat($this->data, $useKeys, $fixKeys, $multi);
 
         return $this;
     }
 
     /**
-     * Sweep.
+     * Sweep data stack dropping empty items those null, '' or [].
+     *
      * @param  array|null $ignoredKeys
      * @return self
      * @since  4.0
@@ -379,13 +546,14 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Search.
+     * Search a value with boolean mode.
+     *
      * @param  any  $value
      * @param  bool $strict
      * @return bool
      * @since  4.0
      */
-    public function search($value, bool $strict = true): bool
+    public function search($value, bool $strict = false): bool
     {
         $key = array_search($value, $this->data, $strict);
 
@@ -393,7 +561,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Test (like JavaScript Array.some()).
+     * Test, like JavaScript Array.some().
+     *
      * @param  callable $func
      * @return bool
      * @since  3.0
@@ -404,7 +573,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Test all (like JavaScript Array.every()).
+     * Test all, like JavaScript Array.every().
+     *
      * @param  callable $func
      * @return bool
      * @since  3.0
@@ -415,7 +585,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Find.
+     * Find, like JavaScript Array.find().
+     *
      * @param  callable $func
      * @return any|null
      * @since  4.3
@@ -426,7 +597,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Find all.
+     * Find all, kinda filter.
+     *
      * @param  callable $func
      * @param  bool     $useKeys
      * @return array
@@ -438,19 +610,21 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Random.
-     * @param  int  $size
-     * @param  bool $pack Return [key,value] pairs.
+     * Randomize data stack returning [key,value] pairs.
+     *
+     * @param  int  $limit
+     * @param  bool $pack
      * @return any|null
      * @since  4.0
      */
-    public function random(int $size = 1, bool $pack = false)
+    public function random(int $limit = 1, bool $pack = false)
     {
-        return Arrays::random($this->data, $size, $pack);
+        return Arrays::random($this->data, $limit, $pack);
     }
 
     /**
-     * Shuffle.
+     * Shuffle data stack.
+     *
      * @param  bool $keepKeys
      * @return self
      * @since  4.0
@@ -465,7 +639,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Flip.
+     * Flip data stack.
+     *
      * @return self
      * @since  4.0
      */
@@ -479,7 +654,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Fill.
+     * Fill data stack with given value.
+     *
      * @param  any $value
      * @return self
      * @since  4.0
@@ -488,15 +664,31 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        foreach (array_keys($this->data) as $key) {
-            $this->data[$key] = $value;
-        }
+        $this->data = array_fill_keys(array_keys($this->data), $value);
 
         return $this;
     }
 
     /**
-     * Sort.
+     * Fill data stack with given keys & value.
+     *
+     * @param  array<int|string> $keys
+     * @param  any               $value
+     * @return self
+     * @since  5.0
+     */
+    public function fillKeys(array $keys, $value): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_fill_keys($keys, $value);
+
+        return $this;
+    }
+
+    /**
+     * Apply a sort on data stack.
+     *
      * @param  string|null $funcName
      * @param  int         $flags
      * @return self
@@ -509,7 +701,7 @@ class Collection extends AbstractCollection implements ArrayAccess
         static $funcNames = ['rsort', 'asort', 'arsort', 'ksort', 'krsort'];
 
         if ($funcName && !in_array($funcName, $funcNames)) {
-            throw new CollectionException('Invalid sort function "%s", valids are: %s and null',
+            throw new CollectionException('Invalid sort function %s, valids are: %s, null',
                 [$funcName, join(', ', $funcNames)]);
         }
 
@@ -519,7 +711,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * USort.
+     * Apply a usort on data stack.
+     *
      * @param  callable    $func
      * @param  string|null $funcName
      * @return self
@@ -533,7 +726,7 @@ class Collection extends AbstractCollection implements ArrayAccess
         static $funcNames = ['uasort', 'uksort'];
 
         if ($funcName && !in_array($funcName, $funcNames)) {
-            throw new CollectionException('Invalid usort function "%s", valids are: %s and null',
+            throw new CollectionException('Invalid usort function %s, valids are: %s, null',
                 [$funcName, join(', ', $funcNames)]);
         }
 
@@ -543,7 +736,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Sort locale.
+     * Apply a locale sort on data stack.
+     *
      * @param  string|null $locale
      * @return self
      * @since  4.0
@@ -570,32 +764,35 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Sort natural.
-     * @param  bool $noCase
+     * Apply a natural sort on data stack.
+     *
+     * @param  bool $icase
      * @return self
      * @since  4.0
      */
-    public function sortNatural(bool $noCase = false): self
+    public function sortNatural(bool $icase = false): self
     {
         $this->readOnlyCheck();
 
-        !$noCase ? natsort($this->data) : natcasesort($this->data);
+        !$icase ? natsort($this->data) : natcasesort($this->data);
 
         return $this;
     }
 
     /**
-     * Item.
+     * Get an item from data stack with given key/index.
+     *
      * @param  int|string $key
      * @return any
      */
-    public function item($key)
+    public function item(int|string $key)
     {
         return $this->get($key);
     }
 
     /**
-     * Items.
+     * Get all items from data stack with/without given keys.
+     *
      * @param  array<int|string>|null $keys
      * @return array
      */
@@ -613,57 +810,67 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Index.
+     * @alias of index()
+     * @since 5.0
+     */
+    public function key(...$args)
+    {
+        return $this->index(...$args);
+    }
+
+    /**
+     * Find key/index of given value with/without strict mode.
+     *
      * @param  any  $value
      * @param  bool $strict
      * @return int|string|null
      * @since  4.0
      */
-    public function index($value, bool $strict = true)
+    public function index($value, bool $strict = true): int|string|null
     {
         return Arrays::index($this->data, $value, $strict);
     }
 
     /**
-     * First.
+     * Get first item or return null if no items on data stack.
+     *
      * @return any|null
      * @since  4.0
      */
     public function first()
     {
-        $key = $this->firstKey();
-
-        return ($key !== null) ?  $this->data[$key] : null;
+        return array_first($this->data);
     }
 
     /**
-     * First key.
-     * @return int|string
+     * Find first key/index or return null if no items data stack.
+     *
+     * @return int|string|null
      * @since  4.0
      */
-    public function firstKey()
+    public function firstKey(): int|string|null
     {
         return array_key_first($this->data);
     }
 
     /**
-     * Last.
+     * Get last item or return null if no items on data stack.
+     *
      * @return any|null
      * @since  4.0
      */
     public function last()
     {
-        $key = $this->lastKey();
-
-        return ($key !== null) ? $this->data[$key] : null;
+        return array_last($this->data);
     }
 
     /**
-     * Last key.
-     * @return int|string
+     * Find last key/index or return null if no items data stack.
+     *
+     * @return int|string|null
      * @since  4.0
      */
-    public function lastKey()
+    public function lastKey(): int|string|null
     {
         return array_key_last($this->data);
     }

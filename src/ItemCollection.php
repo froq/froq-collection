@@ -1,55 +1,38 @@
 <?php
 /**
- * MIT License <https://opensource.org/licenses/mit>
- *
- * Copyright (c) 2015 Kerem Güneş
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Copyright (c) 2015 · Kerem Güneş
+ * Apache License 2.0 · http://github.com/froq/froq-collection
  */
 declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\{AbstractCollection, CollectionException, AccessTrait};
+use froq\collection\{AbstractCollection, CollectionException, AccessTrait, AccessMagicTrait};
 use ArrayAccess;
 
 /**
- * ItemCollection.
+ * Item Collection.
  *
  * Represents a simple array structure that accepts int keys only, and also prevents modifications
  * in read-only mode. Inspired by JavaScript's DOMTokenList.
  *
  * @package froq\collection
  * @object  froq\collection\ItemCollection
- * @author  Kerem Güneş <k-gun@mail.com>
+ * @author  Kerem Güneş
  * @since   4.0
  */
 class ItemCollection extends AbstractCollection implements ArrayAccess
 {
     /**
-     * Access Trait.
      * @see froq\collection\AccessTrait
+     * @see froq\collection\AccessMagicTrait
+     * @since 4.0, 5.0
      */
-    use AccessTrait;
+    use AccessTrait, AccessMagicTrait;
 
     /**
      * Constructor.
+     *
      * @param array<int, any>|null $data
      * @param bool|null            $readOnly
      */
@@ -62,32 +45,20 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
 
     /**
      * Set data.
-     * @param  array $data
-     * @param  bool  $override
-     * @return self (static)
-     * @throws froq\collection\CollectionException
+     *
+     * @param  array<int, any> $data
+     * @param  bool            $reset
+     * @return self
      * @override
      */
-    public final function setData(array $data, bool $override = true): self
+    public final function setData(array $data, bool $reset = true): self
     {
-        foreach (array_keys($data) as $key) {
-            if ($key === '') {
-                throw new CollectionException('Only int keys are accepted for "%s" object, '.
-                    'empty string (probably null key) given', [static::class]);
-            }
-            if (!is_int($key)) {
-                throw new CollectionException('Only int keys are accepted for "%s" object, '.
-                    '"%s" given', [static::class, gettype($key)]);
-            }
-        }
-
-        $this->readOnlyCheck();
-
-        return parent::setData($data, $override);
+        return parent::setData($data, $reset);
     }
 
     /**
-     * Item.
+     * Get an item by given index.
+     *
      * @param  int $index
      * @return any|null
      */
@@ -97,7 +68,8 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Items.
+     * Get all items.
+     *
      * @param  array<int>|null $indexes
      * @return array<int, any>
      */
@@ -115,7 +87,8 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Has.
+     * Check whether an indexed item was set in data stack.
+     *
      * @param  int $index
      * @return bool
      */
@@ -125,7 +98,8 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Has index.
+     * Check whether an index exists in data stack.
+     *
      * @param  int $index
      * @return bool
      */
@@ -135,18 +109,20 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Has value.
+     * Check with/without strict mode whether data stack has given value.
+     *
      * @param  any  $value
      * @param  bool $strict
      * @return bool
      */
     public final function hasValue($value, bool $strict = true): bool
     {
-        return in_array($value, $this->data, $strict);
+        return array_value_exists($value, $this->data, $strict);
     }
 
     /**
-     * Add.
+     * Add (append) an item to data stack.
+     *
      * @param  any $item
      * @return self
      */
@@ -160,7 +136,8 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Set.
+     * Put an item by given index to data stack.
+     *
      * @param  int $index
      * @param  any $item
      * @return self
@@ -175,18 +152,20 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get.
+     * Get an item by given index from data stack.
+     *
      * @param  int      $index
-     * @param  any|null $itemDefault
+     * @param  any|null $default
      * @return any|null
      */
-    public final function get(int $index, $itemDefault = null)
+    public final function get(int $index, $default = null)
     {
-        return $this->data[$index] ?? $itemDefault;
+        return $this->data[$index] ?? $default;
     }
 
     /**
-     * Remove.
+     * Remove an item by given index from data stack by given index.
+     *
      * @param  int $index
      * @return bool
      */
@@ -202,7 +181,8 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Replace.
+     * Replace an item with new one.
+     *
      * @param  any $oldItem
      * @param  any $newItem
      * @return bool

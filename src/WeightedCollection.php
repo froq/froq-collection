@@ -1,26 +1,7 @@
 <?php
 /**
- * MIT License <https://opensource.org/licenses/mit>
- *
- * Copyright (c) 2015 Kerem Güneş
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is furnished
- * to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Copyright (c) 2015 · Kerem Güneş
+ * Apache License 2.0 · http://github.com/froq/froq-collection
  */
 declare(strict_types=1);
 
@@ -35,13 +16,14 @@ use froq\collection\AbstractCollection;
  *
  * @package froq\collection
  * @object  froq\collection\WeightedCollection
- * @author  Kerem Güneş <k-gun@mail.com>
+ * @author  Kerem Güneş
  * @since   4.0
  */
 class WeightedCollection extends AbstractCollection
 {
     /**
      * Constructor.
+     *
      * @param array|null $data
      */
     public function __construct(array $data = null)
@@ -50,21 +32,23 @@ class WeightedCollection extends AbstractCollection
     }
 
     /**
-     * Select.
-     * @return ?array
+     * Select items by default.
+     *
+     * @return array|null
      */
-    public final function select(): ?array
+    public final function select(): array|null
     {
         return $this->selectBy(null, null);
     }
 
     /**
-     * Select by.
+     * Select items by optionally given min-weight / max-weight.
+     *
      * @param  float|null $minWeight
      * @param  float|null $maxWeight
-     * @return ?array
+     * @return array|null
      */
-    public final function selectBy(float $minWeight = null, float $maxWeight = null): ?array
+    public final function selectBy(float $minWeight = null, float $maxWeight = null): array|null
     {
         return $this->filterize(function ($item) use ($minWeight, $maxWeight) {
             // There is nothing to do without weight.
@@ -73,10 +57,10 @@ class WeightedCollection extends AbstractCollection
             }
 
             $weight = (float) $item['weight'];
-            if ($minWeight && $weight < $minWeight) {
+            if ($minWeight !== null && $weight < $minWeight) {
                 return false;
             }
-            if ($maxWeight && $weight > $maxWeight) {
+            if ($maxWeight !== null && $weight > $maxWeight) {
                 return false;
             }
 
@@ -85,30 +69,31 @@ class WeightedCollection extends AbstractCollection
     }
 
     /**
-     * Filterize.
+     * Filter self data items with given callback.
+     *
      * @param  callable $calback
-     * @return ?array
+     * @return array|null
      */
-    private final function filterize(callable $calback): ?array
+    private function filterize(callable $calback): array|null
     {
         $items = array_filter($this->data, $calback);
-        $itemsCount = count($items);
+        $count = count($items);
 
-        if ($itemsCount == 0) return null;
-        if ($itemsCount == 1) return $items[0];
+        if ($count == 0) return null;
+        if ($count == 1) return $items[0];
 
-        $totalWeight = 0.00;
+        $totalWeight = 0.0;
         foreach ($items as $item) {
             $totalWeight += (float) $item['weight'];
         }
 
         // No total weight no items to select.
-        if ($totalWeight == 0.00) {
+        if ($totalWeight == 0.0) {
             return null;
         }
 
-        $accWeight = 0.00;
-        $rndWeight = $this->randomize(0.00, $totalWeight);
+        $accWeight = 0.0;
+        $rndWeight = $this->randomize(0.0, $totalWeight);
 
         foreach ($items as $item) {
             $accWeight += (float) $item['weight'];
@@ -121,12 +106,13 @@ class WeightedCollection extends AbstractCollection
     }
 
     /**
-     * Randomize.
+     * Get a random number by given min/max directives.
+     *
      * @param  float $min
      * @param  float $max
      * @return float
      */
-    private final function randomize(float $min, float $max): float
+    private function randomize(float $min, float $max): float
     {
         return lcg_value() * ($max - $min) + $min;
     }
