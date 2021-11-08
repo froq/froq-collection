@@ -373,8 +373,13 @@ class Collection extends AbstractCollection implements ArrayAccess
         return new static((array) $data);
     }
 
-    /** @alias of selectColumn() */
-    public function column(...$args) { return $this->selectColumn(...$args); }
+    /**
+     * @alias of selectColumn()
+     */
+    public function column(...$args)
+    {
+        return $this->selectColumn(...$args);
+    }
 
     /**
      * Delete an item/items from data stack by given value(s).
@@ -433,8 +438,13 @@ class Collection extends AbstractCollection implements ArrayAccess
         return new static($data);
     }
 
-    /** @alias of unique() */
-    public function uniq() { return $this->unique(); }
+    /**
+     * @alias of unique()
+     */
+    public function uniq()
+    {
+        return $this->unique();
+    }
 
     /**
      * Slice data stack.
