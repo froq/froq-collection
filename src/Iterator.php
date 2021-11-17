@@ -9,7 +9,7 @@ namespace froq\collection;
 
 use froq\collection\CollectionException;
 use froq\common\interface\Arrayable;
-use IteratorAggregate, Countable, Throwable, Generator, ReflectionMethod, ReflectionFunction;
+use Throwable, Countable, Generator, IteratorAggregate, ReflectionMethod, ReflectionFunction;
 
 /**
  * Iterator.
@@ -21,7 +21,7 @@ use IteratorAggregate, Countable, Throwable, Generator, ReflectionMethod, Reflec
  * @author  Kerem Güneş
  * @since   5.0
  */
-class Iterator implements IteratorAggregate, Countable, Arrayable
+class Iterator implements Arrayable, Countable, IteratorAggregate
 {
     /** @var callable */
     private $generator;
@@ -40,9 +40,10 @@ class Iterator implements IteratorAggregate, Countable, Arrayable
      * Set generator property.
      *
      * @param  callable $generator
-     * @return self
+     * @return static
+     * @throws froq\collection\CollectionException
      */
-    public final function setGenerator(callable $generator): self
+    public final function setGenerator(callable $generator): static
     {
         try {
             $ref = is_array($generator)
@@ -56,6 +57,8 @@ class Iterator implements IteratorAggregate, Countable, Arrayable
             'Invalid $generator argument, given generator must execute `yield` stuff'
         );
 
+        unset($ref);
+
         // Wrap in static function.
         $this->generator = static fn() => $generator;
 
@@ -66,9 +69,14 @@ class Iterator implements IteratorAggregate, Countable, Arrayable
      * Get generator property.
      *
      * @return callable
+     * @throws froq\collection\CollectionException
      */
     public final function getGenerator(): callable
     {
+        isset($this->generator) || throw new CollectionException(
+            'No generator was set yet, try after calling setGenerator() method'
+        );
+
         return $this->generator;
     }
 
@@ -91,7 +99,7 @@ class Iterator implements IteratorAggregate, Countable, Arrayable
     /**
      * @inheritDoc froq\common\interface\Arrayable
      */
-    public function toArray(): array
+    public final function toArray(): array
     {
         return iterator_to_array($this->generate());
     }
@@ -104,6 +112,6 @@ class Iterator implements IteratorAggregate, Countable, Arrayable
      */
     private function generate(): Generator
     {
-        return ($this->generator)()();
+        return ($this->getGenerator())()();
     }
 }
