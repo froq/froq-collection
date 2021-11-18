@@ -14,10 +14,10 @@ use froq\collection\AccessException;
  *
  * Represents an access trait that used in `froq\collection` internally for stack and collection objects.
  *
- * @package  froq\collection
- * @object   froq\collection\AccessTrait
- * @author   Kerem Güneş
- * @since    4.0
+ * @package froq\collection
+ * @object  froq\collection\AccessTrait
+ * @author  Kerem Güneş
+ * @since   4.0
  * @internal
  */
 trait AccessTrait

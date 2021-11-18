@@ -556,18 +556,29 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Search a value with boolean mode.
+     * Search given value returning value's hit count.
      *
      * @param  any  $value
      * @param  bool $strict
-     * @return bool
+     * @return int
      * @since  4.0
      */
-    public function search($value, bool $strict = false): bool
+    public function search($value, bool $strict = true): int
     {
-        $key = array_search($value, $this->data, $strict);
+        return Arrays::search($this->data, $value, $strict);
+    }
 
-        return ($key !== false);
+    /**
+     * Search given value's key (works as self.index()).
+     *
+     * @param  any  $value
+     * @param  bool $strict
+     * @return int|string|null
+     * @since  5.2
+     */
+    public function searchKey($value, bool $strict = true): int|string|null
+    {
+        return Arrays::searchKey($this->data, $value, $strict);
     }
 
     /**
@@ -699,48 +710,33 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Apply a sort on data stack.
      *
-     * @param  string|null $funcName
+     * @param  string|null $func
      * @param  int         $flags
+     * @param  bool        $keepKeys
      * @return self
-     * @throws froq\collection\CollectionException
      */
-    public function sort(string $funcName = null, int $flags = 0): self
+    public function sort(callable $func = null, $flags = 0, bool $keepKeys = true): self
     {
         $this->readOnlyCheck();
 
-        static $funcNames = ['rsort', 'asort', 'arsort', 'ksort', 'krsort'];
-
-        if ($funcName && !in_array($funcName, $funcNames)) {
-            throw new CollectionException('Invalid sort function %s, valids are: %s, null',
-                [$funcName, join(', ', $funcNames)]);
-        }
-
-        call_user_func_array($funcName ?: 'sort', [&$this->data, $flags]);
+        $this->data = Arrays::sort($this->data, $func, $flags, $keepKeys);
 
         return $this;
     }
 
     /**
-     * Apply a usort on data stack.
+     * Apply a key sort on data stack.
      *
-     * @param  callable    $func
-     * @param  string|null $funcName
+     * @param  callable|null $func
+     * @param  int           $flags
      * @return self
-     * @throws froq\collection\CollectionException
-     * @since  4.0
+     * @since  5.2
      */
-    public function usort(callable $func, string $funcName = null): self
+    public function sortKey(callable $func = null, int $flags = 0): self
     {
         $this->readOnlyCheck();
 
-        static $funcNames = ['uasort', 'uksort'];
-
-        if ($funcName && !in_array($funcName, $funcNames)) {
-            throw new CollectionException('Invalid usort function %s, valids are: %s, null',
-                [$funcName, join(', ', $funcNames)]);
-        }
-
-        call_user_func_array($funcName ?: 'usort', [&$this->data, $func]);
+        $this->data = Arrays::sortKey($this->data, $func, $flags);
 
         return $this;
     }
@@ -749,26 +745,15 @@ class Collection extends AbstractCollection implements ArrayAccess
      * Apply a locale sort on data stack.
      *
      * @param  string|null $locale
+     * @param  bool        $keepKeys
      * @return self
      * @since  4.0
      */
-    public function sortLocale(string $locale = null): self
+    public function sortLocale(string $locale = null, bool $keepKeys = true): self
     {
         $this->readOnlyCheck();
 
-        if ($locale == null) { // Use current locale.
-            usort($this->data, fn($a, $b) => strcoll($a, $b));
-        } else {
-            // Get & cache.
-            static $default; $default ??= setlocale(LC_COLLATE, 0);
-
-            setlocale(LC_COLLATE, $locale);
-            usort($this->data, fn($a, $b) => strcoll($a, $b));
-
-            if ($default !== null) { // Restore.
-                setlocale(LC_COLLATE, $default);
-            }
-        }
+        $this->data = Arrays::sortLocale($this->data, $locale, $keepKeys);
 
         return $this;
     }
@@ -784,7 +769,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        !$icase ? natsort($this->data) : natcasesort($this->data);
+        $this->data = Arrays::sortNatural($this->data, $icase);
 
         return $this;
     }

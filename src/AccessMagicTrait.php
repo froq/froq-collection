@@ -12,10 +12,10 @@ namespace froq\collection;
  *
  * Represents an access magic trait that used in `froq\collection` internally for stack and collection objects.
  *
- * @package  froq\collection
- * @object   froq\collection\AccessMagicTrait
- * @author   Kerem Güneş
- * @since    5.0
+ * @package froq\collection
+ * @object  froq\collection\AccessMagicTrait
+ * @author  Kerem Güneş
+ * @since   5.0
  * @internal
  */
 trait AccessMagicTrait
