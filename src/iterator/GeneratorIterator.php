@@ -9,12 +9,12 @@ namespace froq\collection\iterator;
 
 use froq\collection\CollectionException;
 use froq\common\interface\Arrayable;
-use Throwable, Countable, IteratorAggregate, Generator, ReflectionMethod, ReflectionFunction;
+use Countable, IteratorAggregate, ReflectionMethod, ReflectionFunction, Throwable, Generator;
 
 /**
  * Generator Iterator.
  *
- * Represents a generator iterator entity that is countable & reusable.
+ * Represents a generator iterator class that is countable & reusable.
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\GeneratorIterator

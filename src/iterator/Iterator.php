@@ -14,14 +14,14 @@ use Iterator as _Iterator, Countable, Traversable;
 /**
  * Iterator.
  *
- * Represents an iterator class entity that contains some utility methods.
+ * Represents an iterator class that contains some utility methods.
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\Iterator
  * @author  Kerem Güneş
  * @since   5.3
  */
-class Iterator implements _Iterator, Countable, Arrayable, Jsonable
+class Iterator implements _Iterator, Arrayable, Jsonable, Countable
 {
     /** @var array */
     protected array $data;
