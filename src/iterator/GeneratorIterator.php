@@ -5,23 +5,23 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection;
+namespace froq\collection\iterator;
 
 use froq\collection\CollectionException;
 use froq\common\interface\Arrayable;
-use Throwable, Countable, Generator, IteratorAggregate, ReflectionMethod, ReflectionFunction;
+use Throwable, Countable, IteratorAggregate, Generator, ReflectionMethod, ReflectionFunction;
 
 /**
- * Iterator.
+ * Generator Iterator.
  *
- * Represents an iterator entity which is rewindable & countable.
+ * Represents a generator iterator entity that is countable & reusable.
  *
- * @package froq\collection
- * @object  froq\collection\Iterator
+ * @package froq\collection\iterator
+ * @object  froq\collection\iterator\GeneratorIterator
  * @author  Kerem Güneş
- * @since   5.0
+ * @since   5.0, 5.3 Moved as iterator.GeneratorIterator from Iterator.
  */
-class Iterator implements Arrayable, Countable, IteratorAggregate
+class GeneratorIterator implements Arrayable, Countable, IteratorAggregate
 {
     /** @var callable */
     private $generator;
@@ -40,10 +40,10 @@ class Iterator implements Arrayable, Countable, IteratorAggregate
      * Set generator property.
      *
      * @param  callable $generator
-     * @return static
+     * @return self
      * @throws froq\collection\CollectionException
      */
-    public final function setGenerator(callable $generator): static
+    public final function setGenerator(callable $generator): self
     {
         try {
             $ref = is_array($generator)
@@ -81,11 +81,11 @@ class Iterator implements Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * @inheritDoc IteratorAggregate
+     * @inheritDoc froq\common\interface\Arrayable
      */
-    public final function getIterator(): iterable
+    public final function toArray(): array
     {
-        return $this->generate();
+        return iterator_to_array($this->generate());
     }
 
     /**
@@ -97,18 +97,17 @@ class Iterator implements Arrayable, Countable, IteratorAggregate
     }
 
     /**
-     * @inheritDoc froq\common\interface\Arrayable
+     * @inheritDoc IteratorAggregate
      */
-    public final function toArray(): array
+    public final function getIterator(): Generator
     {
-        return iterator_to_array($this->generate());
+        return $this->generate();
     }
 
     /**
      * Run generation process.
      *
      * @return Generator
-     * @internal
      */
     private function generate(): Generator
     {
