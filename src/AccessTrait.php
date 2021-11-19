@@ -58,9 +58,9 @@ trait AccessTrait
     /**
      * Lock, read-only state as true.
      *
-     * @return static
+     * @return self
      */
-    public final function lock(): static
+    public final function lock(): self
     {
         $this->readOnly(true);
 
@@ -70,9 +70,9 @@ trait AccessTrait
     /**
      * Unlock, read-only state as true.
      *
-     * @return static
+     * @return self
      */
-    public final function unlock(): static
+    public final function unlock(): self
     {
         $this->readOnly(false);
 
