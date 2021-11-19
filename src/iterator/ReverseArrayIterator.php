@@ -25,10 +25,10 @@ class ReverseArrayIterator extends ArrayIterator
      * Constructor.
      *
      * @param array $data
-     * @param bool  $preserveKeys
+     * @param bool  $keepKeys
      */
-    public function __construct(array $data, bool $preserveKeys = true)
+    public function __construct(array $data, bool $keepKeys = true)
     {
-        parent::__construct(array_reverse($data, $preserveKeys));
+        parent::__construct(array_reverse($data, $keepKeys));
     }
 }
