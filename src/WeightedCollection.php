@@ -42,7 +42,7 @@ class WeightedCollection extends AbstractCollection
     }
 
     /**
-     * Select items by optionally given min-weight / max-weight.
+     * Select items (by optionally given min-weight / max-weight).
      *
      * @param  float|null $minWeight
      * @param  float|null $maxWeight
@@ -69,7 +69,7 @@ class WeightedCollection extends AbstractCollection
     }
 
     /**
-     * Filter self data items with given callback.
+     * Filter self data items by given callback.
      *
      * @param  callable $calback
      * @return array|null
