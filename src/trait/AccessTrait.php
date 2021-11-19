@@ -5,80 +5,20 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection;
-
-use froq\collection\AccessException;
+namespace froq\collection\trait;
 
 /**
  * Access Trait.
  *
- * Represents an access trait that used in `froq\collection` internally for stack and collection objects.
+ * Represents an access trait that provides some utility methods.
  *
- * @package froq\collection
- * @object  froq\collection\AccessTrait
+ * @package froq\collection\trait
+ * @object  froq\collection\trait\AccessTrait
  * @author  Kerem Güneş
- * @since   4.0
- * @internal
+ * @since   4.0, 5.4 Moved as trait.AccessTrait from AccessTrait.
  */
 trait AccessTrait
 {
-    /** @var array */
-    private static array $__READ_ONLY_STATES;
-
-    /**
-     * Set/get read-only state.
-     *
-     * @param  bool|null $state
-     * @return bool|null
-     */
-    public final function readOnly(bool $state = null): bool|null
-    {
-        $id = spl_object_id($this);
-
-        if ($state !== null) {
-            self::$__READ_ONLY_STATES[$id] = $state;
-        }
-
-        return self::$__READ_ONLY_STATES[$id] ?? null;
-    }
-
-    /**
-     * Check read-only state, throw an `AccessException` if object is read-only.
-     *
-     * @return void
-     * @throws froq\collection\AccessException
-     */
-    public final function readOnlyCheck(): void
-    {
-        $this->readOnly() && throw new AccessException(
-            'Cannot modify read-only object ' . static::class
-        );
-    }
-
-    /**
-     * Lock, read-only state as true.
-     *
-     * @return self
-     */
-    public final function lock(): self
-    {
-        $this->readOnly(true);
-
-        return $this;
-    }
-
-    /**
-     * Unlock, read-only state as true.
-     *
-     * @return self
-     */
-    public final function unlock(): self
-    {
-        $this->readOnly(false);
-
-        return $this;
-    }
-
     /**
      * Get a value as given type.
      *

@@ -7,7 +7,8 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\{AbstractCollection, CollectionException, AccessTrait, AccessMagicTrait};
+use froq\collection\{AbstractCollection, CollectionException};
+use froq\collection\trait\{AccessTrait, AccessMagicTrait};
 use ArrayAccess;
 
 /**
@@ -24,8 +25,8 @@ use ArrayAccess;
 class ComponentCollection extends AbstractCollection implements ArrayAccess
 {
     /**
-     * @see froq\collection\AccessTrait
-     * @see froq\collection\AccessMagicTrait
+     * @see froq\collection\trait\AccessTrait
+     * @see froq\collection\trait\AccessMagicTrait
      * @since 4.0, 5.0
      */
     use AccessTrait, AccessMagicTrait;
@@ -113,7 +114,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether a component was set in data stack with given name.
+     * Check whether a component was set in data array with given name.
      *
      * @param  string $name
      * @return bool
@@ -124,7 +125,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether a name exists in data stack.
+     * Check whether a name exists in data array.
      *
      * @param  string $name
      * @return bool
@@ -135,7 +136,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Put a component by given name to data stack.
+     * Put a component by given name to data array.
      *
      * @param  string $name
      * @param  any    $value
@@ -143,7 +144,8 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
      */
     public final function set(string $name, $value): self
     {
-        $this->nameCheck($name); $this->readOnlyCheck();
+        $this->readOnlyCheck();
+        $this->nameCheck($name);
 
         $this->data[$name] = $value;
 
@@ -151,7 +153,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get a component by given name from data stack.
+     * Get a component by given name from data array.
      *
      * @param  string   $name
      * @param  any|null $default
@@ -165,14 +167,15 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Remove a component from data stack by given name.
+     * Remove a component from data array by given name.
      *
      * @param  string $name
      * @return void
      */
     public final function remove(string $name): void
     {
-        $this->nameCheck($name); $this->readOnlyCheck();
+        $this->readOnlyCheck();
+        $this->nameCheck($name);
 
         unset($this->data[$name]);
     }

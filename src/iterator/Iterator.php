@@ -8,13 +8,14 @@ declare(strict_types=1);
 namespace froq\collection\iterator;
 
 use froq\common\interface\{Arrayable, Jsonable};
+use froq\collection\trait\{SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait};
 use froq\util\Arrays;
 use Iterator as _Iterator, Countable, Traversable;
 
 /**
  * Iterator.
  *
- * Represents an iterator class that contains some utility methods.
+ * Represents an iterator class entity that contains some utility methods.
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\Iterator
@@ -23,6 +24,13 @@ use Iterator as _Iterator, Countable, Traversable;
  */
 class Iterator implements _Iterator, Arrayable, Jsonable, Countable
 {
+    /** @see froq\collection\trait\SortTrait */
+    /** @see froq\collection\trait\EachTrait */
+    /** @see froq\collection\trait\FilterTrait */
+    /** @see froq\collection\trait\MapTrait */
+    /** @see froq\collection\trait\ReduceTrait */
+    use SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait;
+
     /** @var array */
     protected array $data;
 
@@ -41,7 +49,7 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
     }
 
     /**
-     * Check whether a value exists in data stack.
+     * Check whether a value exists in data array.
      *
      * @param  mixed $value
      * @param  bool  $strict
@@ -53,7 +61,7 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
     }
 
     /**
-     * Check whether a key exists in data stack.
+     * Check whether a key exists in data array.
      *
      * @param  int|string $key
      * @return bool
@@ -64,7 +72,7 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
     }
 
     /**
-     * Append a value to data stack.
+     * Append a value to data array.
      *
      * @param  mixed $value
      * @return self
@@ -77,7 +85,7 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
     }
 
     /**
-     * Append a value to data stack with given key.
+     * Append a value to data array with given key.
      *
      * @param  int|string $key
      * @param  mixed      $value
@@ -133,7 +141,7 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
     }
 
     /**
-     * Empty data stack.
+     * Empty data array.
      *
      * @return self
      */
@@ -145,7 +153,7 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
     }
 
     /**
-     * Check whether data stack is empty.
+     * Check whether data array is empty.
      *
      * @return bool
      */
@@ -155,82 +163,13 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
     }
 
     /**
-     * Check whether data stack is a list.
+     * Check whether data array is a list.
      *
      * @return bool
      */
     public function isList(): bool
     {
         return is_list($this->data);
-    }
-
-    /**
-     * Filter.
-     *
-     * @param  callable|null $func
-     * @param  bool          $keepKeys
-     * @return self
-     */
-    public function filter(callable $func = null, bool $keepKeys = true): self
-    {
-        $this->data = Arrays::filter($this->data, $func, $keepKeys);
-
-        return $this;
-    }
-
-    /**
-     * Map.
-     *
-     * @param  callable $func
-     * @param  bool     $keepKeys
-     * @return self
-     */
-    public function map(callable $func, bool $keepKeys = true): self
-    {
-        $this->data = Arrays::map($this->data, $func, $keepKeys);
-
-        return $this;
-    }
-
-    /**
-     * Reduce.
-     *
-     * @param  mixed    $carry
-     * @param  callable $func
-     * @return mixed
-     */
-    public function reduce(mixed $carry, callable $func): mixed
-    {
-        return Arrays::reduce($this->data, $carry, $func);
-    }
-
-    /**
-     * Sort.
-     *
-     * @param  callable|null $func
-     * @param  int           $flags
-     * @param  bool          $keepKeys
-     * @return self
-     */
-    public function sort(callable $func = null, int $flags = 0, bool $keepKeys = true): self
-    {
-        $this->data = Arrays::sort($this->data, $func, $flags, $keepKeys);
-
-        return $this;
-    }
-
-    /**
-     * Sort key.
-     *
-     * @param  callable|null $func
-     * @param  int           $flags
-     * @return self
-     */
-    public function sortKey(callable $func = null, int $flags = 0): self
-    {
-        $this->data = Arrays::sortKey($this->data, $func, $flags);
-
-        return $this;
     }
 
     /**

@@ -12,7 +12,7 @@ use froq\collection\iterator\Iterator;
 /**
  * Array Iterator.
  *
- * Represents an array iterator class that contains some utility methods (via its parent).
+ * Represents an array iterator class entity that contains some utility methods (via its parent).
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\ArrayIterator

@@ -7,7 +7,8 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\{AbstractCollection, CollectionException, AccessTrait, AccessMagicTrait};
+use froq\collection\AbstractCollection;
+use froq\collection\trait\{AccessTrait, AccessMagicTrait};
 use ArrayAccess;
 
 /**
@@ -24,8 +25,8 @@ use ArrayAccess;
 class ItemCollection extends AbstractCollection implements ArrayAccess
 {
     /**
-     * @see froq\collection\AccessTrait
-     * @see froq\collection\AccessMagicTrait
+     * @see froq\collection\trait\AccessTrait
+     * @see froq\collection\trait\AccessMagicTrait
      * @since 4.0, 5.0
      */
     use AccessTrait, AccessMagicTrait;
@@ -87,7 +88,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether an indexed item was set in data stack.
+     * Check whether an indexed item was set in data array.
      *
      * @param  int $index
      * @return bool
@@ -98,7 +99,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether an index exists in data stack.
+     * Check whether an index exists in data array.
      *
      * @param  int $index
      * @return bool
@@ -109,7 +110,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check with/without strict mode whether data stack has given value.
+     * Check with/without strict mode whether data array has given value.
      *
      * @param  any  $value
      * @param  bool $strict
@@ -121,7 +122,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Add (append) an item to data stack.
+     * Add (append) an item to data array.
      *
      * @param  any $item
      * @return self
@@ -136,7 +137,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Put an item by given index to data stack.
+     * Put an item by given index to data array.
      *
      * @param  int $index
      * @param  any $item
@@ -152,7 +153,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get an item by given index from data stack.
+     * Get an item by given index from data array.
      *
      * @param  int      $index
      * @param  any|null $default
@@ -164,7 +165,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Remove an item by given index from data stack by given index.
+     * Remove an item by given index from data array by given index.
      *
      * @param  int $index
      * @return bool

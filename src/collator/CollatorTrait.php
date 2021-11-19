@@ -5,25 +5,33 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection\stack;
+namespace froq\collection\collator;
 
+use froq\collection\trait\{AccessTrait, AccessMagicTrait};
 use froq\util\Arrays;
 
 /**
- * Stack Trait.
+ * Collator Trait.
  *
- * Represents a trait that used in `froq\collection\stack` internally for stacks to avoid code repetition.
+ * Represents a trait entity that used in `froq\collection\collator` internally to avoid code repetition.
  *
- * @package  froq\collection\stack
- * @object   froq\collection\stack\StackTrait
+ * @package  froq\collection\collator
+ * @object   froq\collection\collator\CollatorTrait
  * @author   Kerem Güneş
- * @since    4.0
- * @internal Used in froq\collection\stack only.
+ * @since    4.0, 5.4 Moved as stack => collator.
+ * @internal
  */
-trait StackTrait
+trait CollatorTrait
 {
     /**
-     * Add (append) an item to data stack with given key/index.
+     * @see froq\collection\trait\AccessTrait
+     * @see froq\collection\trait\AccessMagicTrait
+     * @since 4.0, 5.0
+     */
+    use AccessTrait, AccessMagicTrait;
+
+    /**
+     * Add (append) an item to data array with given key/index.
      *
      * @param  int|string $key
      * @param  any        $value
@@ -43,7 +51,7 @@ trait StackTrait
     }
 
     /**
-     * Put an item to data stack with given key/index.
+     * Put an item to data array with given key/index.
      *
      * @param  int|string $key
      * @param  any        $value
@@ -59,7 +67,7 @@ trait StackTrait
     }
 
     /**
-     * Get an item from data stack by given key/index.
+     * Get an item from data array by given key/index.
      *
      * @param  int|string $key
      * @param  any|null   $default
@@ -71,7 +79,7 @@ trait StackTrait
     }
 
     /**
-     * Remove an item from data stack by given key/index.
+     * Remove an item from data array by given key/index.
      *
      * @param  int|string $key
      * @return bool
@@ -88,7 +96,7 @@ trait StackTrait
     }
 
     /**
-     * Check whether an item was set in data stack with given key/index.
+     * Check whether an item was set in data array with given key/index.
      *
      * @param  int|string $key
      * @return bool
@@ -99,7 +107,7 @@ trait StackTrait
     }
 
     /**
-     * Check whether given key/index exists in data stack.
+     * Check whether given key/index exists in data array.
      *
      * @param  int|string $key
      * @return bool
@@ -110,7 +118,7 @@ trait StackTrait
     }
 
     /**
-     * Check with/without strict mode whether data stack has given value.
+     * Check with/without strict mode whether data array has given value.
      *
      * @param  any  $value
      * @param  bool $strict

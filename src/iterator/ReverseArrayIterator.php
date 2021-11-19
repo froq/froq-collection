@@ -12,7 +12,7 @@ use froq\collection\iterator\ArrayIterator;
 /**
  * Reverse Array Iterator.
  *
- * Represents a reverse-array iterator class that contains some utility methods (via its parent).
+ * Represents a reverse-array iterator class entity that contains some utility methods (via its parent).
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\ReverseArrayIterator

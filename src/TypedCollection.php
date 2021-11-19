@@ -8,6 +8,8 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\collection\{AbstractCollection, CollectionException};
+use froq\collection\trait\{AccessTrait, AccessMagicTrait};
+use ArrayAccess;
 
 /**
  * Typed Collection.
@@ -19,8 +21,15 @@ use froq\collection\{AbstractCollection, CollectionException};
  * @author  Kerem Güneş
  * @since   4.0
  */
-class TypedCollection extends AbstractCollection
+class TypedCollection extends AbstractCollection implements ArrayAccess
 {
+    /**
+     * @see froq\collection\trait\AccessTrait
+     * @see froq\collection\trait\AccessMagicTrait
+     * @since 5.4
+     */
+    use AccessTrait, AccessMagicTrait;
+
     /** @var string */
     protected string $dataType;
 
@@ -37,9 +46,10 @@ class TypedCollection extends AbstractCollection
         $this->dataType = $dataType ?? $this->dataType ?? '';
 
         if ($this->dataType == '') {
-            throw new CollectionException('Data type is required, it must be defined like'
-                . ' `protected string $dataType = \'int\'` or given at constructor calls as'
-                . ' second argument');
+            throw new CollectionException(
+                'Data type is required, it must be defined like `protected string $dataType = \'int\'` '.
+                'or given at constructor calls as second argument'
+            );
         }
 
         parent::__construct($data);
@@ -73,7 +83,7 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Check whether a keyed/indexed item was set in data stack.
+     * Check whether a keyed/indexed item was set in data array.
      *
      * @param  int|string $key
      * @return bool
@@ -84,7 +94,7 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Check whether a key/index exists in data stack.
+     * Check whether a key/index exists in data array.
      *
      * @param  int|string $key
      * @return bool
@@ -95,7 +105,7 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Check with/without strict mode whether data stack has given value.
+     * Check with/without strict mode whether data array has given value.
      *
      * @param  any  $value
      * @param  bool $strict
@@ -107,7 +117,7 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Add (append) an item to data stack.
+     * Add (append) an item to data array.
      *
      * @param  any $value
      * @return self
@@ -122,7 +132,7 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Put an item by given key/index to data stack.
+     * Put an item by given key/index to data array.
      *
      * @param  int|string $key
      * @param  any        $value
@@ -138,7 +148,7 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Get an item by given key/index from data stack.
+     * Get an item by given key/index from data array.
      *
      * @param  int|string $key
      * @param  any|null   $default
@@ -150,7 +160,7 @@ class TypedCollection extends AbstractCollection
     }
 
     /**
-     * Remove an item by given key/index from data stack.
+     * Remove an item by given key/index from data array.
      *
      * @param  int|string $key
      * @return void

@@ -5,18 +5,17 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection;
+namespace froq\collection\trait;
 
 /**
  * Access Magic Trait.
  *
- * Represents an access magic trait that used in `froq\collection` internally for stack and collection objects.
+ * Represents an access magic trait that provides some utility methods.
  *
- * @package froq\collection
- * @object  froq\collection\AccessMagicTrait
+ * @package froq\collection\trait
+ * @object  froq\collection\trait\AccessMagicTrait
  * @author  Kerem Güneş
- * @since   5.0
- * @internal
+ * @since   5.0, 5.4 Moved as trait.AccessMagicTrait from AccessMagicTrait.
  */
 trait AccessMagicTrait
 {

@@ -5,35 +5,26 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection\stack;
+namespace froq\collection\collator;
 
-use froq\collection\{AbstractCollection, AccessTrait, AccessMagicTrait};
-use froq\collection\stack\{StackException, StackTrait};
+use froq\collection\collator\{CollatorException, CollatorTrait};
+use froq\collection\AbstractCollection;
 use ArrayAccess;
 
 /**
- * Stack.
+ * Collator.
  *
- * This is not an implementation of Stack (https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
- * but simply designed to be able for checking key types here or in extender objects, and also to
- * prevent the modifications in read-only mode.
+ * Represents a class entity designed to check key types and provide read-only state & some utility methods.
  *
- * @package froq\collection\stack
- * @object  froq\collection\stack\Stack
+ * @package froq\collection\collator
+ * @object  froq\collection\collator\Collator
  * @author  Kerem Güneş
- * @since   4.0
+ * @since   4.0, 5.4 Moved as stack => collator.
  */
-class Stack extends AbstractCollection implements ArrayAccess
+class Collator extends AbstractCollection implements ArrayAccess
 {
-    /** @see froq\collection\stack\StackTrait */
-    use StackTrait;
-
-    /**
-     * @see froq\collection\AccessTrait
-     * @see froq\collection\AccessMagicTrait
-     * @since 4.0, 5.0
-     */
-    use AccessTrait, AccessMagicTrait;
+    /** @see froq\collection\collator\CollatorTrait */
+    use CollatorTrait;
 
     /**
      * Constructor.
@@ -62,7 +53,7 @@ class Stack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Add (append) an item to data stack with given key.
+     * Add (append) an item to data array with given key.
      *
      * @param  int|string $key
      * @param  any        $value
@@ -74,7 +65,7 @@ class Stack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Put an item to data stack with given key.
+     * Put an item to data array with given key.
      *
      * @param  int|string $key
      * @param  any        $value
@@ -86,7 +77,7 @@ class Stack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get an item from data stack by given key.
+     * Get an item from data array by given key.
      *
      * @param  int|string $key
      * @param  any|null   $default
@@ -98,7 +89,7 @@ class Stack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Remove an item from data stack by given key.
+     * Remove an item from data array by given key.
      *
      * @param  int|string $key
      * @return bool
@@ -109,7 +100,7 @@ class Stack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether an item was set in data stack with given key.
+     * Check whether an item was set in data array with given key.
      *
      * @param  int|string $key
      * @return bool
@@ -120,7 +111,7 @@ class Stack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether given key exists in data stack.
+     * Check whether given key exists in data array.
      *
      * @param  int|string $key
      * @return bool
@@ -131,7 +122,7 @@ class Stack extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     *  Check with/without strict mode whether data stack has given value.
+     *  Check with/without strict mode whether data array has given value.
      *
      * @param  any  $value
      * @param  bool $strict
