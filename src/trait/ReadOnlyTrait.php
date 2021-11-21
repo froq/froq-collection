@@ -47,8 +47,7 @@ trait ReadOnlyTrait
     public final function readOnlyCheck(): void
     {
         $this->readOnly() && throw new ReadOnlyException(
-            'Cannot modify read-only object %s (#%s)',
-            [get_class($this), spl_object_id($this)]
+            'Cannot modify read-only object ' . Objects::getId($this)
         );
     }
 

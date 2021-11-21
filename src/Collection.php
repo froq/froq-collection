@@ -362,18 +362,18 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Select item columns from data array by given key, optionally index by given index argument.
+     * Select item columns from data array by given key, optionally index by given index key.
      *
      * @param  int|string      $key
-     * @param  int|string|null $index
+     * @param  int|string|null $indexKey
      * @return static
      * @since  5.0
      */
-    public function selectColumn(int|string $key, int|string $index = null): static
+    public function selectColumn(int|string $key, int|string $indexKey = null): static
     {
-        $data = array_column($this->data, $key, $index);
+        $data = array_column($this->data, $key, $indexKey);
 
-        return new static((array) $data);
+        return new static($data);
     }
 
     /**
@@ -382,6 +382,30 @@ class Collection extends AbstractCollection implements ArrayAccess
     public function column(...$args)
     {
         return $this->selectColumn(...$args);
+    }
+
+    /**
+     * Index items in data array by given index key, optionally select columns only by given key.
+     *
+     * @param  int|string      $indexKey
+     * @param  int|string|null $key
+     * @return static
+     * @since  5.5
+     */
+    public function indexColumn(int|string $indexKey, int|string $key = null): static
+    {
+        $data = array_column($this->data, $key, $indexKey);
+
+        return new static($data);
+    }
+
+    /**
+     * @alias of indexColumn()
+     * @since 5.5
+     */
+    public function index(...$args)
+    {
+        return $this->indexColumn(...$args);
     }
 
     /**
@@ -572,7 +596,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Search given value's key (works as self.index()).
+     * Search given value's key.
      *
      * @param  any  $value
      * @param  bool $strict
@@ -582,6 +606,37 @@ class Collection extends AbstractCollection implements ArrayAccess
     public function searchKey($value, bool $strict = true): int|string|null
     {
         return Arrays::searchKey($this->data, $value, $strict);
+    }
+
+    /**
+     * Search given value's last key.
+     *
+     * @param  any  $value
+     * @param  bool $strict
+     * @return int|string|null
+     * @since  5.5
+     */
+    public function searchLastKey($value, bool $strict = true): int|string|null
+    {
+        return Arrays::searchLastKey($this->data, $value, $strict);
+    }
+
+    /**
+     * @alias of searchKey()
+     * @since 5.5
+     */
+    public function indexOf(...$args)
+    {
+        return $this->searchKey(...$args);
+    }
+
+    /**
+     * @alias of searchLastKey()
+     * @since 5.5
+     */
+    public function lastIndexOf(...$args)
+    {
+        return $this->searchLastKey(...$args);
     }
 
     /**
@@ -741,25 +796,12 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * @alias of index()
-     * @since 5.0
+     * @alias of searchKey()
+     * @since 5.0, 5.5 Change call index() => searchKey().
      */
     public function key(...$args)
     {
-        return $this->index(...$args);
-    }
-
-    /**
-     * Find key/index of given value with/without strict mode.
-     *
-     * @param  any  $value
-     * @param  bool $strict
-     * @return int|string|null
-     * @since  4.0
-     */
-    public function index($value, bool $strict = true): int|string|null
-    {
-        return Arrays::index($this->data, $value, $strict);
+        return $this->searchKey(...$args);
     }
 
     /**

@@ -8,14 +8,14 @@ declare(strict_types=1);
 namespace froq\collection\iterator;
 
 use froq\common\interface\{Arrayable, Jsonable};
-use froq\collection\trait\{SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait};
+use froq\collection\trait\{SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait, ReadOnlyTrait};
 use froq\util\Arrays;
 use Iterator as _Iterator, Countable, Traversable;
 
 /**
  * Iterator.
  *
- * Represents an iterator class entity that contains some utility methods.
+ * Represents an iterator class that contains some utility methods.
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\Iterator
@@ -31,21 +31,27 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
     /** @see froq\collection\trait\ReduceTrait */
     use SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait;
 
+    /** @see froq\collection\trait\ReadOnlyTrait @since 5.5 */
+    use ReadOnlyTrait;
+
     /** @var array */
     protected array $data;
 
     /**
      * Constructor.
      *
-     * @param iterable $data
+     * @param iterable  $data
+     * @param bool|null $readOnly
      */
-    public function __construct(iterable $data)
+    public function __construct(iterable $data, bool $readOnly = null)
     {
         if ($data instanceof Traversable) {
             $data = iterator_to_array($data);
         }
 
         $this->data = $data;
+
+        $this->readOnly($readOnly);
     }
 
     /**
@@ -79,6 +85,8 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
      */
     public function append(mixed $value): self
     {
+        $this->readOnlyCheck();
+
         $this->data[] = $value;
 
         return $this;
@@ -93,6 +101,8 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
      */
     public function appendAt(int|string $key, mixed $value): self
     {
+        $this->readOnlyCheck();
+
         $this->data[$key] = $value;
 
         return $this;
@@ -122,16 +132,16 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
         return key($this->data);
     }
 
-    /** @alias of current() */
-    public function value()
-    {
-        return $this->current();
-    }
-
     /** @inheritDoc Iterator */
     public function valid(): bool
     {
         return key($this->data) !== null;
+    }
+
+    /** @alias of current() */
+    public function value()
+    {
+        return $this->current();
     }
 
     /** @alias of rewind() */
@@ -141,12 +151,30 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
     }
 
     /**
+     * Reverse data array.
+     *
+     * @param  bool $keepKeys
+     * @return self
+     * @since  5.5
+     */
+    public function reverse(bool $keepKeys = false): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_reverse($this->data, $keepKeys);
+
+        return $this;
+    }
+
+    /**
      * Empty data array.
      *
      * @return self
      */
     public function empty(): self
     {
+        $this->readOnlyCheck();
+
         $this->data = [];
 
         return $this;

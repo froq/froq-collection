@@ -29,8 +29,8 @@ class SetCollator extends AbstractCollection implements ArrayAccess
     /**
      * Constructor.
      *
-     * @param  array<int, any>|null $data
-     * @param  bool|null            $readOnly
+     * @param array<int, any>|null $data
+     * @param bool|null            $readOnly
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {

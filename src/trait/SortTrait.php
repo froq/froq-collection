@@ -28,13 +28,13 @@ trait SortTrait
     /**
      * Apply a sort on data array.
      *
-     * @param  string|null $func
-     * @param  int         $flags
-     * @param  bool        $keepKeys
+     * @param  callable|int|null $func
+     * @param  int               $flags
+     * @param  bool              $keepKeys
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function sort(callable $func = null, $flags = 0, bool $keepKeys = true): self
+    public function sort(callable|int $func = null, $flags = 0, bool $keepKeys = true): self
     {
         $this->readOnlyCall();
 

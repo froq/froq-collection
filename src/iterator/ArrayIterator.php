@@ -12,7 +12,7 @@ use froq\collection\iterator\Iterator;
 /**
  * Array Iterator.
  *
- * Represents an array iterator class entity that contains some utility methods (via its parent).
+ * Represents an array iterator class that contains some utility methods (via its parent).
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\ArrayIterator
@@ -25,9 +25,10 @@ class ArrayIterator extends Iterator
      * Constructor.
      *
      * @param array $data
+     * @param bool  $readOnly
      */
-    public function __construct(array $data)
+    public function __construct(array $data, bool $readOnly = null)
     {
-        parent::__construct($data);
+        parent::__construct($data, $readOnly);
     }
 }

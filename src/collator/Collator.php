@@ -29,8 +29,8 @@ class Collator extends AbstractCollection implements ArrayAccess
     /**
      * Constructor.
      *
-     * @param  array<int|string, any>|null $data
-     * @param  bool|null                   $readOnly
+     * @param array<int|string, any>|null $data
+     * @param bool|null                   $readOnly
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {
