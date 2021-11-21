@@ -131,20 +131,14 @@ class Collection extends AbstractCollection implements ArrayAccess
      *
      * @param  int|string|array<int|string, any> $key
      * @param  any|null                          $value
+     * @param  bool                              $flat
      * @return self
      * @since  3.0
      */
-    public function add(int|string|array $key, $value = null): self
+    public function add(int|string|array $key, $value = null, bool $flat = true): self
     {
-        $this->readOnlyCheck();
-
-        @ [$key, $value] = is_array($key) ? $key : [$key, $value];
-
-        if (isset($this->data[$key])) {
-            $this->data[$key] = Arrays::flat([$this->data[$key], $value]);
-        } else {
-            $this->data[$key] = $value;
-        }
+        is_array($key) ? Arrays::addAll($this->data, $key, $flat)
+                       : Arrays::add($this->data, $key, $value, $flat);
 
         return $this;
     }
