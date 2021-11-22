@@ -39,9 +39,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {
-        parent::__construct($data);
-
-        $this->readOnly($readOnly);
+        parent::__construct($data, $readOnly);
     }
 
     /**

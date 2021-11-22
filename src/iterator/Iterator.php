@@ -7,8 +7,11 @@ declare(strict_types=1);
 
 namespace froq\collection\iterator;
 
+use froq\collection\iterator\{IteratorInterface, IteratorException};
+use froq\collection\trait\{SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait};
 use froq\common\interface\{Arrayable, Jsonable};
-use froq\collection\trait\{SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait, ReadOnlyTrait};
+use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataListTrait, DataToArrayTrait, DataToObjectTrait,
+    DataToJsonTrait, ReadOnlyTrait};
 use froq\util\Arrays;
 use Iterator as _Iterator, Countable, Traversable;
 
@@ -22,7 +25,7 @@ use Iterator as _Iterator, Countable, Traversable;
  * @author  Kerem Güneş
  * @since   5.3
  */
-class Iterator implements _Iterator, Arrayable, Jsonable, Countable
+class Iterator implements _Iterator, IteratorInterface, Arrayable, Jsonable, Countable
 {
     /** @see froq\collection\trait\SortTrait */
     /** @see froq\collection\trait\EachTrait */
@@ -31,8 +34,17 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
     /** @see froq\collection\trait\ReduceTrait */
     use SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait;
 
-    /** @see froq\collection\trait\ReadOnlyTrait @since 5.5 */
-    use ReadOnlyTrait;
+    /**
+     * @see froq\common\trait\DataCountTrait
+     * @see froq\common\trait\DataEmptyTrait
+     * @see froq\common\trait\DataListTrait
+     * @see froq\common\trait\DataToArrayTrait
+     * @see froq\common\trait\DataToObjectTrait
+     * @see froq\common\trait\DataToJsonTrait
+     * @see froq\common\trait\ReadOnlyTrait
+     */
+    use DataCountTrait, DataEmptyTrait, DataListTrait, DataToArrayTrait, DataToObjectTrait, DataToJsonTrait,
+        ReadOnlyTrait;
 
     /** @var array */
     protected array $data;
@@ -78,16 +90,21 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
     }
 
     /**
-     * Append a value to data array.
+     * Append values to data array.
      *
-     * @param  mixed $value
+     * @param  mixed ...$values
      * @return self
+     * @throws froq\collection\iterator\IteratorException
      */
-    public function append(mixed $value): self
+    public function append(mixed ...$values): self
     {
         $this->readOnlyCheck();
 
-        $this->data[] = $value;
+        $values || throw new IteratorException('No values provided');
+
+        foreach ($values as $value) {
+            $this->data[] = $value;
+        }
 
         return $this;
     }
@@ -164,63 +181,5 @@ class Iterator implements _Iterator, Arrayable, Jsonable, Countable
         $this->data = array_reverse($this->data, $keepKeys);
 
         return $this;
-    }
-
-    /**
-     * Empty data array.
-     *
-     * @return self
-     */
-    public function empty(): self
-    {
-        $this->readOnlyCheck();
-
-        $this->data = [];
-
-        return $this;
-    }
-
-    /**
-     * Check whether data array is empty.
-     *
-     * @return bool
-     */
-    public function isEmpty(): bool
-    {
-        return empty($this->data);
-    }
-
-    /**
-     * Check whether data array is a list.
-     *
-     * @return bool
-     */
-    public function isList(): bool
-    {
-        return is_list($this->data);
-    }
-
-    /**
-     * @inheritDoc Countable
-     */
-    public function count(): int
-    {
-        return count($this->data);
-    }
-
-    /**
-     * @inheritDoc froq\common\interface\Arrayable
-     */
-    public function toArray(): array
-    {
-        return $this->data;
-    }
-
-    /**
-     * @inheritDoc froq\common\interface\Jsonable
-     */
-    public function toJson(int $flags = 0): string
-    {
-        return (string) json_encode($this->data, $flags);
     }
 }

@@ -24,8 +24,8 @@ class ArrayIterator extends Iterator
     /**
      * Constructor.
      *
-     * @param array $data
-     * @param bool  $readOnly
+     * @param array     $data
+     * @param bool|null $readOnly
      */
     public function __construct(array $data, bool $readOnly = null)
     {

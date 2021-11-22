@@ -24,9 +24,9 @@ class ReverseArrayIterator extends ArrayIterator
     /**
      * Constructor.
      *
-     * @param array $data
-     * @param bool  $readOnly
-     * @param bool  $keepKeys
+     * @param array     $data
+     * @param bool|null $readOnly
+     * @param bool      $keepKeys
      */
     public function __construct(array $data, bool $readOnly = null, bool $keepKeys = false)
     {

@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace froq\collection\trait;
 
-use froq\collection\trait\ReadOnlyCallTrait;
 use froq\util\Arrays;
 
 /**
@@ -22,25 +21,15 @@ use froq\util\Arrays;
  */
 trait EachTrait
 {
-    /** @see froq\collection\trait\ReadOnlyCallTrait */
-    use ReadOnlyCallTrait;
-
     /**
-     * Apply given action on each item of data array.
+     * Call given function for each item of data array.
      *
      * @param  callable $func
      * @return self
-     * @causes froq\common\exception\ReadOnlyException
      */
     public function each(callable $func): self
     {
-        $this->readOnlyCall();
-
-        foreach ($this->data as $key => &$value) {
-            $func($value, $key);
-        }
-
-        unset($value); // Drop last ref.
+        Arrays::each($this->data, $func);
 
         return $this;
     }

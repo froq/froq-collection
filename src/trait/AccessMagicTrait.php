@@ -20,13 +20,24 @@ namespace froq\collection\trait;
 trait AccessMagicTrait
 {
     /**
+     * Magic - isset.
+     *
+     * @param  int|string $key
+     * @return bool
+     */
+    public final function __isset(int|string $key): bool
+    {
+        return $this->has($key);
+    }
+
+    /**
      * Magic - set.
      *
      * @param  int|string $key
-     * @param  any        $value
+     * @param  mixed      $value
      * @return void
      */
-    public final function __set($key, $value)
+    public final function __set(int|string $key, mixed $value): void
     {
         $this->set($key, $value);
     }
@@ -35,22 +46,11 @@ trait AccessMagicTrait
      * Magic - get.
      *
      * @param  int|string $key
-     * @return any
+     * @return mixed
      */
-    public final function __get($key)
+    public final function __get(int|string $key): mixed
     {
         return $this->get($key);
-    }
-
-    /**
-     * Magic - isset.
-     *
-     * @param  int|string $key
-     * @return bool
-     */
-    public final function __isset($key)
-    {
-        return $this->has($key);
     }
 
     /**
@@ -59,7 +59,7 @@ trait AccessMagicTrait
      * @param  int|string $key
      * @return void
      */
-    public final function __unset($key)
+    public final function __unset(int|string $key): void
     {
         $this->remove($key);
     }

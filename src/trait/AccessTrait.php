@@ -91,7 +91,7 @@ trait AccessTrait
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetExists($key)
+    public final function offsetExists(mixed $key): bool
     {
         return $this->has($key);
     }
@@ -99,18 +99,18 @@ trait AccessTrait
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetSet($key, $value)
+    public final function offsetSet(mixed $key, mixed $value): void
     {
         // For "items[] = item" calls.
         $key ??= $this->count();
 
-        return $this->set($key, $value);
+        $this->set($key, $value);
     }
 
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetGet($key)
+    public final function offsetGet(mixed $key): mixed
     {
         return $this->get($key);
     }
@@ -118,8 +118,8 @@ trait AccessTrait
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetUnset($key)
+    public final function offsetUnset(mixed $key): void
     {
-        return $this->remove($key);
+        $this->remove($key);
     }
 }

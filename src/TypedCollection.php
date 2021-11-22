@@ -36,11 +36,12 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
     /**
      * Constructor.
      *
-     * @param  array|null  $data
-     * @param  string|null $dataType
+     * @param array<int|string, any>|null $data
+     * @param  string|null                $dataType
+     * @param  bool|null                  $readOnly
      * @throws froq\collection\CollectionException
      */
-    public function __construct(array $data = null, string $dataType = null)
+    public function __construct(array $data = null, string $dataType = null, bool $readOnly = null)
     {
         // Data type might be defined in extender class.
         $this->dataType = $dataType ?? $this->dataType ?? '';
@@ -52,7 +53,7 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
             );
         }
 
-        parent::__construct($data);
+        parent::__construct($data, $readOnly);
     }
 
     /**

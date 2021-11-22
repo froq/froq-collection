@@ -42,13 +42,14 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
      *
      * @param array<string> $names
      * @param bool          $throws
+     * @param bool|null     $readOnly
      */
-    public function __construct(array $names, bool $throws = true)
+    public function __construct(array $names, bool $throws = true, bool $readOnly = null)
     {
         self::$names  = $names;
         self::$throws = $throws;
 
-        parent::__construct(null);
+        parent::__construct(null, $readOnly);
     }
 
     /**

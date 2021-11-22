@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection\trait;
 
-use froq\collection\trait\ReadOnlyCallTrait;
+use froq\common\trait\ReadOnlyCallTrait;
 use froq\util\Arrays;
 
 /**
@@ -22,7 +22,7 @@ use froq\util\Arrays;
  */
 trait SortTrait
 {
-    /** @see froq\collection\trait\ReadOnlyCallTrait */
+    /** @see froq\common\trait\ReadOnlyCallTrait */
     use ReadOnlyCallTrait;
 
     /**

@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection\iterator;
 
-use froq\collection\CollectionException;
+use froq\collection\iterator\GeneratorIteratorException;
 use froq\common\interface\Arrayable;
 use Countable, IteratorAggregate, ReflectionMethod, ReflectionFunction, Throwable, Generator;
 
@@ -41,7 +41,7 @@ class GeneratorIterator implements Arrayable, Countable, IteratorAggregate
      *
      * @param  callable $generator
      * @return self
-     * @throws froq\collection\CollectionException
+     * @throws froq\collection\iterator\GeneratorIteratorException
      */
     public final function setGenerator(callable $generator): self
     {
@@ -50,14 +50,12 @@ class GeneratorIterator implements Arrayable, Countable, IteratorAggregate
                  ? new ReflectionMethod($generator[0], $generator[1])
                  : new ReflectionFunction($generator);
         } catch (Throwable $e) {
-            throw new CollectionException($e);
+            throw new GeneratorIteratorException($e);
         }
 
-        $ref->isGenerator() || throw new CollectionException(
+        $ref->isGenerator() || throw new GeneratorIteratorException(
             'Invalid $generator argument, given generator must execute `yield` stuff'
         );
-
-        unset($ref);
 
         // Wrap in static function.
         $this->generator = static fn() => $generator;
@@ -69,11 +67,11 @@ class GeneratorIterator implements Arrayable, Countable, IteratorAggregate
      * Get generator property.
      *
      * @return callable
-     * @throws froq\collection\CollectionException
+     * @throws froq\collection\iterator\GeneratorIteratorException
      */
     public final function getGenerator(): callable
     {
-        isset($this->generator) || throw new CollectionException(
+        isset($this->generator) || throw new GeneratorIteratorException(
             'No generator was set yet, try after calling setGenerator() method'
         );
 

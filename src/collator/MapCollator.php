@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\collection\collator\{CollatorException, CollatorTrait};
+use froq\collection\collator\{CollatorException, CollatorInterface, CollatorTrait};
 use froq\collection\AbstractCollection;
 use ArrayAccess;
 
@@ -21,7 +21,7 @@ use ArrayAccess;
  * @author  Kerem Güneş
  * @since   4.0, 5.4 Moved as stack => collator.
  */
-class MapCollator extends AbstractCollection implements ArrayAccess
+class MapCollator extends AbstractCollection implements CollatorInterface, ArrayAccess
 {
     /** @see froq\collection\collator\CollatorTrait */
     use CollatorTrait;
@@ -34,9 +34,7 @@ class MapCollator extends AbstractCollection implements ArrayAccess
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {
-        parent::__construct($data);
-
-        $this->readOnly($readOnly);
+        parent::__construct($data, $readOnly);
     }
 
     /**

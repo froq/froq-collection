@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
+use froq\collection\CollectionInterface;
 use froq\common\object\XArray;
 
 /**
@@ -17,5 +18,5 @@ use froq\common\object\XArray;
  * @author  Kerem Güneş
  * @since   4.0
  */
-abstract class AbstractCollection extends XArray
+abstract class AbstractCollection extends XArray implements CollectionInterface
 {}
