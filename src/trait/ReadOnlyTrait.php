@@ -26,6 +26,19 @@ trait ReadOnlyTrait
     private static array $__READ_ONLY_STATES;
 
     /**
+     * Destructor.
+     *
+     * @since 5.6
+     */
+    public function __destruct()
+    {
+        $id = Objects::getId($this);
+
+        // Simple GC process.
+        unset(self::$__READ_ONLY_STATES[$id]);
+    }
+
+    /**
      * Set/get read-only state.
      *
      * @param  bool|null $state
@@ -35,7 +48,12 @@ trait ReadOnlyTrait
     {
         $id = Objects::getId($this);
 
-        return self::$__READ_ONLY_STATES[$id] ??= $state;
+        // No set, no memory.
+        if ($state !== null) {
+            self::$__READ_ONLY_STATES[$id] = $state;
+        }
+
+        return self::$__READ_ONLY_STATES[$id] ?? null;
     }
 
     /**
