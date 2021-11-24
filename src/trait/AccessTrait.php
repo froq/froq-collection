@@ -10,84 +10,16 @@ namespace froq\collection\trait;
 /**
  * Access Trait.
  *
- * Represents an access trait that provides some utility methods.
+ * Represents an trait that provides some utility methods for those classes define `has()`,
+ * `set()`, `get()` and `remove()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\AccessTrait
  * @author  Kerem Güneş
- * @since   4.0, 5.4 Moved as trait.AccessTrait from AccessTrait.
+ * @since   4.0, 5.4 Moved as "trait.AccessTrait" from "AccessTrait".
  */
 trait AccessTrait
 {
-    /**
-     * Get a value as given type.
-     *
-     * @param  int|string $key
-     * @param  string     $type
-     * @param  any|null   $default
-     * @return any
-     * @since  5.0
-     */
-    public final function getAs(int|string $key, string $type, $default = null)
-    {
-        $value = $this->get($key, $default);
-        settype($value, $type);
-
-        return $value;
-    }
-
-    /**
-     * Get a value as int.
-     *
-     * @param  int|string $key
-     * @param  any|null   $default
-     * @return int
-     * @since  4.2
-     */
-    public final function getInt(int|string $key, $default = null): int
-    {
-        return (int) $this->get($key, $default);
-    }
-
-    /**
-     * Get a value as float.
-     *
-     * @param  int|string $key
-     * @param  any|null   $default
-     * @return float
-     * @since  4.2
-     */
-    public final function getFloat(int|string $key, $default = null): float
-    {
-        return (float) $this->get($key, $default);
-    }
-
-    /**
-     * Get a value as string.
-     *
-     * @param  int|string $key
-     * @param  any|null   $default
-     * @return string
-     * @since  4.2
-     */
-    public final function getString(int|string $key, $default = null): string
-    {
-        return (string) $this->get($key, $default);
-    }
-
-    /**
-     * Get a value as bool.
-     *
-     * @param  int|string $key
-     * @param  any|null   $default
-     * @return bool
-     * @since  4.2
-     */
-    public final function getBool(int|string $key, $default = null): bool
-    {
-        return (bool) $this->get($key, $default);
-    }
-
     /**
      * @inheritDoc ArrayAccess
      */

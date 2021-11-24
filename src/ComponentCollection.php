@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\collection\{AbstractCollection, CollectionException};
-use froq\collection\trait\{AccessTrait, AccessMagicTrait};
+use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetAsTrait};
 use ArrayAccess;
 
 /**
@@ -27,9 +27,10 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     /**
      * @see froq\collection\trait\AccessTrait
      * @see froq\collection\trait\AccessMagicTrait
+     * @see froq\collection\trait\GetAsTrait
      * @since 4.0, 5.0
      */
-    use AccessTrait, AccessMagicTrait;
+    use AccessTrait, AccessMagicTrait, GetAsTrait;
 
     /** @var array */
     protected static array $names = [];

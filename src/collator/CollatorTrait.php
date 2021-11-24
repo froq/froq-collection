@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\collection\trait\{AccessTrait, AccessMagicTrait};
+use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetAsTrait};
 use froq\util\Arrays;
 
 /**
@@ -26,9 +26,10 @@ trait CollatorTrait
     /**
      * @see froq\collection\trait\AccessTrait
      * @see froq\collection\trait\AccessMagicTrait
+     * @see froq\collection\trait\GetAsTrait
      * @since 4.0, 5.0
      */
-    use AccessTrait, AccessMagicTrait;
+    use AccessTrait, AccessMagicTrait, GetAsTrait;
 
     /**
      * Add (append) an item to data array with given key/index.
