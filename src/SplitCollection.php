@@ -28,7 +28,7 @@ class SplitCollection extends Collection
      * @param string   $pattern
      * @param int|null $limit
      */
-    public function __construct(string $pattern, string $string = null, int|null $limit = null)
+    public function __construct(string $pattern, string $string, int|null $limit = null)
     {
         parent::__construct(split($pattern, $string, limit: $limit));
     }
