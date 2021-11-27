@@ -139,6 +139,8 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function add(int|string|array $key, $value = null, bool $flat = true): self
     {
+        $this->readOnlyCheck();
+
         is_array($key) ? Arrays::addAll($this->data, $key, $flat)
                        : Arrays::add($this->data, $key, $value, $flat);
 
