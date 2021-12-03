@@ -199,6 +199,22 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Push an item.
+     *
+     * @param  any $value
+     * @return self
+     * @since  5.11
+     */
+    public function push($value): self
+    {
+        $this->readOnlyCheck();
+
+        array_push($this->data, $value);
+
+        return $this;
+    }
+
+    /**
      * Pop an item.
      *
      * @return any
