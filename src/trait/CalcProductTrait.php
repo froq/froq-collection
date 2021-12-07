@@ -27,14 +27,12 @@ trait CalcProductTrait
      */
     public function product(int $precision = null): int|float
     {
-        $ret = array_product($this->data);
-
-        if ($precision !== null) {
-            $ret = round($ret, $precision);
+        if (empty($this->data)) {
+            return 0;
         }
 
-        return $ret;
+        return ($precision === null)
+             ? array_product($this->data)
+             : round(array_product($this->data), $precision);
     }
-
-
 }

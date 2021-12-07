@@ -27,12 +27,12 @@ trait CalcSumTrait
      */
     public function sum(int $precision = null): int|float
     {
-        $ret = array_sum($this->data);
-
-        if ($precision !== null) {
-            $ret = round($ret, $precision);
+        if (empty($this->data)) {
+            return 0;
         }
 
-        return $ret;
+        return ($precision === null)
+             ? array_sum($this->data)
+             : round(array_sum($this->data), $precision);
     }
 }

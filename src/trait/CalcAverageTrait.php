@@ -27,12 +27,12 @@ trait CalcAverageTrait
      */
     public function average(int $precision = null): int|float
     {
-        $ret = array_average($this->data);
-
-        if ($precision !== null) {
-            $ret = round($ret, $precision);
+        if (empty($this->data)) {
+            return 0;
         }
 
-        return $ret;
+        return ($precision === null)
+             ? array_average($this->data)
+             : round(array_average($this->data), $precision);
     }
 }
