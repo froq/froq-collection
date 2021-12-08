@@ -36,7 +36,7 @@ trait CollatorTrait
 
         if (isset($this->data[$key])) {
             $this->data[$key] = $flat
-                ? Arrays::flat([$this->data[$key], $value], true)
+                ? Arrays::flat([$this->data[$key], $value])
                 : Arrays::merge((array) $this->data[$key], $value);
         } else {
             $this->data[$key] = $value;
