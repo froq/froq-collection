@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetAsTrait};
 use froq\util\Arrays;
 
 /**
@@ -24,26 +23,21 @@ use froq\util\Arrays;
 trait CollatorTrait
 {
     /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\AccessMagicTrait
-     * @see froq\collection\trait\GetAsTrait
-     * @since 4.0, 5.0
-     */
-    use AccessTrait, AccessMagicTrait, GetAsTrait;
-
-    /**
      * Add (append) an item to data array with given key/index.
      *
      * @param  int|string $key
      * @param  any        $value
+     * @param  bool       $flat
      * @return self
      */
-    private function _add(int|string $key, $value): self
+    private function _add(int|string $key, $value, bool $flat = true): self
     {
         $this->readOnlyCheck();
 
         if (isset($this->data[$key])) {
-            $this->data[$key] = Arrays::flat([$this->data[$key], $value]);
+            $this->data[$key] = $flat
+                ? Arrays::flat([$this->data[$key], $value], true)
+                : Arrays::merge((array) $this->data[$key], $value);
         } else {
             $this->data[$key] = $value;
         }

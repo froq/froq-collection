@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace froq\collection\collator;
 
 use froq\collection\collator\{CollatorException, CollatorInterface, CollatorTrait};
+use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetAsTrait};
 use froq\collection\AbstractCollection;
 use ArrayAccess;
 
@@ -25,6 +26,14 @@ class SetCollator extends AbstractCollection implements CollatorInterface, Array
 {
     /** @see froq\collection\collator\CollatorTrait */
     use CollatorTrait;
+
+    /**
+     * @see froq\collection\trait\AccessTrait
+     * @see froq\collection\trait\AccessMagicTrait
+     * @see froq\collection\trait\GetAsTrait
+     * @since 4.0, 5.0
+     */
+    use AccessTrait, AccessMagicTrait, GetAsTrait;
 
     /**
      * Constructor.
@@ -53,13 +62,14 @@ class SetCollator extends AbstractCollection implements CollatorInterface, Array
     /**
      * Add (append) an item to data array with given key.
      *
-     * @param  int $key
+     * @param  int  $key
      * @param  any  $value
+     * @param  bool $flat
      * @return self
      */
-    public final function add(int $key, $value): self
+    public final function add(int $key, $value, bool $flat = true): self
     {
-        return $this->_add($key, $value);
+        return $this->_add($key, $value, $flat);
     }
 
     /**

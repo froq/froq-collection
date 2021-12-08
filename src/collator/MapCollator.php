@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace froq\collection\collator;
 
 use froq\collection\collator\{CollatorException, CollatorInterface, CollatorTrait};
+use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetAsTrait};
 use froq\collection\AbstractCollection;
 use ArrayAccess;
 
@@ -25,6 +26,14 @@ class MapCollator extends AbstractCollection implements CollatorInterface, Array
 {
     /** @see froq\collection\collator\CollatorTrait */
     use CollatorTrait;
+
+    /**
+     * @see froq\collection\trait\AccessTrait
+     * @see froq\collection\trait\AccessMagicTrait
+     * @see froq\collection\trait\GetAsTrait
+     * @since 4.0, 5.0
+     */
+    use AccessTrait, AccessMagicTrait, GetAsTrait;
 
     /**
      * Constructor.
@@ -55,11 +64,12 @@ class MapCollator extends AbstractCollection implements CollatorInterface, Array
      *
      * @param  string $key
      * @param  any    $value
+     * @param  bool   $flat
      * @return self
      */
-    public final function add(string $key, $value): self
+    public final function add(string $key, $value, bool $flat = true): self
     {
-        return $this->_add($key, $value);
+        return $this->_add($key, $value, $flat);
     }
 
     /**
