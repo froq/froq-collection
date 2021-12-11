@@ -810,15 +810,6 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * @alias of searchKey()
-     * @since 5.0, 5.5 Change call index() => searchKey().
-     */
-    public function key(...$args)
-    {
-        return $this->searchKey(...$args);
-    }
-
-    /**
      * Get first item or return null if no items on data array.
      *
      * @return any|null

@@ -11,7 +11,7 @@ use froq\collection\iterator\{IteratorInterface, IteratorException};
 use froq\collection\trait\{SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait};
 use froq\common\interface\{Arrayable, Jsonable};
 use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataListTrait, DataToArrayTrait, DataToObjectTrait,
-    DataToJsonTrait, ReadOnlyTrait};
+    DataToJsonTrait, DataIteratorTrait, ReadOnlyTrait};
 use froq\util\Arrays;
 use Iterator as _Iterator, Countable, Traversable;
 
@@ -25,13 +25,15 @@ use Iterator as _Iterator, Countable, Traversable;
  * @author  Kerem Güneş
  * @since   5.3
  */
-class Iterator implements _Iterator, IteratorInterface, Arrayable, Jsonable, Countable
+class Iterator implements IteratorInterface, Arrayable, Jsonable, _Iterator, Countable
 {
-    /** @see froq\collection\trait\SortTrait */
-    /** @see froq\collection\trait\EachTrait */
-    /** @see froq\collection\trait\FilterTrait */
-    /** @see froq\collection\trait\MapTrait */
-    /** @see froq\collection\trait\ReduceTrait */
+    /**
+     * @see froq\collection\trait\SortTrait
+     * @see froq\collection\trait\EachTrait
+     * @see froq\collection\trait\FilterTrait
+     * @see froq\collection\trait\MapTrait
+     * @see froq\collection\trait\ReduceTrait
+     */
     use SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait;
 
     /**
@@ -41,10 +43,13 @@ class Iterator implements _Iterator, IteratorInterface, Arrayable, Jsonable, Cou
      * @see froq\common\trait\DataToArrayTrait
      * @see froq\common\trait\DataToObjectTrait
      * @see froq\common\trait\DataToJsonTrait
-     * @see froq\common\trait\ReadOnlyTrait
+     * @see froq\common\trait\DataIteratorTrait
      */
     use DataCountTrait, DataEmptyTrait, DataListTrait, DataToArrayTrait, DataToObjectTrait, DataToJsonTrait,
-        ReadOnlyTrait;
+        DataIteratorTrait;
+
+    /** @see froq\common\trait\ReadOnlyTrait */
+    use ReadOnlyTrait;
 
     /** @var array */
     protected array $data;
@@ -123,48 +128,6 @@ class Iterator implements _Iterator, IteratorInterface, Arrayable, Jsonable, Cou
         $this->data[$key] = $value;
 
         return $this;
-    }
-
-    /** @inheritDoc Iterator */
-    public function current(): mixed
-    {
-        return current($this->data);
-    }
-
-    /** @inheritDoc Iterator */
-    public function next(): void
-    {
-        next($this->data);
-    }
-
-    /** @inheritDoc Iterator */
-    public function rewind(): void
-    {
-        reset($this->data);
-    }
-
-    /** @inheritDoc Iterator */
-    public function key(): int|string|null
-    {
-        return key($this->data);
-    }
-
-    /** @inheritDoc Iterator */
-    public function valid(): bool
-    {
-        return key($this->data) !== null;
-    }
-
-    /** @alias of current() */
-    public function value()
-    {
-        return $this->current();
-    }
-
-    /** @alias of rewind() */
-    public function reset()
-    {
-        $this->rewind();
     }
 
     /**
