@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\{AbstractCollection, CollectionException};
+use froq\collection\AbstractCollection;
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetAsTrait};
 use froq\util\Arrays;
 use ArrayAccess;
