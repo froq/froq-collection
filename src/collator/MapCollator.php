@@ -60,12 +60,7 @@ class MapCollator extends AbstractCollection implements CollatorInterface, Array
     }
 
     /**
-     * Add (append) an item to data array with given key.
-     *
-     * @param  string $key
-     * @param  any    $value
-     * @param  bool   $flat
-     * @return self
+     * @inheritDoc froq\collection\collator\CollatorTrait
      */
     public final function add(string $key, $value, bool $flat = true): self
     {
@@ -73,11 +68,7 @@ class MapCollator extends AbstractCollection implements CollatorInterface, Array
     }
 
     /**
-     * Put an item to data array with given key.
-     *
-     * @param  string $key
-     * @param  any    $value
-     * @return self
+     * @inheritDoc froq\collection\collator\CollatorTrait
      */
     public final function set(string $key, $value): self
     {
@@ -85,11 +76,7 @@ class MapCollator extends AbstractCollection implements CollatorInterface, Array
     }
 
     /**
-     * Get an item from data array by given key.
-     *
-     * @param  string   $key
-     * @param  any|null $default
-     * @return any|null
+     * @inheritDoc froq\collection\collator\CollatorTrait
      */
     public final function get(string $key, $default = null)
     {
@@ -97,21 +84,15 @@ class MapCollator extends AbstractCollection implements CollatorInterface, Array
     }
 
     /**
-     * Remove an item from data array by given key.
-     *
-     * @param  string $key
-     * @return bool
+     * @inheritDoc froq\collection\collator\CollatorTrait
      */
-    public final function remove(string $key): bool
+    public final function remove(string $key, &$value = null): bool
     {
-        return $this->_remove($key);
+        return $this->_remove($key, $value);
     }
 
     /**
-     * Check whether an item was set in data array with given key.
-     *
-     * @param  string $key
-     * @return bool
+     * @inheritDoc froq\collection\collator\CollatorTrait
      */
     public final function has(string $key): bool
     {
@@ -119,10 +100,7 @@ class MapCollator extends AbstractCollection implements CollatorInterface, Array
     }
 
     /**
-     * Check whether given key exists in data array.
-     *
-     * @param  string $key
-     * @return bool
+     * @inheritDoc froq\collection\collator\CollatorTrait
      */
     public final function hasKey(string $key): bool
     {
@@ -130,11 +108,7 @@ class MapCollator extends AbstractCollection implements CollatorInterface, Array
     }
 
     /**
-     * Check with/without strict mode whether data array has given value.
-     *
-     * @param  any  $value
-     * @param  bool $strict
-     * @return bool
+     * @inheritDoc froq\collection\collator\CollatorTrait
      */
     public final function hasValue($value, bool $strict = true): bool
     {

@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\collection\{AbstractCollection, CollectionException};
-use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetAsTrait};
+use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetAsTrait, HasTrait};
 use ArrayAccess;
 
 /**
@@ -27,9 +27,10 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
      * @see froq\collection\trait\AccessTrait
      * @see froq\collection\trait\AccessMagicTrait
      * @see froq\collection\trait\GetAsTrait
-     * @since 5.4
+     * @see froq\collection\trait\HasTrait
+     * @since 5.4, 5.15
      */
-    use AccessTrait, AccessMagicTrait, GetAsTrait;
+    use AccessTrait, AccessMagicTrait, GetAsTrait, HasTrait;
 
     /** @var string */
     protected string $dataType;
@@ -73,6 +74,7 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
      * @param  array<int|string, any> $data
      * @param  bool                   $reset
      * @return self
+     * @causes froq\collection\CollectionException
      * @override
      */
     public final function setData(array $data, bool $reset = true): self
@@ -85,47 +87,16 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether a keyed/indexed item was set in data array.
-     *
-     * @param  int|string $key
-     * @return bool
-     */
-    public final function has(int|string $key): bool
-    {
-        return isset($this->data[$key]);
-    }
-
-    /**
-     * Check whether a key/index exists in data array.
-     *
-     * @param  int|string $key
-     * @return bool
-     */
-    public final function hasKey(int|string $key): bool
-    {
-        return array_key_exists($key, $this->data);
-    }
-
-    /**
-     * Check with/without strict mode whether data array has given value.
-     *
-     * @param  any  $value
-     * @param  bool $strict
-     * @return bool
-     */
-    public final function hasValue($value, bool $strict = true): bool
-    {
-        return array_value_exists($value, $this->data, $strict);
-    }
-
-    /**
-     * Add (append) an item to data array.
+     * Add (append) an item.
      *
      * @param  any $value
      * @return self
+     * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\collection\CollectionException
      */
     public final function add($value): self
     {
+        $this->readOnlyCheck();
         $this->typeCheck($value);
 
         $this->data[] = $value;
@@ -134,14 +105,17 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Put an item by given key/index to data array.
+     * Set an item.
      *
      * @param  int|string $key
      * @param  any        $value
      * @return self
+     * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\collection\CollectionException
      */
     public final function set(int|string $key, $value): self
     {
+        $this->readOnlyCheck();
         $this->typeCheck($value);
 
         $this->data[$key] = $value;
@@ -150,7 +124,7 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get an item by given key/index from data array.
+     * Get an item.
      *
      * @param  int|string $key
      * @param  any|null   $default
@@ -162,13 +136,16 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Remove an item by given key/index from data array.
+     * Remove an item.
      *
      * @param  int|string $key
      * @return void
+     * @causes froq\common\exception\ReadOnlyException
      */
     public final function remove(int|string $key): void
     {
+        $this->readOnlyCheck();
+
         unset($this->data[$key]);
     }
 
@@ -206,7 +183,7 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
         if ($type != $this->dataType) {
             $types = explode('|', $this->dataType);
 
-            // @fix, @todo: Make namespace resolution for short class names.
+            // @fix @todo: Make namespace resolution for short class names.
             if (in_array($type, $types)) {
                 return;
             }

@@ -50,7 +50,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
         self::$names  = $names;
         self::$throws = $throws;
 
-        parent::__construct(null, $readOnly);
+        parent::__construct(array_fill_keys($names, null), $readOnly);
     }
 
     /**
@@ -84,6 +84,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
      * @param  bool               $reset
      * @return self
      * @since  4.0
+     * @causes froq\collection\CollectionException
      * @override
      */
     public final function setData(array $data, bool $reset = true): self
@@ -116,7 +117,7 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether a component was set in data array with given name.
+     * Check whether given name set in data array.
      *
      * @param  string $name
      * @return bool
@@ -127,22 +128,36 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether a name exists in data array.
+     * Check whether given name exists in data array.
      *
      * @param  string $name
      * @return bool
      */
     public final function hasName(string $name): bool
     {
-        return in_array($name, self::$names);
+        return array_key_exists($name, $this->data);
     }
 
     /**
-     * Put a component by given name to data array.
+     * Check whether given value exists in data array (with/without strict mode).
+     *
+     * @param  any  $value
+     * @param  bool $strict
+     * @return bool
+     */
+    public final function hasValue($value, bool $strict = true): bool
+    {
+        return array_value_exists($value, $this->data, $strict);
+    }
+
+    /**
+     * Set a component.
      *
      * @param  string $name
      * @param  any    $value
      * @return self
+     * @causes froq\collection\CollectionException
+     * @causes froq\common\exception\ReadOnlyException
      */
     public final function set(string $name, $value): self
     {
@@ -155,11 +170,12 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get a component by given name from data array.
+     * Get a component.
      *
      * @param  string   $name
      * @param  any|null $default
      * @return any|null
+     * @causes froq\collection\CollectionException
      */
     public final function get(string $name, $default = null)
     {
@@ -169,10 +185,12 @@ class ComponentCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Remove a component from data array by given name.
+     * Remove a component.
      *
      * @param  string $name
      * @return void
+     * @causes froq\collection\CollectionException
+     * @causes froq\common\exception\ReadOnlyException
      */
     public final function remove(string $name): void
     {

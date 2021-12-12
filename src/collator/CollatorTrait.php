@@ -23,12 +23,13 @@ use froq\util\Arrays;
 trait CollatorTrait
 {
     /**
-     * Add (append) an item to data array with given key/index.
+     * Add (append) an item to data array with given key.
      *
      * @param  int|string $key
      * @param  any        $value
      * @param  bool       $flat
      * @return self
+     * @causes froq\common\exception\ReadOnlyException
      */
     private function _add(int|string $key, $value, bool $flat = true): self
     {
@@ -46,11 +47,12 @@ trait CollatorTrait
     }
 
     /**
-     * Put an item to data array with given key/index.
+     * Set an item to data array by given key.
      *
      * @param  int|string $key
      * @param  any        $value
      * @return self
+     * @causes froq\common\exception\ReadOnlyException
      */
     private function _set(int|string $key, $value): self
     {
@@ -62,7 +64,7 @@ trait CollatorTrait
     }
 
     /**
-     * Get an item from data array by given key/index.
+     * Get an item from data array by given key.
      *
      * @param  int|string $key
      * @param  any|null   $default
@@ -74,16 +76,19 @@ trait CollatorTrait
     }
 
     /**
-     * Remove an item from data array by given key/index.
+     * Remove an item from data array by given key & fill ref if success.
      *
-     * @param  int|string $key
+     * @param  int|string  $key
+     * @param  any|null   &$value
      * @return bool
+     * @causes froq\common\exception\ReadOnlyException
      */
-    private function _remove(int|string $key): bool
+    private function _remove(int|string $key, &$value = null): bool
     {
         $this->readOnlyCheck();
 
         if (isset($this->data[$key])) {
+            $value = $this->data[$key];
             unset($this->data[$key]);
             return true;
         }
@@ -91,7 +96,7 @@ trait CollatorTrait
     }
 
     /**
-     * Check whether an item was set in data array with given key/index.
+     * Check whether given key set in data array.
      *
      * @param  int|string $key
      * @return bool
@@ -102,7 +107,7 @@ trait CollatorTrait
     }
 
     /**
-     * Check whether given key/index exists in data array.
+     * Check whether given key exists in data array.
      *
      * @param  int|string $key
      * @return bool
@@ -113,7 +118,7 @@ trait CollatorTrait
     }
 
     /**
-     * Check with/without strict mode whether data array has given value.
+     * Check whether given value exists in data array (with/without strict mode).
      *
      * @param  any  $value
      * @param  bool $strict

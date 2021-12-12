@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace froq\collection\iterator;
 
 use froq\collection\iterator\{IteratorInterface, IteratorException};
-use froq\collection\trait\{SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait};
+use froq\collection\trait\{SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait, HasTrait};
 use froq\common\interface\{Arrayable, Jsonable};
 use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataListTrait, DataToArrayTrait, DataToObjectTrait,
     DataToJsonTrait, DataIteratorTrait, ReadOnlyTrait};
@@ -33,8 +33,9 @@ class Iterator implements IteratorInterface, Arrayable, Jsonable, _Iterator, Cou
      * @see froq\collection\trait\FilterTrait
      * @see froq\collection\trait\MapTrait
      * @see froq\collection\trait\ReduceTrait
+     * @see froq\collection\trait\HasTrait
      */
-    use SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait;
+    use SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait, HasTrait;
 
     /**
      * @see froq\common\trait\DataCountTrait
@@ -69,29 +70,6 @@ class Iterator implements IteratorInterface, Arrayable, Jsonable, _Iterator, Cou
         $this->data = $data;
 
         $this->readOnly($readOnly);
-    }
-
-    /**
-     * Check whether a value exists in data array.
-     *
-     * @param  mixed $value
-     * @param  bool  $strict
-     * @return bool
-     */
-    public function has(mixed $value, bool $strict = true): bool
-    {
-        return array_value_exists($value, $this->data, $strict);
-    }
-
-    /**
-     * Check whether a key exists in data array.
-     *
-     * @param  int|string $key
-     * @return bool
-     */
-    public function hasKey(int|string $key): bool
-    {
-        return array_key_exists($key, $this->data);
     }
 
     /**

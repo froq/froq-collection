@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\collection\AbstractCollection;
-use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetAsTrait};
+use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetAsTrait, HasTrait};
 use froq\util\Arrays;
 use ArrayAccess;
 
@@ -29,9 +29,10 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @see froq\collection\trait\AccessTrait
      * @see froq\collection\trait\AccessMagicTrait
      * @see froq\collection\trait\GetAsTrait
-     * @since 4.0, 5.0
+     * @see froq\collection\trait\HasTrait
+     * @since 4.0, 5.0, 5.15
      */
-    use AccessTrait, AccessMagicTrait, GetAsTrait;
+    use AccessTrait, AccessMagicTrait, GetAsTrait, HasTrait;
 
     /**
      * Constructor.
@@ -45,41 +46,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether an item set in data array.
-     *
-     * @param  int|string $key
-     * @return bool
-     */
-    public function has(int|string $key): bool
-    {
-        return isset($this->data[$key]);
-    }
-
-    /**
-     * Check whether a key/index exists in data array.
-     *
-     * @param  int|string $key
-     * @return bool
-     */
-    public function hasKey(int|string $key): bool
-    {
-        return array_key_exists($key, $this->data);
-    }
-
-    /**
-     * Check with/without strict mode whether data array has given value.
-     *
-     * @param  any  $value
-     * @param  bool $strict
-     * @return bool
-     */
-    public function hasValue($value, bool $strict = true): bool
-    {
-        return array_value_exists($value, $this->data, $strict);
-    }
-
-    /**
-     * Put an item/items into data array.
+     * Set an item/items.
      *
      * @param  int|string|array<int|string>|null $key
      * @param  any|null                          $value
@@ -100,7 +67,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get an item/items from data array.
+     * Get an item/items.
      *
      * @param  int|string|array<int|string> $key
      * @param  any|null                     $default
@@ -113,7 +80,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Pull an item/items from data array.
+     * Pull an item/items.
      *
      * @param  int|string|array<int|string> $key
      * @param  any|null                     $default
@@ -129,7 +96,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Add (append) an item to data array, flat if already exists.
+     * Add (append) an item.
      *
      * @param  int|string|array<int|string, any> $key
      * @param  any|null                          $value
@@ -148,7 +115,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Remove an item/items from data array.
+     * Remove an item/items.
      *
      * @param  int|string|array<int|string> $key
      * @return self
@@ -780,7 +747,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get an item from data array with given key/index.
+     * Get an item from data array with given key.
      *
      * @param  int|string $key
      * @return any
@@ -821,7 +788,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Find first key/index or return null if no items data array.
+     * Find first key or return null if no items data array.
      *
      * @return int|string|null
      * @since  4.0
@@ -843,7 +810,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Find last key/index or return null if no items data array.
+     * Find last key or return null if no items data array.
      *
      * @return int|string|null
      * @since  4.0

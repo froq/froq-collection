@@ -87,7 +87,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether an indexed item was set in data array.
+     * Check whether given index set in data array.
      *
      * @param  int $index
      * @return bool
@@ -98,7 +98,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check whether an index exists in data array.
+     * Check whether given index exists in data array.
      *
      * @param  int $index
      * @return bool
@@ -109,15 +109,15 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Check with/without strict mode whether data array has given value.
+     * Check whether given item exists in data array (with/without strict mode).
      *
-     * @param  any  $value
+     * @param  any  $item
      * @param  bool $strict
      * @return bool
      */
-    public final function hasValue($value, bool $strict = true): bool
+    public final function hasItem($item, bool $strict = true): bool
     {
-        return array_value_exists($value, $this->data, $strict);
+        return array_value_exists($item, $this->data, $strict);
     }
 
     /**
@@ -125,6 +125,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
      *
      * @param  any $item
      * @return self
+     * @causes froq\common\exception\ReadOnlyException
      */
     public final function add($item): self
     {
@@ -141,6 +142,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
      * @param  int $index
      * @param  any $item
      * @return self
+     * @causes froq\common\exception\ReadOnlyException
      */
     public final function set(int $index, $item): self
     {
@@ -166,14 +168,17 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     /**
      * Remove an item by given index from data array by given index.
      *
-     * @param  int $index
+     * @param  int       $index
+     * @param  any|null &$item
      * @return bool
+     * @causes froq\common\exception\ReadOnlyException
      */
-    public final function remove(int $index): bool
+    public final function remove(int $index, &$item = null): bool
     {
         $this->readOnlyCheck();
 
         if (isset($this->data[$index])) {
+            $item = $this->data[$index];
             unset($this->data[$index]);
             return true;
         }
@@ -186,6 +191,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
      * @param  any $oldItem
      * @param  any $newItem
      * @return bool
+     * @causes froq\common\exception\ReadOnlyException
      */
     public final function replace($oldItem, $newItem): bool
     {
