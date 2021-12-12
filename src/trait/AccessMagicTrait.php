@@ -27,7 +27,7 @@ trait AccessMagicTrait
      */
     public final function __isset(int|string $key): bool
     {
-        return $this->has($key);
+        return $this->get($key) !== null;
     }
 
     /**

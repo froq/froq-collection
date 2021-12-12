@@ -25,7 +25,7 @@ trait AccessTrait
      */
     public final function offsetExists(mixed $key): bool
     {
-        return $this->has($key);
+        return $this->get($key) !== null;
     }
 
     /**
