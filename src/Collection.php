@@ -96,7 +96,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Add (append) an item.
+     * Add (append) an item, flat if key exists.
      *
      * @param  int|string|array<int|string, any> $key
      * @param  any|null                          $value
