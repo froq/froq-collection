@@ -23,7 +23,7 @@ trait AccessTrait
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetExists(mixed $key): bool
+    public function offsetExists(mixed $key): bool
     {
         return $this->get($key) !== null;
     }
@@ -31,7 +31,7 @@ trait AccessTrait
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetSet(mixed $key, mixed $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
         // For "items[] = item" calls.
         $key ??= $this->count();
@@ -42,7 +42,7 @@ trait AccessTrait
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetGet(mixed $key): mixed
+    public function offsetGet(mixed $key): mixed
     {
         return $this->get($key);
     }
@@ -50,7 +50,7 @@ trait AccessTrait
     /**
      * @inheritDoc ArrayAccess
      */
-    public final function offsetUnset(mixed $key): void
+    public function offsetUnset(mixed $key): void
     {
         $this->remove($key);
     }

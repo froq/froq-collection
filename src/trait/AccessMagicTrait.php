@@ -25,7 +25,7 @@ trait AccessMagicTrait
      * @param  int|string $key
      * @return bool
      */
-    public final function __isset(int|string $key): bool
+    public function __isset(int|string $key): bool
     {
         return $this->get($key) !== null;
     }
@@ -37,7 +37,7 @@ trait AccessMagicTrait
      * @param  mixed      $value
      * @return void
      */
-    public final function __set(int|string $key, mixed $value): void
+    public function __set(int|string $key, mixed $value): void
     {
         $this->set($key, $value);
     }
@@ -48,7 +48,7 @@ trait AccessMagicTrait
      * @param  int|string $key
      * @return mixed
      */
-    public final function __get(int|string $key): mixed
+    public function __get(int|string $key): mixed
     {
         return $this->get($key);
     }
@@ -59,7 +59,7 @@ trait AccessMagicTrait
      * @param  int|string $key
      * @return void
      */
-    public final function __unset(int|string $key): void
+    public function __unset(int|string $key): void
     {
         $this->remove($key);
     }

@@ -29,7 +29,7 @@ trait GetAsTrait
      * @return any
      * @since  5.0
      */
-    public final function getAs(int|string $key, string $type, $default = null)
+    public function getAs(int|string $key, string $type, $default = null)
     {
         $value = $this->get($key, $default);
         settype($value, $type);
@@ -45,7 +45,7 @@ trait GetAsTrait
      * @return int
      * @since  4.2
      */
-    public final function getInt(int|string $key, $default = null): int
+    public function getInt(int|string $key, $default = null): int
     {
         return (int) $this->get($key, $default);
     }
@@ -58,7 +58,7 @@ trait GetAsTrait
      * @return float
      * @since  4.2
      */
-    public final function getFloat(int|string $key, $default = null): float
+    public function getFloat(int|string $key, $default = null): float
     {
         return (float) $this->get($key, $default);
     }
@@ -71,7 +71,7 @@ trait GetAsTrait
      * @return string
      * @since  4.2
      */
-    public final function getString(int|string $key, $default = null): string
+    public function getString(int|string $key, $default = null): string
     {
         return (string) $this->get($key, $default);
     }
@@ -84,7 +84,7 @@ trait GetAsTrait
      * @return bool
      * @since  4.2
      */
-    public final function getBool(int|string $key, $default = null): bool
+    public function getBool(int|string $key, $default = null): bool
     {
         return (bool) $this->get($key, $default);
     }
