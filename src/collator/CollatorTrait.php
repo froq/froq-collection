@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\util\Arrays;
+use froq\collection\collator\CollatorException;
 
 /**
  * Collator Trait.
@@ -23,7 +23,7 @@ use froq\util\Arrays;
 trait CollatorTrait
 {
     /**
-     * Add (append) an item to data array.
+     * Add (append) a value to data array.
      *
      * @param  any $value
      * @return self
@@ -39,7 +39,7 @@ trait CollatorTrait
     }
 
     /**
-     * Set an item to data array by given key.
+     * Set a value to data array by given key.
      *
      * @param  int|string $key
      * @param  any        $value
@@ -56,7 +56,7 @@ trait CollatorTrait
     }
 
     /**
-     * Get an item from data array by given key.
+     * Get a value from data array by given key.
      *
      * @param  int|string $key
      * @param  any|null   $default
@@ -68,7 +68,7 @@ trait CollatorTrait
     }
 
     /**
-     * Remove an item from data array by given key & fill ref if success.
+     * Remove a value from data array by given key & fill ref if success.
      *
      * @param  int|string  $key
      * @param  any|null   &$value
@@ -82,15 +82,13 @@ trait CollatorTrait
         if (array_key_exists($key, $this->data)) {
             $value = $this->data[$key];
             unset($this->data[$key]);
-
             return true;
         }
-
         return false;
     }
 
     /**
-     * Remove an item from data array.
+     * Remove a value from data array.
      *
      * @param  any              $value
      * @param  int|string|null &$key
@@ -103,10 +101,47 @@ trait CollatorTrait
 
         if (array_value_exists($value, $this->data, key: $key)) {
             unset($this->data[$key]);
-
             return true;
         }
+        return false;
+    }
 
+    /**
+     * Replace a value by given key if key exists.
+     *
+     * @param  int|string $key
+     * @param  any        $value
+     * @return bool
+     * @since  5.17
+     */
+    private function _replace(int|string $key, $value): bool
+    {
+        $this->readOnlyCheck();
+
+        if (array_key_exists($key, $this->data)) {
+            $this->data[$key] = $value;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Replace a value with given new value if value exists.
+     *
+     * @param  any              $oldValue
+     * @param  any              $newValue
+     * @param  int|string|null &$key
+     * @return bool
+     * @since  5.17
+     */
+    private function _replaceValue($oldValue, $newValue, int|string &$key = null): bool
+    {
+        $this->readOnlyCheck();
+
+        if (array_value_exists($oldValue, $this->data, key: $key)) {
+            $this->data[$key] = $newValue;
+            return true;
+        }
         return false;
     }
 
@@ -135,13 +170,14 @@ trait CollatorTrait
     /**
      * Check whether given value exists in data array (with/without strict mode).
      *
-     * @param  any  $value
-     * @param  bool $strict
+     * @param  any              $value
+     * @param  int|string|null &$key
+     * @param  bool             $strict
      * @return bool
      */
-    private function _hasValue($value, bool $strict = true): bool
+    private function _hasValue($value, int|string &$key = null, bool $strict = true): bool
     {
-        return array_value_exists($value, $this->data, $strict);
+        return array_value_exists($value, $this->data, $strict, $key);
     }
 
     /**

@@ -7,34 +7,23 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\collection\collator\{CollatorException, CollatorInterface, CollatorTrait};
-use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetAsTrait};
-use froq\collection\AbstractCollection;
-use froq\util\Arrays;
-use ArrayAccess;
+use froq\collection\collator\{AbstractCollator, CollatorInterface, CollatorTrait};
 
 /**
  * Set Collator.
  *
- * Represents a class entity designed to check unique values and provide read-only state & some utility methods.
+ * Represents a class entity designed to check unique values and provide read-only state
+ * and some utility methods.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\SetCollator
  * @author  Kerem Güneş
  * @since   4.0, 5.4, 5.16
  */
-class SetCollator extends AbstractCollection implements CollatorInterface, ArrayAccess
+class SetCollator extends AbstractCollator implements CollatorInterface
 {
     /** @see froq\collection\collator\CollatorTrait */
     use CollatorTrait;
-
-    /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\AccessMagicTrait
-     * @see froq\collection\trait\GetAsTrait
-     * @since 4.0, 5.0
-     */
-    use AccessTrait, AccessMagicTrait, GetAsTrait;
 
     /**
      * Constructor.
@@ -122,6 +111,22 @@ class SetCollator extends AbstractCollection implements CollatorInterface, Array
     /**
      * @inheritDoc froq\collection\collator\CollatorTrait
      */
+    public final function replace(int $key, $value): bool
+    {
+        return $this->_replace($key, $value);
+    }
+
+    /**
+     * @inheritDoc froq\collection\collator\CollatorTrait
+     */
+    public final function replaceValue($oldValue, $newValue, int &$key = null): bool
+    {
+        return $this->_replaceValue($oldValue, $newValue, $key);
+    }
+
+    /**
+     * @inheritDoc froq\collection\collator\CollatorTrait
+     */
     public final function has(int $key): bool
     {
         return $this->_has($key);
@@ -138,9 +143,9 @@ class SetCollator extends AbstractCollection implements CollatorInterface, Array
     /**
      * @inheritDoc froq\collection\collator\CollatorTrait
      */
-    public final function hasValue($value, bool $strict = true): bool
+    public final function hasValue($value, int &$key = null, bool $strict = true): bool
     {
-        return $this->_hasValue($value, $strict);
+        return $this->_hasValue($value, $key, $strict);
     }
 
     /**
