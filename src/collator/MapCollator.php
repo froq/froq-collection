@@ -13,7 +13,7 @@ use froq\collection\collator\{AbstractCollator, CollatorInterface, CollatorTrait
  * Map Collator.
  *
  * Represents a class entity designed to check key types and provide read-only state
- * and map-like structure with utility methods.
+ * and map-like structure with some utility methods.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\MapCollator
