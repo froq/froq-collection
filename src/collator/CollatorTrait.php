@@ -12,7 +12,8 @@ use froq\collection\collator\CollatorException;
 /**
  * Collator Trait.
  *
- * Represents a trait entity that used in `froq\collection\collator` internally to avoid code repetition.
+ * Represents a trait entity that used in `froq\collection\collator` internally
+ * to avoid code repetition.
  *
  * @package  froq\collection\collator
  * @object   froq\collection\collator\CollatorTrait

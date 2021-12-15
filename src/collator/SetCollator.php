@@ -13,7 +13,7 @@ use froq\collection\collator\{AbstractCollator, CollatorInterface, CollatorTrait
  * Set Collator.
  *
  * Represents a class entity designed to check unique values and provide read-only state
- * and some utility methods.
+ * and set-like structure with utility methods.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\SetCollator

@@ -13,7 +13,7 @@ use froq\collection\collator\{AbstractCollator, CollatorInterface, CollatorTrait
  * Array Collator.
  *
  * Represents a collator class designed to check key types and provide read-only state
- * and some utility methods.
+ * and array-like structure with some utility methods.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\ArrayCollator
