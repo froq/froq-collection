@@ -20,7 +20,7 @@ use ArrayAccess;
  * @package froq\collection\collator
  * @object  froq\collection\collator\Collator
  * @author  Kerem Güneş
- * @since   4.0, 5.4 Moved as stack => collator.
+ * @since   4.0, 5.4
  */
 class Collator extends AbstractCollection implements CollatorInterface, ArrayAccess
 {
@@ -62,9 +62,9 @@ class Collator extends AbstractCollection implements CollatorInterface, ArrayAcc
     /**
      * @inheritDoc froq\collection\collator\CollatorTrait
      */
-    public final function add(int|string $key, $value, bool $flat = true): self
+    public final function add($value): self
     {
-        return $this->_add($key, $value, $flat);
+        return $this->_add($value);
     }
 
     /**
@@ -89,6 +89,14 @@ class Collator extends AbstractCollection implements CollatorInterface, ArrayAcc
     public final function remove(int|string $key, &$value = null): bool
     {
         return $this->_remove($key, $value);
+    }
+
+    /**
+     * @inheritDoc froq\collection\collator\CollatorTrait
+     */
+    public final function removeValue($value, int|string &$key = null): bool
+    {
+        return $this->_removeValue($value, $key);
     }
 
     /**

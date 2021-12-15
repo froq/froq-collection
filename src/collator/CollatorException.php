@@ -15,7 +15,7 @@ use froq\collection\CollectionException;
  * @package froq\collection\collator
  * @object  froq\collection\collator\CollatorException
  * @author  Kerem Güneş
- * @since   4.0, 5.4 Moved as stack => collator.
+ * @since   4.0, 5.4
  */
 class CollatorException extends CollectionException
 {}

@@ -107,20 +107,4 @@ class Iterator implements IteratorInterface, Arrayable, Jsonable, _Iterator, Cou
 
         return $this;
     }
-
-    /**
-     * Reverse data array.
-     *
-     * @param  bool $keepKeys
-     * @return self
-     * @since  5.5
-     */
-    public function reverse(bool $keepKeys = false): self
-    {
-        $this->readOnlyCheck();
-
-        $this->data = array_reverse($this->data, $keepKeys);
-
-        return $this;
-    }
 }

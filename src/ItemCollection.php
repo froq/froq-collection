@@ -177,7 +177,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        if (isset($this->data[$index])) {
+        if (array_key_exists($index, $this->data)) {
             $item = $this->data[$index];
             unset($this->data[$index]);
             return true;
@@ -197,11 +197,9 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        foreach ($this->data as $index => $item) {
-            if ($item === $oldItem) {
-                $this->data[$index] = $newItem;
-                return true;
-            }
+        if (array_value_exists($oldItem, $this->data, key: $index)) {
+            $this->data[$index] = $newItem;
+            return true;
         }
         return false;
     }

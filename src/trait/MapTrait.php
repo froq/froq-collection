@@ -8,7 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 use froq\common\trait\ReadOnlyCallTrait;
-use froq\common\exception\{InvalidArgumentException, RuntimeException};
 use froq\util\Arrays;
 
 /**
@@ -29,14 +28,28 @@ trait MapTrait
     /**
      * Apply a map action on data array.
      *
-     * @param  callable $func
-     * @param  bool     $keepKeys
+     * @param  string|callable $func
+     * @param  bool            $keepKeys
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function map(callable $func, bool $keepKeys = true): self
+    public function map(string|callable $func, bool $keepKeys = true): self
     {
         $this->readOnlyCall();
+
+        // When a built-in type given.
+        if (!is_callable($func)) {
+            static $types = '~^(int|float|string|bool|array|object|null)$~';
+            $type = $func;
+
+            // Provide a mapper using settype().
+            if (preg_test($types, $type)) {
+                $func = function ($value) use ($type) {
+                    settype($value, $type);
+                    return $value;
+                };
+            }
+        }
 
         $this->data = Arrays::map($this->data, $func, $keepKeys);
 
@@ -44,55 +57,24 @@ trait MapTrait
     }
 
     /**
-     * Map all data items to given type.
-     *
-     * @param  string $type
-     * @return self
-     * @throws froq\common\exception\InvalidArgumentException
-     * @causes froq\common\exception\ReadOnlyException
-     */
-    public function mapAs(string $type): self
-    {
-        static $pattern = '~^(int|float|string|bool|array|object|null)$~';
-
-        // Check given type for proper error message, not like settype()'s like.
-        preg_test($pattern, $type) || throw new InvalidArgumentException(
-            'Invalid type `%s`, valid type pattern: %s', [$type, $pattern]
-        );
-
-        return $this->map(function ($item) use ($type) {
-            settype($item, $type);
-
-            return $item;
-        });
-    }
-
-    /**
      * Map all data items as properties to given class.
      *
      * @notice This method must be used on list-data containing objects, not single-dimensions.
-     * @param  string $class
+     * @param  string   $class
+     * @param  mixed ...$classArgs
      * @return self
-     * @throws froq\common\exception\RuntimeException
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function mapTo(string $class): self
+    public function mapTo(string $class, mixed ...$classArgs): self
     {
-        // Check class existence.
-        class_exists($class) || throw new RuntimeException(
-            'Class `%s` not exists', [$class]
-        );
-
-        $object = new $class();
-
-        return $this->map(function ($item) use ($object) {
-            $clone = clone $object;
+        return $this->map(function ($item) use ($class, $classArgs) {
+            $object = new $class(...$classArgs);
 
             foreach ($item as $key => $value) {
-                $clone->{$key} = $value;
+                $object->$key = $value;
             }
 
-            return $clone;
+            return $object;
         });
     }
 }

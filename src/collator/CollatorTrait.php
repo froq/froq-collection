@@ -17,31 +17,23 @@ use froq\util\Arrays;
  * @package  froq\collection\collator
  * @object   froq\collection\collator\CollatorTrait
  * @author   Kerem Güneş
- * @since    4.0, 5.4 Moved as stack => collator.
+ * @since    4.0, 5.4
  * @internal
  */
 trait CollatorTrait
 {
     /**
-     * Add (append) an item to data array with given key.
+     * Add (append) an item to data array.
      *
-     * @param  int|string $key
-     * @param  any        $value
-     * @param  bool       $flat
+     * @param  any $value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    private function _add(int|string $key, $value, bool $flat = true): self
+    private function _add($value): self
     {
         $this->readOnlyCheck();
 
-        if (isset($this->data[$key])) {
-            $this->data[$key] = $flat
-                ? Arrays::flat([$this->data[$key], $value])
-                : Arrays::merge((array) $this->data[$key], $value);
-        } else {
-            $this->data[$key] = $value;
-        }
+        $this->data[] = $value;
 
         return $this;
     }
@@ -87,11 +79,34 @@ trait CollatorTrait
     {
         $this->readOnlyCheck();
 
-        if (isset($this->data[$key])) {
+        if (array_key_exists($key, $this->data)) {
             $value = $this->data[$key];
             unset($this->data[$key]);
+
             return true;
         }
+
+        return false;
+    }
+
+    /**
+     * Remove an item from data array.
+     *
+     * @param  any              $value
+     * @param  int|string|null &$key
+     * @return bool
+     * @causes froq\common\exception\ReadOnlyException
+     */
+    private function _removeValue($value, int|string &$key = null): bool
+    {
+        $this->readOnlyCheck();
+
+        if (array_value_exists($value, $this->data, key: $key)) {
+            unset($this->data[$key]);
+
+            return true;
+        }
+
         return false;
     }
 
@@ -127,5 +142,31 @@ trait CollatorTrait
     private function _hasValue($value, bool $strict = true): bool
     {
         return array_value_exists($value, $this->data, $strict);
+    }
+
+    /**
+     * Check given key validity (for ListCollator & SetCollator only).
+     *
+     * @param  int|string|null $key
+     * @param  bool            $all
+     * @return void
+     * @throws froq\collection\collator\CollatorException
+     */
+    private function _keyCheck(int|string|null $key, bool $all = false): void
+    {
+        if (!is_int($key)) {
+            throw new CollatorException(
+                $all ? 'Invalid data, data keys type must be int'
+                     : 'Invalid key type, key type must be int'
+            );
+        }
+
+        // Evaluates "'' < 0" true.
+        if ($key < 0 && ($this instanceof ListCollator || $this instanceof SetCollator)) {
+            throw new CollatorException(
+                $all ? 'Invalid data, data keys must be sequential'
+                     : 'Invalid key, key must be greater than or equal to 0'
+            );
+        }
     }
 }

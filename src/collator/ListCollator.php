@@ -13,16 +13,16 @@ use froq\collection\AbstractCollection;
 use ArrayAccess;
 
 /**
- * Map Collator.
+ * List Collator.
  *
  * Represents a class entity designed to check key types and provide read-only state & some utility methods.
  *
  * @package froq\collection\collator
- * @object  froq\collection\collator\MapCollator
+ * @object  froq\collection\collator\ListCollator
  * @author  Kerem Güneş
- * @since   4.0, 5.4
+ * @since   4.0, 5.4, 5.16
  */
-class MapCollator extends AbstractCollection implements CollatorInterface, ArrayAccess
+class ListCollator extends AbstractCollection implements CollatorInterface, ArrayAccess
 {
     /** @see froq\collection\collator\CollatorTrait */
     use CollatorTrait;
@@ -38,8 +38,8 @@ class MapCollator extends AbstractCollection implements CollatorInterface, Array
     /**
      * Constructor.
      *
-     * @param array<string, any>|null $data
-     * @param bool|null               $readOnly
+     * @param array<int, any>|null $data
+     * @param bool|null            $readOnly
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {
@@ -49,60 +49,99 @@ class MapCollator extends AbstractCollection implements CollatorInterface, Array
     /**
      * Set data.
      *
-     * @param  array<string, any> $data
-     * @param  bool               $reset
+     * @param  array<int, any> $data
+     * @param  bool            $reset
      * @return self
+     * @causes froq\collection\collator\CollatorException
      * @override
      */
     public final function setData(array $data, bool $reset = true): self
     {
+        foreach (array_keys($data) as $key) {
+            $this->_keyCheck($key, true);
+        }
+
         return parent::setData($data, $reset);
     }
 
     /**
      * @inheritDoc froq\collection\collator\CollatorTrait
+     * @causes froq\collection\collator\CollatorException
      */
-    public final function set(string $key, $value): self
+    public final function add($value): self
     {
+        return $this->_add($value);
+    }
+
+    /**
+     * @inheritDoc froq\collection\collator\CollatorTrait
+     * @causes froq\collection\collator\CollatorException
+     */
+    public final function set(int $key, $value): self
+    {
+        $this->_keyCheck($key);
+
+        // Maintain next key.
+        if ($key > $nextKey = $this->count()) {
+            $key = $nextKey;
+        }
+
         return $this->_set($key, $value);
     }
 
     /**
      * @inheritDoc froq\collection\collator\CollatorTrait
+     * @causes froq\collection\collator\CollatorException
      */
-    public final function get(string $key, $default = null)
+    public final function get(int $key, $default = null)
     {
+        $this->_keyCheck($key);
+
         return $this->_get($key, $default);
     }
 
     /**
      * @inheritDoc froq\collection\collator\CollatorTrait
+     * @causes froq\collection\collator\CollatorException
      */
-    public final function remove(string $key, &$value = null): bool
+    public final function remove(int $key, &$value = null, bool $reset = true): bool
     {
-        return $this->_remove($key, $value);
+        $this->_keyCheck($key);
+
+        $ok = $this->_remove($key, $value);
+
+        // Re-index.
+        $ok && $reset && $this->resetKeys();
+
+        return $ok;
     }
 
     /**
      * @inheritDoc froq\collection\collator\CollatorTrait
      */
-    public final function removeValue($value, string &$key = null): bool
+    public final function removeValue($value, int &$key = null, bool $reset = true): bool
     {
-        return $this->_removeValue($value, $key);
+        $ok = $this->_removeValue($value, $key);
+
+        // Re-index.
+        $ok && $reset && $this->resetKeys();
+
+        return $ok;
     }
 
     /**
      * @inheritDoc froq\collection\collator\CollatorTrait
      */
-    public final function has(string $key): bool
+    public final function has(int $key): bool
     {
         return $this->_has($key);
     }
 
     /**
      * @inheritDoc froq\collection\collator\CollatorTrait
+     * @causes froq\collection\collator\CollatorException
      */
-    public final function hasKey(string $key): bool
+    public final function hasKey(int $key): bool
     {
         return $this->_hasKey($key);
     }
@@ -113,5 +152,17 @@ class MapCollator extends AbstractCollection implements CollatorInterface, Array
     public final function hasValue($value, bool $strict = true): bool
     {
         return $this->_hasValue($value, $strict);
+    }
+
+    /**
+     * Reset data array keys.
+     *
+     * @return self
+     */
+    public final function resetKeys(): self
+    {
+        $this->data = array_values($this->data);
+
+        return $this;
     }
 }

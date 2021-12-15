@@ -79,16 +79,40 @@ class ArrayObject extends AbstractCollection implements ArrayAccess
     /**
      * Remove an item.
      *
-     * @param  int|string $key
+     * @param  int|string  $key
+     * @param  any|null   &$value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function remove(int|string $key): self
+    public function remove(int|string $key, &$value = null): bool
     {
         $this->readOnlyCheck();
 
-        unset($this->data[$key]);
+        if (array_key_exists($key, $this->data)) {
+            $value = $this->data[$key];
+            unset($this->data[$key]);
+            return true;
+        }
+        return false;
+    }
 
-        return $this;
+    /**
+     * Replace an item with new one.
+     *
+     * @param  any              $oldValue
+     * @param  any              $newValue
+     * @param  int|string|null &$key
+     * @return bool
+     * @causes froq\common\exception\ReadOnlyException
+     */
+    public function replace($oldValue, $newValue, int|string &$key = null): bool
+    {
+        $this->readOnlyCheck();
+
+        if (array_value_exists($oldValue, $this->data, key: $key)) {
+            $this->data[$key] = $newValue;
+            return true;
+        }
+        return false;
     }
 }
