@@ -14,7 +14,7 @@ use ArrayAccess;
 /**
  * Abstract Collator.
  *
- * Represents an collator class that provides more basic methods than Collaction classes provide
+ * Represents an collator class that provides more basic methods than collaction classes
  * and is extended by other collator classes.
  *
  * @package froq\collection\collator
