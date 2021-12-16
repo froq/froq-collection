@@ -685,15 +685,15 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Shuffle data array.
      *
-     * @param  bool $keepKeys
+     * @param  bool $assoc
      * @return self
      * @since  4.0
      */
-    public function shuffle(bool $keepKeys = false)
+    public function shuffle(bool $assoc = false)
     {
         $this->readOnlyCheck();
 
-        Arrays::shuffle($this->data, $keepKeys);
+        Arrays::shuffle($this->data, $assoc);
 
         return $this;
     }
