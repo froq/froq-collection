@@ -72,6 +72,25 @@ class SetCollator extends AbstractCollator implements CollatorInterface
      * @inheritDoc froq\collection\collator\CollatorTrait
      * @causes froq\collection\collator\CollatorException
      */
+    public function set(int $key, $value): self
+    {
+        $this->_keyCheck($key);
+
+        if (!$this->_hasValue($value)) {
+            // Maintain next key.
+            if ($key > $nextKey = $this->count()) {
+                $key = $nextKey;
+            }
+            $this->_set($key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc froq\collection\collator\CollatorTrait
+     * @causes froq\collection\collator\CollatorException
+     */
     public final function get(int $key, $default = null)
     {
         $this->_keyCheck($key);
