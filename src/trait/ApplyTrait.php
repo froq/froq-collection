@@ -43,7 +43,7 @@ trait ApplyTrait
 
         // For some internal data changes.
         if (method_exists($this, 'onDataChange')) {
-            $this->onDataChange('filter');
+            $this->onDataChange(__function__);
         }
 
         return $this;
