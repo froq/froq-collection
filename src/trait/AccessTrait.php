@@ -23,20 +23,12 @@ trait AccessTrait
     /** @inheritDoc ArrayAccess */
     public function offsetExists(mixed $key): bool
     {
-        if (is_object($key)) {
-            $key = get_object_id($key);
-        }
-
         return $this->get($key) !== null;
     }
 
     /** @inheritDoc ArrayAccess */
     public function offsetSet(mixed $key, mixed $value): void
     {
-        if (is_object($key)) {
-            $key = get_object_id($key);
-        }
-
         // For calls like `items[] = item`.
         $key ??= $this->count();
 
@@ -46,20 +38,12 @@ trait AccessTrait
     /** @inheritDoc ArrayAccess */
     public function offsetGet(mixed $key): mixed
     {
-        if (is_object($key)) {
-            $key = get_object_id($key);
-        }
-
         return $this->get($key);
     }
 
     /** @inheritDoc ArrayAccess */
     public function offsetUnset(mixed $key): void
     {
-        if (is_object($key)) {
-            $key = get_object_id($key);
-        }
-
         $this->remove($key);
     }
 }
