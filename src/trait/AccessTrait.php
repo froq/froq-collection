@@ -10,8 +10,8 @@ namespace froq\collection\trait;
 /**
  * Access Trait.
  *
- * Represents an trait that provides some utility methods for those classes define `has()`,
- * `set()`, `get()` and `remove()` methods.
+ * Represents a trait that defines related methods for the classes implementing
+ * `ArrayAccess` interface.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\AccessTrait
@@ -20,36 +20,28 @@ namespace froq\collection\trait;
  */
 trait AccessTrait
 {
-    /**
-     * @inheritDoc ArrayAccess
-     */
+    /** @inheritDoc ArrayAccess */
     public function offsetExists(mixed $key): bool
     {
         return $this->get($key) !== null;
     }
 
-    /**
-     * @inheritDoc ArrayAccess
-     */
+    /** @inheritDoc ArrayAccess */
     public function offsetSet(mixed $key, mixed $value): void
     {
-        // For "items[] = item" calls.
+        // For calls like `items[] = item`.
         $key ??= $this->count();
 
         $this->set($key, $value);
     }
 
-    /**
-     * @inheritDoc ArrayAccess
-     */
+    /** @inheritDoc ArrayAccess */
     public function offsetGet(mixed $key): mixed
     {
         return $this->get($key);
     }
 
-    /**
-     * @inheritDoc ArrayAccess
-     */
+    /** @inheritDoc ArrayAccess */
     public function offsetUnset(mixed $key): void
     {
         $this->remove($key);

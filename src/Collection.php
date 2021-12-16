@@ -48,20 +48,16 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Set an item/items.
      *
-     * @param  int|string|array<int|string>|null $key
-     * @param  any|null                          $value
+     * @param  int|string|array<int|string> $key
+     * @param  any|null                     $value
      * @return self
      */
     public function set(int|string|array $key, $value = null): self
     {
         $this->readOnlyCheck();
 
-        if ($key === null) { // From conventions like: $a[] = 1.
-            $this->data[] = $value;
-        } else {
-            is_array($key) ? Arrays::setAll($this->data, $key)
-                           : Arrays::set($this->data, $key, $value);
-        }
+        is_array($key) ? Arrays::setAll($this->data, $key)
+                       : Arrays::set($this->data, $key, $value);
 
         return $this;
     }

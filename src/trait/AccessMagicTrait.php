@@ -10,7 +10,7 @@ namespace froq\collection\trait;
 /**
  * Access Magic Trait.
  *
- * Represents an access magic trait that provides some utility methods.
+ * Represents a trait that provides magic-access methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\AccessMagicTrait
@@ -19,46 +19,25 @@ namespace froq\collection\trait;
  */
 trait AccessMagicTrait
 {
-    /**
-     * Magic - isset.
-     *
-     * @param  int|string $key
-     * @return bool
-     */
+    /** @magic __isset() */
     public function __isset(int|string $key): bool
     {
         return $this->get($key) !== null;
     }
 
-    /**
-     * Magic - set.
-     *
-     * @param  int|string $key
-     * @param  mixed      $value
-     * @return void
-     */
+    /** @magic __set() */
     public function __set(int|string $key, mixed $value): void
     {
         $this->set($key, $value);
     }
 
-    /**
-     * Magic - get.
-     *
-     * @param  int|string $key
-     * @return mixed
-     */
+    /** @magic __get() */
     public function __get(int|string $key): mixed
     {
         return $this->get($key);
     }
 
-    /**
-     * Magic - unset.
-     *
-     * @param  int|string $key
-     * @return void
-     */
+    /** @magic __unset() */
     public function __unset(int|string $key): void
     {
         $this->remove($key);
