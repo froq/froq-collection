@@ -53,6 +53,11 @@ trait MapTrait
 
         $this->data = Arrays::map($this->data, $func, $keepKeys);
 
+        // For some internal data changes.
+        if (method_exists($this, 'onDataChange')) {
+            $this->onDataChange('filter');
+        }
+
         return $this;
     }
 

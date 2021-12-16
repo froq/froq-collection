@@ -39,6 +39,11 @@ trait FilterTrait
 
         $this->data = Arrays::filter($this->data, $func, $keepKeys);
 
+        // For some internal data changes.
+        if (method_exists($this, 'onDataChange')) {
+            $this->onDataChange('filter');
+        }
+
         return $this;
     }
 }

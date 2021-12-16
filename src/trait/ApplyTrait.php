@@ -41,6 +41,11 @@ trait ApplyTrait
 
         $this->data = Arrays::apply($this->data, $func, $useKeys, $swapKeys);
 
+        // For some internal data changes.
+        if (method_exists($this, 'onDataChange')) {
+            $this->onDataChange('filter');
+        }
+
         return $this;
     }
 }

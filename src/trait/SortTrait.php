@@ -40,6 +40,11 @@ trait SortTrait
 
         $this->data = Arrays::sort($this->data, $func, $flags, $keepKeys);
 
+        // For some internal data changes.
+        if (method_exists($this, 'onDataChange')) {
+            $this->onDataChange('filter');
+        }
+
         return $this;
     }
 
@@ -56,6 +61,11 @@ trait SortTrait
         $this->readOnlyCall();
 
         $this->data = Arrays::sortKey($this->data, $func, $flags);
+
+        // For some internal data changes.
+        if (method_exists($this, 'onDataChange')) {
+            $this->onDataChange('filter');
+        }
 
         return $this;
     }
@@ -74,6 +84,11 @@ trait SortTrait
 
         $this->data = Arrays::sortLocale($this->data, $locale, $keepKeys);
 
+        // For some internal data changes.
+        if (method_exists($this, 'onDataChange')) {
+            $this->onDataChange('filter');
+        }
+
         return $this;
     }
 
@@ -89,6 +104,11 @@ trait SortTrait
         $this->readOnlyCall();
 
         $this->data = Arrays::sortNatural($this->data, $icase);
+
+        // For some internal data changes.
+        if (method_exists($this, 'onDataChange')) {
+            $this->onDataChange('filter');
+        }
 
         return $this;
     }
