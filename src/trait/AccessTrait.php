@@ -33,12 +33,12 @@ trait AccessTrait
     /** @inheritDoc ArrayAccess */
     public function offsetSet(mixed $key, mixed $value): void
     {
-        // For calls like `items[] = item`.
-        $key ??= $this->count();
-
         if (is_object($key)) {
             $key = get_object_id($key);
         }
+
+        // For calls like `items[] = item`.
+        $key ??= $this->count();
 
         $this->set($key, $value);
     }
