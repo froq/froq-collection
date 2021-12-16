@@ -96,20 +96,22 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Add (append) an item, flat if key exists.
+     * Add (append) an item/items.
      *
-     * @param  int|string|array<int|string, any> $key
-     * @param  any|null                          $value
-     * @param  bool                              $flat
+     * @param  any  ...$value
      * @return self
+     * @throws froq\collection\CollectionException
      * @since  3.0
      */
-    public function add(int|string|array $key, $value = null, bool $flat = true): self
+    public function add(...$values): self
     {
         $this->readOnlyCheck();
 
-        is_array($key) ? Arrays::addAll($this->data, $key, $flat)
-                       : Arrays::add($this->data, $key, $value, $flat);
+        $values || throw new CollectionException('No value(s) provided');
+
+        foreach ($values as $value) {
+            $this->data[] = $value;
+        }
 
         return $this;
     }
@@ -135,11 +137,14 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @param  int|string|array     $key
      * @param  mixed            &...$value
      * @return self
+     * @throws froq\collection\CollectionException
      * @since  5.0
      */
     public function compact(int|string|array $key, mixed ...$value): self
     {
         $this->readOnlyCheck();
+
+        $value || throw new CollectionException('No value(s) provided');
 
         foreach ((array) $key as $i => $key) {
             $this->data[$key] = $value[$i] ?? null;
@@ -154,10 +159,13 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @param  int|string|array     $key
      * @param  mixed            &...$value
      * @return self
+     * @throws froq\collection\CollectionException
      * @since  5.0
      */
     public function extract(int|string|array $key, mixed &...$value): self
     {
+        $value || throw new CollectionException('No value(s) provided');
+
         foreach ((array) $key as $i => $key) {
             $value[$i] = $this->data[$key] ?? null;
         }
@@ -250,11 +258,14 @@ class Collection extends AbstractCollection implements ArrayAccess
      *
      * @param  ... $values
      * @return self
+     * @throws froq\collection\CollectionException
      * @since  5.0
      */
     public function append(...$values): self
     {
         $this->readOnlyCheck();
+
+        $values || throw new CollectionException('No value(s) provided');
 
         $this->data = array_append($this->data, ...$values);
 
@@ -266,11 +277,14 @@ class Collection extends AbstractCollection implements ArrayAccess
      *
      * @param  ... $values
      * @return self
+     * @throws froq\collection\CollectionException
      * @since  5.0
      */
     public function prepend(...$values): self
     {
         $this->readOnlyCheck();
+
+        $values || throw new CollectionException('No value(s) provided');
 
         $this->data = array_prepend($this->data, ...$values);
 
@@ -394,11 +408,14 @@ class Collection extends AbstractCollection implements ArrayAccess
      *
      * @param  ... $values
      * @return self
+     * @throws froq\collection\CollectionException
      * @since  5.0
      */
     public function delete(...$values): self
     {
         $this->readOnlyCheck();
+
+        $values || throw new CollectionException('No value(s) provided');
 
         $this->data = array_delete($this->data, ...$values);
 
@@ -502,11 +519,14 @@ class Collection extends AbstractCollection implements ArrayAccess
      *
      * @param  array ...$datas
      * @return self
+     * @throws froq\collection\CollectionException
      * @since  4.0
      */
     public function merge(array ...$datas): self
     {
         $this->readOnlyCheck();
+
+        $datas || throw new CollectionException('No data(s) provided');
 
         $this->data = array_merge($this->data, ...$datas);
 
@@ -518,11 +538,14 @@ class Collection extends AbstractCollection implements ArrayAccess
      *
      * @param  array ...$datas
      * @return self
+     * @throws froq\collection\CollectionException
      * @since  5.0
      */
     public function replace(array ...$datas): self
     {
         $this->readOnlyCheck();
+
+        $datas || throw new CollectionException('No data(s) provided');
 
         $this->data = array_replace($this->data, ...$datas);
 
