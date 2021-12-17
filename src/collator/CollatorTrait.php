@@ -182,6 +182,16 @@ trait CollatorTrait
     }
 
     /**
+     * Reset data array keys.
+     *
+     * @return void
+     */
+    private function _resetKeys(): void
+    {
+        $this->data = array_values($this->data);
+    }
+
+    /**
      * Check given key validity (for ListCollator & SetCollator only).
      *
      * @param  int|string|null $key

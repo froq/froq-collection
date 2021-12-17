@@ -101,7 +101,7 @@ class ListCollator extends AbstractCollator implements CollatorInterface
         $ok = $this->_remove($key, $value);
 
         // Re-index.
-        $ok && $reset && $this->resetKeys();
+        $ok && $reset && $this->_resetKeys();
 
         return $ok;
     }
@@ -114,7 +114,7 @@ class ListCollator extends AbstractCollator implements CollatorInterface
         $ok = $this->_removeValue($value, $key);
 
         // Re-index.
-        $ok && $reset && $this->resetKeys();
+        $ok && $reset && $this->_resetKeys();
 
         return $ok;
     }
@@ -158,17 +158,5 @@ class ListCollator extends AbstractCollator implements CollatorInterface
     public final function hasValue($value, int &$key = null, bool $strict = true): bool
     {
         return $this->_hasValue($value, $key, $strict);
-    }
-
-    /**
-     * Reset data array keys.
-     *
-     * @return self
-     */
-    public final function resetKeys(): self
-    {
-        $this->data = array_values($this->data);
-
-        return $this;
     }
 }
