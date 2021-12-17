@@ -419,52 +419,82 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Gather mutual items from given data array over own data array.
+     * Get mutual items in given data array.
      *
-     * @param  ... $datas
+     * @param  array $data
      * @return static
      * @since  5.0
      */
-    public function mutual(...$datas): static
+    public function mutual(array $data): static
     {
-        $data = array_intersect($this->data, ...$datas);
+        $data = Arrays::mutual($this->data, $data);
 
         return new static($data);
     }
 
     /**
-     * Gather unmutual items from given data array over own data array.
+     * Get unmutual copy.
      *
-     * @param  ... $datas
+     * @param  array $data
      * @return static
      * @since  5.0
      */
-    public function unmutual(...$datas): static
+    public function unmutual(array $data): static
     {
-        $data = array_diff($this->data, ...$datas);
+        $data = Arrays::unmutual($this->data, $data);
 
         return new static($data);
     }
 
     /**
-     * Get unique items from data array.
+     * Get diff copy.
+     *
+     * @param  array  $data
+     * @param  bool   $assoc
+     * @return static
+     * @since  5.21
+     */
+    public function diff(array $data, bool $assoc = false): static
+    {
+        $data = Arrays::diff($this->data, $data, $assoc);
+
+        return new static($data);
+    }
+
+    /**
+     * Get diff-key copy.
+     *
+     * @param  array  $data
+     * @param  bool   $assoc
+     * @return static
+     * @since  5.21
+     */
+    public function diffKey(array $data): static
+    {
+        $data = Arrays::diffKey($this->data, $data);
+
+        return new static($data);
+    }
+
+    /**
+     * Dedupe items in data array.
      *
      * @return static
      * @since  4.0
      */
-    public function unique(): static
+    public function dedupe(): static
     {
-        $data = array_unique($this->data, SORT_REGULAR);
+        $data = Arrays::dedupe($this->data);
 
         return new static($data);
     }
 
     /**
-     * @alias of unique()
+     * @alias of dedupe()
      */
-    public function uniq()
+    public function unique()
     {
-        return $this->unique();
+        return $this->dedupe();
     }
 
     /**

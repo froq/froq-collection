@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\collection\collator\CollatorException;
+use froq\collection\collator\{CollatorException, ListCollator, SetCollator};
 
 /**
  * Collator Trait.

@@ -51,7 +51,8 @@ class SetCollator extends AbstractCollator implements CollatorInterface
             $this->_keyCheck($key, true);
         }
 
-        $data = Arrays::unique($data);
+        // Deduplicate repeating values.
+        $data = array_dedupe($data);
 
         return parent::setData($data, $reset);
     }
