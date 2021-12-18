@@ -13,7 +13,7 @@ use froq\util\Arrays;
 /**
  * Map Trait.
  *
- * Represents a trait entity that provides `map()`, `mapAs()` and `mapTo()` methods.
+ * Represents a trait entity that provides `map()`, `mapKeys()` and `mapTo()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\MapTrait
