@@ -28,12 +28,13 @@ trait MapTrait
     /**
      * Apply a map action on data array.
      *
-     * @param  string|callable $func
+     * @param  callable|string $func
+     * @param  bool            $recursive
      * @param  bool            $keepKeys
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function map(string|callable $func, bool $keepKeys = true): self
+    public function map(callable|string $func, bool $recursive = false, bool $keepKeys = true): self
     {
         $this->readOnlyCall();
 
@@ -51,7 +52,29 @@ trait MapTrait
             }
         }
 
-        $this->data = Arrays::map($this->data, $func, $keepKeys);
+        $this->data = Arrays::map($this->data, $func, $recursive, $keepKeys);
+
+        // For some internal data changes.
+        if (method_exists($this, 'onDataChange')) {
+            $this->onDataChange(__function__);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Apply a map action on data array keys.
+     *
+     * @param  callable|string $func
+     * @param  bool            $recursive
+     * @return self
+     * @causes froq\common\exception\ReadOnlyException
+     */
+    public function mapKeys(callable $func, bool $recursive = false): self
+    {
+        $this->readOnlyCall();
+
+        $this->data = Arrays::mapKeys($this->data, $func, $recursive);
 
         // For some internal data changes.
         if (method_exists($this, 'onDataChange')) {
