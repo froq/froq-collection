@@ -30,15 +30,15 @@ trait SortTrait
      *
      * @param  callable|int|null $func
      * @param  int               $flags
-     * @param  bool              $keepKeys
+     * @param  bool              $assoc
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function sort(callable|int $func = null, $flags = 0, bool $keepKeys = true): self
+    public function sort(callable|int $func = null, $flags = 0, bool $assoc = false): self
     {
         $this->readOnlyCall();
 
-        $this->data = Arrays::sort($this->data, $func, $flags, $keepKeys);
+        $this->data = Arrays::sort($this->data, $func, $flags, $assoc);
 
         // For some internal data changes.
         if (method_exists($this, 'onDataChange')) {
@@ -74,15 +74,15 @@ trait SortTrait
      * Apply a locale sort on data array.
      *
      * @param  string|null $locale
-     * @param  bool        $keepKeys
+     * @param  bool        $assoc
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function sortLocale(string $locale = null, bool $keepKeys = true): self
+    public function sortLocale(string $locale = null, bool $assoc = false): self
     {
         $this->readOnlyCall();
 
-        $this->data = Arrays::sortLocale($this->data, $locale, $keepKeys);
+        $this->data = Arrays::sortLocale($this->data, $locale, $assoc);
 
         // For some internal data changes.
         if (method_exists($this, 'onDataChange')) {
