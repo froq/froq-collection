@@ -7,8 +7,10 @@ declare(strict_types=1);
 
 namespace froq\collection\trait;
 
+use froq\collection\collator\MapCollator;
 use froq\common\trait\ReadOnlyCallTrait;
 use froq\util\Arrays;
+use Map;
 
 /**
  * Sort Trait.
@@ -37,6 +39,11 @@ trait SortTrait
     public function sort(callable|int $func = null, $flags = 0, bool $assoc = false): self
     {
         $this->readOnlyCall();
+
+        // Check assoc option.
+        if (!func_has_arg(2) && ($this instanceof Map || $this instanceof MapCollator)) {
+            $assoc = true;
+        }
 
         $this->data = Arrays::sort($this->data, $func, $flags, $assoc);
 
@@ -81,6 +88,11 @@ trait SortTrait
     public function sortLocale(string $locale = null, bool $assoc = false): self
     {
         $this->readOnlyCall();
+
+        // Check assoc option.
+        if (!func_has_arg(1) && ($this instanceof Map || $this instanceof MapCollator)) {
+            $assoc = true;
+        }
 
         $this->data = Arrays::sortLocale($this->data, $locale, $assoc);
 
