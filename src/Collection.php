@@ -479,14 +479,45 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Concat given item(s) with data array & return a new static instance.
+     *
+     * @param  mixed    $item
+     * @param  mixed ...$items
+     * @return static
+     * @since  5.22
+     */
+    public function concat(mixed $item, mixed ...$items): static
+    {
+        $data = Arrays::concat($this->data, $item, ...$items);
+
+        return new static($data);
+    }
+
+    /**
+     * Union given data(s) with data array & return a new static instance.
+     *
+     * @param  array    $data
+     * @param  array ...$datas
+     * @return static
+     * @since  5.22
+     */
+    public function union(array $data, array $datas): static
+    {
+        $data = Arrays::union($this->data, $data, ...$datas);
+
+        return new static($data);
+    }
+
+    /**
      * Dedupe items in data array & return a new static instance.
      *
+     * @param  bool $strict
      * @return static
      * @since  4.0
      */
-    public function dedupe(): static
+    public function dedupe(bool $strict = true): static
     {
-        $data = Arrays::dedupe($this->data);
+        $data = Arrays::dedupe($this->data, $strict);
 
         return new static($data);
     }
@@ -518,14 +549,14 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Split data array & return a new static instance.
      *
-     * @param  int  $limit
+     * @param  int  $length
      * @param  bool $keepKeys
      * @return static
      * @since  4.0
      */
-    public function split(int $limit, bool $keepKeys = false): static
+    public function split(int $length, bool $keepKeys = false): static
     {
-        $data = array_chunk($this->data, $limit, $keepKeys);
+        $data = array_chunk($this->data, $length, $keepKeys);
 
         return new static($data);
     }
@@ -543,39 +574,69 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Merge data array with given data array.
+     * Merge data array with given data array(s).
      *
+     * @param  array    $data
      * @param  array ...$datas
      * @return self
-     * @throws froq\collection\CollectionException
      * @since  4.0
      */
-    public function merge(array ...$datas): self
+    public function merge(array $data, array ...$datas): self
     {
         $this->readOnlyCheck();
 
-        $datas || throw new CollectionException('No data(s) provided');
-
-        $this->data = array_merge($this->data, ...$datas);
+        $this->data = array_merge($this->data, $data, ...$datas);
 
         return $this;
     }
 
     /**
-     * Replace data array with given data array.
+     * Merge data array with given data array(s) recursively.
      *
+     * @param  array    $data
      * @param  array ...$datas
      * @return self
-     * @throws froq\collection\CollectionException
-     * @since  5.0
+     * @since  5.22
      */
-    public function replace(array ...$datas): self
+    public function mergeRecursive(array $data, array ...$datas): self
     {
         $this->readOnlyCheck();
 
-        $datas || throw new CollectionException('No data(s) provided');
+        $this->data = array_merge_recursive($this->data, $data, ...$datas);
 
-        $this->data = array_replace($this->data, ...$datas);
+        return $this;
+    }
+
+    /**
+     * Replace data array with given data array(s).
+     *
+     * @param  array    $data
+     * @param  array ...$datas
+     * @return self
+     * @since  5.0
+     */
+    public function replace(array $data, array ...$datas): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_replace($this->data, $data, ...$datas);
+
+        return $this;
+    }
+
+    /**
+     * Replace data array with given data array(s) recursively.
+     *
+     * @param  array    $data
+     * @param  array ...$datas
+     * @return self
+     * @since  5.22
+     */
+    public function replaceRecursive(array $data, array ...$datas): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_replace_recursive($this->data, $data, ...$datas);
 
         return $this;
     }
