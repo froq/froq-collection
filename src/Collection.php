@@ -288,6 +288,25 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
+     * Delete an item/items from data array by given value(s).
+     *
+     * @param  ... $values
+     * @return self
+     * @throws froq\collection\CollectionException
+     * @since  5.0
+     */
+    public function delete(...$values): self
+    {
+        $this->readOnlyCheck();
+
+        $values || throw new CollectionException('No value(s) provided');
+
+        $this->data = array_delete($this->data, ...$values);
+
+        return $this;
+    }
+
+    /**
      * Reverse data array.
      *
      * @param  bool $keepKeys
@@ -338,7 +357,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Select an item/items from data array by given key(s).
+     * Select item(s) from data array by given key(s) & return a new static instance.
      *
      * @param  int|string|array<int|string> $key
      * @param  bool                         $combine (AKA keep-keys directive).
@@ -347,13 +366,14 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function select(int|string|array $key, bool $combine = true): static
     {
-        $data = array_select($this->data, $key, combine: $combine);
+        $data = (array) array_select($this->data, $key, combine: $combine);
 
-        return new static((array) $data);
+        return new static($data);
     }
 
     /**
-     * Select item columns from data array by given key, optionally index by given index key.
+     * Select item columns from data array by given key, optionally index by given index key
+     * & return a new static instance.
      *
      * @param  int|string      $key
      * @param  int|string|null $indexKey
@@ -376,7 +396,8 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Index items in data array by given index key, optionally select columns only by given key.
+     * Index items in data array by given index key, optionally select columns only by given key
+     * & return a new static instance.
      *
      * @param  int|string      $indexKey
      * @param  int|string|null $key
@@ -400,26 +421,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Delete an item/items from data array by given value(s).
-     *
-     * @param  ... $values
-     * @return self
-     * @throws froq\collection\CollectionException
-     * @since  5.0
-     */
-    public function delete(...$values): self
-    {
-        $this->readOnlyCheck();
-
-        $values || throw new CollectionException('No value(s) provided');
-
-        $this->data = array_delete($this->data, ...$values);
-
-        return $this;
-    }
-
-    /**
-     * Get mutual items in given data array.
+     * Get mutual items in given data array & return a new static instance.
      *
      * @param  array $data
      * @return static
@@ -433,7 +435,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get unmutual copy.
+     * Get unmutual items & return a new static instance.
      *
      * @param  array $data
      * @return static
@@ -447,7 +449,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get diff copy.
+     * Get different items & return a new static instance.
      *
      * @param  array  $data
      * @param  bool   $assoc
@@ -462,7 +464,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Get diff-key copy.
+     * Get different (keyed) items & return a new static instance.
      *
      * @param  array  $data
      * @param  bool   $assoc
@@ -477,7 +479,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Dedupe items in data array.
+     * Dedupe items in data array & return a new static instance.
      *
      * @return static
      * @since  4.0
@@ -498,7 +500,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Slice data array.
+     * Slice data array & return a new static instance.
      *
      * @param  int      $start
      * @param  int|null $end
@@ -514,7 +516,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Split data array.
+     * Split data array & return a new static instance.
      *
      * @param  int  $limit
      * @param  bool $keepKeys
