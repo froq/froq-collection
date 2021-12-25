@@ -547,14 +547,14 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Split data array & return a new static instance.
+     * Chunk data array & return a new static instance.
      *
      * @param  int  $length
      * @param  bool $keepKeys
      * @return static
      * @since  4.0
      */
-    public function split(int $length, bool $keepKeys = false): static
+    public function chunk(int $length, bool $keepKeys = false): static
     {
         $data = array_chunk($this->data, $length, $keepKeys);
 
