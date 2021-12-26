@@ -501,7 +501,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      * @return static
      * @since  5.22
      */
-    public function union(array $data, array $datas): static
+    public function union(array $data, array ...$datas): static
     {
         $data = Arrays::union($this->data, $data, ...$datas);
 
