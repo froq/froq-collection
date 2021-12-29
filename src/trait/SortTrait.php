@@ -58,12 +58,12 @@ trait SortTrait
     /**
      * Apply a key sort on data array.
      *
-     * @param  callable|null $func
-     * @param  int           $flags
+     * @param  callable|int|null $func
+     * @param  int               $flags
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function sortKey(callable $func = null, int $flags = 0): self
+    public function sortKey(callable|int $func = null, int $flags = 0): self
     {
         $this->readOnlyCall();
 
