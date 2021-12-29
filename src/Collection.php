@@ -252,18 +252,16 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Append given values to data array.
      *
-     * @param  ... $values
+     * @param  mixed    $value
+     * @param  mixed ...$values
      * @return self
-     * @throws froq\collection\CollectionException
      * @since  5.0
      */
-    public function append(...$values): self
+    public function append(mixed $value, mixed ...$values): self
     {
         $this->readOnlyCheck();
 
-        $values || throw new CollectionException('No value(s) provided');
-
-        $this->data = array_append($this->data, ...$values);
+        $this->data = array_append($this->data, $value, ...$values);
 
         return $this;
     }
@@ -271,18 +269,16 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Prepend given values to data array.
      *
-     * @param  ... $values
+     * @param  mixed    $value
+     * @param  mixed ...$values
      * @return self
-     * @throws froq\collection\CollectionException
      * @since  5.0
      */
-    public function prepend(...$values): self
+    public function prepend(mixed $value, mixed ...$values): self
     {
         $this->readOnlyCheck();
 
-        $values || throw new CollectionException('No value(s) provided');
-
-        $this->data = array_prepend($this->data, ...$values);
+        $this->data = array_prepend($this->data, $value, ...$values);
 
         return $this;
     }
@@ -290,18 +286,33 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Delete an item/items from data array by given value(s).
      *
-     * @param  ... $values
+     * @param  mixed    $value
+     * @param  mixed ...$values
      * @return self
-     * @throws froq\collection\CollectionException
      * @since  5.0
      */
-    public function delete(...$values): self
+    public function delete(mixed $value, mixed ...$values): self
     {
         $this->readOnlyCheck();
 
-        $values || throw new CollectionException('No value(s) provided');
+        $this->data = array_delete($this->data, $value, ...$values);
 
-        $this->data = array_delete($this->data, ...$values);
+        return $this;
+    }
+
+    /**
+     * Delete an item/items from data array by given key(s).
+     *
+     * @param  int|string    $key
+     * @param  int|string ...$keys
+     * @return self
+     * @since  5.24
+     */
+    public function deleteKey(int|string $key, int|string ...$keys): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_delete_keys($this->data, $key, ...$keys);
 
         return $this;
     }
@@ -660,17 +671,18 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Sweep data array dropping empty items those null, '' or [].
+     * Clean data array dropping empty (null, '', []) items.
      *
      * @param  array|null $ignoredKeys
+     * @param  bool       $keepKeys
      * @return self
      * @since  4.0
      */
-    public function sweep(array $ignoredKeys = null): self
+    public function clean(array $ignoredKeys = null, bool $keepKeys = true): self
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::sweep($this->data, $ignoredKeys);
+        $this->data = Arrays::clean($this->data, $ignoredKeys, $keepKeys);
 
         return $this;
     }
@@ -754,31 +766,6 @@ class Collection extends AbstractCollection implements ArrayAccess
     public function testAll(callable $func): bool
     {
         return Arrays::testAll($this->data, $func);
-    }
-
-    /**
-     * Find, like JavaScript Array.find().
-     *
-     * @param  callable $func
-     * @return any|null
-     * @since  4.3
-     */
-    public function find(callable $func)
-    {
-        return Arrays::find($this->data, $func);
-    }
-
-    /**
-     * Find all, kinda filter.
-     *
-     * @param  callable $func
-     * @param  bool     $useKeys
-     * @return array
-     * @since  4.3
-     */
-    public function findAll(callable $func, bool $useKeys = false): array
-    {
-        return Arrays::findAll($this->data, $func, $useKeys);
     }
 
     /**
@@ -886,49 +873,5 @@ class Collection extends AbstractCollection implements ArrayAccess
             $items[$key] = $this->get($key);
         }
         return $items;
-    }
-
-    /**
-     * Get first item or return null if no items on data array.
-     *
-     * @return any|null
-     * @since  4.0
-     */
-    public function first()
-    {
-        return array_first($this->data);
-    }
-
-    /**
-     * Find first key or return null if no items data array.
-     *
-     * @return int|string|null
-     * @since  4.0
-     */
-    public function firstKey(): int|string|null
-    {
-        return array_key_first($this->data);
-    }
-
-    /**
-     * Get last item or return null if no items on data array.
-     *
-     * @return any|null
-     * @since  4.0
-     */
-    public function last()
-    {
-        return array_last($this->data);
-    }
-
-    /**
-     * Find last key or return null if no items data array.
-     *
-     * @return int|string|null
-     * @since  4.0
-     */
-    public function lastKey(): int|string|null
-    {
-        return array_key_last($this->data);
     }
 }
