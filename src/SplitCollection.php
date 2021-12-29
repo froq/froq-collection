@@ -27,13 +27,13 @@ class SplitCollection extends Collection
      * @param string   $string
      * @param string   $pattern
      * @param int|null $limit
-     * @param bool     $blanks
+     * @param int|null $flags
      * @param bool     $pad
      */
-    public static function split(string $string, string $pattern, int $limit = null,
-        bool $pad = true, bool $blanks = false)
+    public static function split(string $string, string $pattern, int $limit = null, int $flags = null,
+        bool $pad = true)
     {
-        return new static(split($pattern, $string, $limit, $pad, $blanks));
+        return new static(split($pattern, $string, $limit, $flags, $pad));
     }
 
     /**
