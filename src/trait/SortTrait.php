@@ -32,16 +32,16 @@ trait SortTrait
      *
      * @param  callable|int|null $func
      * @param  int               $flags
-     * @param  bool              $assoc
+     * @param  bool|null         $assoc
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function sort(callable|int $func = null, $flags = 0, bool $assoc = false): self
+    public function sort(callable|int $func = null, $flags = 0, bool $assoc = null): self
     {
         $this->readOnlyCall();
 
         // Check assoc option.
-        if (!func_has_arg(2) && ($this instanceof Map || $this instanceof MapCollator)) {
+        if (func_num_args() != 3 && ($this instanceof Map || $this instanceof MapCollator)) {
             $assoc = true;
         }
 
@@ -81,16 +81,16 @@ trait SortTrait
      * Apply a locale sort on data array.
      *
      * @param  string|null $locale
-     * @param  bool        $assoc
+     * @param  bool|null   $assoc
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function sortLocale(string $locale = null, bool $assoc = false): self
+    public function sortLocale(string $locale = null, bool $assoc = null): self
     {
         $this->readOnlyCall();
 
         // Check assoc option.
-        if (!func_has_arg(1) && ($this instanceof Map || $this instanceof MapCollator)) {
+        if (func_num_args() != 2 && ($this instanceof Map || $this instanceof MapCollator)) {
             $assoc = true;
         }
 
