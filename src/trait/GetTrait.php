@@ -7,36 +7,21 @@ declare(strict_types=1);
 
 namespace froq\collection\trait;
 
+use froq\util\Arrays;
+
 /**
- * Get-as Trait.
+ * Get Trait.
  *
- * Represents a trait that provides `getAs()` and other utility methods for expected returns
- * such as int/bool/string/float for those classes define `get()` method.
+ * Represents a trait that provides `get*()` utility methods for expected returns such as
+ * int/bool/string/float for those classes define `get()` method and `getRandom()` method as well.
  *
  * @package froq\collection\trait
- * @object  froq\collection\trait\GetAsTrait
+ * @object  froq\collection\trait\GetTrait
  * @author  Kerem Güneş
  * @since   5.0, 5.8 Separated from "AccessTrait" methods.
  */
-trait GetAsTrait
+trait GetTrait
 {
-    /**
-     * Get a value as given type.
-     *
-     * @param  int|string $key
-     * @param  string     $type
-     * @param  any|null   $default
-     * @return any
-     * @since  5.0
-     */
-    public function getAs(int|string $key, string $type, $default = null)
-    {
-        $value = $this->get($key, $default);
-        settype($value, $type);
-
-        return $value;
-    }
-
     /**
      * Get a value as int.
      *
@@ -87,5 +72,32 @@ trait GetAsTrait
     public function getBool(int|string $key, $default = null): bool
     {
         return (bool) $this->get($key, $default);
+    }
+
+    /**
+     * Get a value as given type.
+     *
+     * @param  int|string $key
+     * @param  string     $type
+     * @param  mixed|null $default
+     * @return mixed|null
+     * @since  5.0
+     */
+    public function getAs(int|string $key, string $type, mixed $default = null)
+    {
+        return Arrays::getAs($this->data, $key, $type, $default);
+    }
+
+    /**
+     * Get random item(s).
+     *
+     * @param  int        $limit
+     * @param  mixed|null $default
+     * @return mixed|null
+     * @since  5.25
+     */
+    public function getRandom(int $limit = 1, mixed $default = null): mixed
+    {
+        return Arrays::getRandom($this->data, $limit, drop: $drop) ?? $default;
     }
 }

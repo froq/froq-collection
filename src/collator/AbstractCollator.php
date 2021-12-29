@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetAsTrait};
+use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
 use froq\common\object\XArray;
 use ArrayAccess;
 
@@ -27,7 +27,7 @@ abstract class AbstractCollator extends XArray implements ArrayAccess
     /**
      * @see froq\collection\trait\AccessTrait
      * @see froq\collection\trait\AccessMagicTrait
-     * @see froq\collection\trait\GetAsTrait
+     * @see froq\collection\trait\GetTrait
      */
-    use AccessTrait, AccessMagicTrait, GetAsTrait;
+    use AccessTrait, AccessMagicTrait, GetTrait;
 }
