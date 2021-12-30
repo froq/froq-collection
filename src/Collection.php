@@ -815,15 +815,16 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Fill data array with given value.
      *
-     * @param  any $value
+     * @param  int|null   $count
+     * @param  mixed|null $value
      * @return self
      * @since  4.0
      */
-    public function fill($value): self
+    public function fill(int $count, mixed $value = null): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_fill_keys(array_keys($this->data), $value);
+        $this->data = array_fill(0, $count, $value);
 
         return $this;
     }
@@ -832,11 +833,11 @@ class Collection extends AbstractCollection implements ArrayAccess
      * Fill data array with given keys & value.
      *
      * @param  array<int|string> $keys
-     * @param  any               $value
+     * @param  mixed|null        $value
      * @return self
      * @since  5.0
      */
-    public function fillKeys(array $keys, $value): self
+    public function fillKeys(array $keys, mixed $value = null): self
     {
         $this->readOnlyCheck();
 
