@@ -33,4 +33,17 @@ trait EachTrait
 
         return $this;
     }
+
+    /**
+     * Call given function for each item key of data array.
+     *
+     * @param  callable $func
+     * @return self
+     */
+    public function eachKey(callable $func): self
+    {
+        Arrays::each(array_keys($this->data), $func);
+
+        return $this;
+    }
 }
