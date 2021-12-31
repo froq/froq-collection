@@ -49,83 +49,63 @@ class ArrayCollator extends AbstractCollator implements CollatorInterface
         return parent::setData($data, $reset);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function add($value): self
     {
         return $this->_add($value);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function set(int|string $key, $value): self
     {
         return $this->_set($key, $value);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function get(int|string $key, $default = null)
     {
         return $this->_get($key, $default);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function remove(int|string $key, &$value = null): bool
     {
         return $this->_remove($key, $value);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function removeValue($value, int|string &$key = null): bool
     {
         return $this->_removeValue($value, $key);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function replace(int|string $key, $value): bool
     {
         return $this->_replace($key, $value);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function replaceValue($oldValue, $newValue, int|string &$key = null): bool
     {
         return $this->_replaceValue($oldValue, $newValue, $key);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function has(int|string $key): bool
     {
         return $this->_has($key);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function hasKey(int|string $key): bool
     {
         return $this->_hasKey($key);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
-    public final function hasValue($value, int|string &$key = null, bool $strict = true): bool
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    public final function hasValue($value, int|string &$key = null): bool
     {
-        return $this->_hasValue($value, $key, $strict);
+        return $this->_hasValue($value, $key);
     }
 }

@@ -7,7 +7,8 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\collection\collator\{CollatorException, ListCollator, SetCollator};
+use froq\collection\collator\{ListCollator, MapCollator, SetCollator};
+use froq\common\exception\InvalidKeyException;
 
 /**
  * Collator Trait.
@@ -45,10 +46,12 @@ trait CollatorTrait
      * @param  int|string $key
      * @param  any        $value
      * @return self
+     * @causes froq\common\exception\InvalidKeyException
      * @causes froq\common\exception\ReadOnlyException
      */
     private function _set(int|string $key, $value): self
     {
+        $this->keyCheck($key);
         $this->readOnlyCheck();
 
         $this->data[$key] = $value;
@@ -62,9 +65,12 @@ trait CollatorTrait
      * @param  int|string $key
      * @param  any|null   $default
      * @return any|null
+     * @causes froq\common\exception\InvalidKeyException
      */
     private function _get(int|string $key, $default = null)
     {
+        $this->keyCheck($key);
+
         return $this->data[$key] ?? $default;
     }
 
@@ -73,18 +79,26 @@ trait CollatorTrait
      *
      * @param  int|string  $key
      * @param  any|null   &$value
+     * @param  bool        $reset
      * @return bool
+     * @causes froq\common\exception\InvalidKeyException
      * @causes froq\common\exception\ReadOnlyException
      */
-    private function _remove(int|string $key, &$value = null): bool
+    private function _remove(int|string $key, &$value = null, bool $reset = false): bool
     {
+        $this->keyCheck($key);
         $this->readOnlyCheck();
 
         if (array_key_exists($key, $this->data)) {
             $value = $this->data[$key];
             unset($this->data[$key]);
+
+            // Re-index.
+            $reset && $this->resetKeys();
+
             return true;
         }
+
         return false;
     }
 
@@ -93,17 +107,23 @@ trait CollatorTrait
      *
      * @param  any              $value
      * @param  int|string|null &$key
+     * @param  bool             $reset
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
      */
-    private function _removeValue($value, int|string &$key = null): bool
+    private function _removeValue($value, int|string &$key = null, bool $reset = false): bool
     {
         $this->readOnlyCheck();
 
         if (array_value_exists($value, $this->data, key: $key)) {
             unset($this->data[$key]);
+
+            // Re-index.
+            $reset && $this->resetKeys();
+
             return true;
         }
+
         return false;
     }
 
@@ -114,15 +134,20 @@ trait CollatorTrait
      * @param  any        $value
      * @return bool
      * @since  5.17
+     * @causes froq\common\exception\InvalidKeyException
+     * @causes froq\common\exception\ReadOnlyException
      */
     private function _replace(int|string $key, $value): bool
     {
+        $this->keyCheck($key);
         $this->readOnlyCheck();
 
         if (array_key_exists($key, $this->data)) {
             $this->data[$key] = $value;
+
             return true;
         }
+
         return false;
     }
 
@@ -134,6 +159,7 @@ trait CollatorTrait
      * @param  int|string|null &$key
      * @return bool
      * @since  5.17
+     * @causes froq\common\exception\ReadOnlyException
      */
     private function _replaceValue($oldValue, $newValue, int|string &$key = null): bool
     {
@@ -141,8 +167,10 @@ trait CollatorTrait
 
         if (array_value_exists($oldValue, $this->data, key: $key)) {
             $this->data[$key] = $newValue;
+
             return true;
         }
+
         return false;
     }
 
@@ -169,16 +197,15 @@ trait CollatorTrait
     }
 
     /**
-     * Check whether given value exists in data array (with/without strict mode).
+     * Check whether given value exists in data array with strict mode.
      *
      * @param  any              $value
      * @param  int|string|null &$key
-     * @param  bool             $strict
      * @return bool
      */
-    private function _hasValue($value, int|string &$key = null, bool $strict = true): bool
+    private function _hasValue($value, int|string &$key = null): bool
     {
-        return array_value_exists($value, $this->data, $strict, $key);
+        return array_value_exists($value, $this->data, key: $key);
     }
 
     /**
@@ -186,31 +213,35 @@ trait CollatorTrait
      *
      * @return void
      */
-    private function _resetKeys(): void
+    private function resetKeys(): void
     {
         $this->data = array_values($this->data);
     }
 
     /**
-     * Check given key validity (for ListCollator & SetCollator only).
+     * Check given key validity.
      *
      * @param  int|string|null $key
      * @param  bool            $all
      * @return void
-     * @throws froq\collection\collator\CollatorException
+     * @throws froq\common\exception\InvalidKeyException
      */
-    private function _keyCheck(int|string|null $key, bool $all = false): void
+    private function keyCheck(int|string|null $key, bool $all = false): void
     {
-        if (!is_int($key)) {
-            throw new CollatorException(
-                $all ? 'Invalid data, data keys type must be int'
-                     : 'Invalid key type, key type must be int'
+        if ($this instanceof ArrayCollator || $this instanceof MapCollator) {
+            if ($key === '') throw new InvalidKeyException(
+                'Empty keys not allowed for %s object', static::class
             );
         }
 
-        // Evaluates "'' < 0" true.
-        if ($key < 0 && ($this instanceof ListCollator || $this instanceof SetCollator)) {
-            throw new CollatorException(
+        if ($this instanceof ListCollator || $this instanceof SetCollator) {
+            if (!is_int($key)) throw new InvalidKeyException(
+                $all ? 'Invalid data, data keys type must be int'
+                     : 'Invalid key type, key type must be int'
+            );
+
+            // Note: evaluates "'' < 0" true.
+            if ($key < 0) throw new InvalidKeyException(
                 $all ? 'Invalid data, data keys must be sequential'
                      : 'Invalid key, key must be greater than or equal to 0'
             );

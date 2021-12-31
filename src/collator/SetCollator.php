@@ -48,7 +48,7 @@ class SetCollator extends AbstractCollator implements CollatorInterface
     public final function setData(array $data, bool $reset = true): self
     {
         foreach (array_keys($data) as $key) {
-            $this->_keyCheck($key, true);
+            $this->keyCheck($key, true);
         }
 
         // Deduplicate repeating values.
@@ -57,9 +57,7 @@ class SetCollator extends AbstractCollator implements CollatorInterface
         return parent::setData($data, $reset);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function add($value): self
     {
         if (!$this->_hasValue($value)) {
@@ -69,102 +67,66 @@ class SetCollator extends AbstractCollator implements CollatorInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     * @causes froq\collection\collator\CollatorException
-     */
-    public function set(int $key, $value): self
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    public final function set(int $key, $value): self
     {
-        $this->_keyCheck($key);
-
         if (!$this->_hasValue($value)) {
             // Maintain next key.
             if ($key > $nextKey = $this->count()) {
                 $key = $nextKey;
             }
+
             $this->_set($key, $value);
         }
 
         return $this;
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     * @causes froq\collection\collator\CollatorException
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function get(int $key, $default = null)
     {
-        $this->_keyCheck($key);
-
         return $this->_get($key, $default);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     * @causes froq\collection\collator\CollatorException
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function remove(int $key, &$value = null): bool
     {
-        $this->_keyCheck($key);
-
-        $ok = $this->_remove($key, $value);
-
-        // Re-index.
-        $ok && $this->_resetKeys();
-
-        return $ok;
+        return $this->_remove($key, $value, true);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function removeValue($value, int &$key = null): bool
     {
-        $ok = $this->_removeValue($value, $key);
-
-        // Re-index.
-        $ok && $this->_resetKeys();
-
-        return $ok;
+        return $this->_removeValue($value, $key, true);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function replace(int $key, $value): bool
     {
         return $this->_replace($key, $value);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function replaceValue($oldValue, $newValue, int &$key = null): bool
     {
         return $this->_replaceValue($oldValue, $newValue, $key);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function has(int $key): bool
     {
         return $this->_has($key);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
     public final function hasKey(int $key): bool
     {
         return $this->_hasKey($key);
     }
 
-    /**
-     * @inheritDoc froq\collection\collator\CollatorTrait
-     */
-    public final function hasValue($value, int &$key = null, bool $strict = true): bool
+    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    public final function hasValue($value, int &$key = null): bool
     {
-        return $this->_hasValue($value, $key, $strict);
+        return $this->_hasValue($value, $key);
     }
 }
