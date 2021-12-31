@@ -5,10 +5,11 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection;
+namespace froq\collection\object;
 
 use froq\collection\AbstractCollection;
 use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
+use froq\common\exception\InvalidKeyException;
 use ArrayAccess;
 
 /**
@@ -17,8 +18,8 @@ use ArrayAccess;
  * Represents a simple but very extended array-object structure (not like `ArrayObject`) with
  * some utility methods.
  *
- * @package froq\collection
- * @object  froq\collection\ArrayObject
+ * @package froq\collection\object
+ * @object  froq\collection\object\ArrayObject
  * @author  Kerem Güneş
  * @since   5.14, 5.15 Refactored extending AbstractCollection.
  */
@@ -53,10 +54,12 @@ class ArrayObject extends AbstractCollection implements ArrayAccess
      * @param  int|string $key
      * @param  mixed      $value
      * @return self
+     * @causes froq\common\exception\InvalidKeyException
      * @causes froq\common\exception\ReadOnlyException
      */
     public function set(int|string $key, mixed $value): self
     {
+        $this->keyCheck($key);
         $this->readOnlyCheck();
 
         $this->data[$key] = $value;
@@ -70,9 +73,12 @@ class ArrayObject extends AbstractCollection implements ArrayAccess
      * @param  int|string $key
      * @param  mixed|null $default
      * @return mixed|null
+     * @causes froq\common\exception\InvalidKeyException
      */
     public function get(int|string $key, mixed $default = null): mixed
     {
+        $this->keyCheck($key);
+
         return $this->data[$key] ?? $default;
     }
 
@@ -82,17 +88,21 @@ class ArrayObject extends AbstractCollection implements ArrayAccess
      * @param  int|string  $key
      * @param  any|null   &$value
      * @return self
+     * @causes froq\common\exception\InvalidKeyException
      * @causes froq\common\exception\ReadOnlyException
      */
     public function remove(int|string $key, &$value = null): bool
     {
+        $this->keyCheck($key);
         $this->readOnlyCheck();
 
         if (array_key_exists($key, $this->data)) {
             $value = $this->data[$key];
             unset($this->data[$key]);
+
             return true;
         }
+
         return false;
     }
 
@@ -114,5 +124,19 @@ class ArrayObject extends AbstractCollection implements ArrayAccess
             return true;
         }
         return false;
+    }
+
+    /**
+     * Check key validity.
+     *
+     * @param  int|string|null $key
+     * @return void
+     * @throws froq\collection\InvalidKeyException
+     */
+    private function keyCheck(int|string|null $key): void
+    {
+        if ($key === '') throw new InvalidKeyException(
+            'Empty keys are not allowed',
+        );
     }
 }

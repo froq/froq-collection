@@ -230,7 +230,7 @@ trait CollatorTrait
     {
         if ($this instanceof ArrayCollator || $this instanceof MapCollator) {
             if ($key === '') throw new InvalidKeyException(
-                'Empty keys not allowed for %s object', static::class
+                'Empty keys are not allowed'
             );
         }
 

@@ -5,9 +5,9 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection;
+namespace froq\collection\object;
 
-use froq\collection\ArrayObject;
+use froq\collection\object\ArrayObject;
 use froq\collection\trait\AccessMagicTrait;
 
 /**
@@ -15,8 +15,8 @@ use froq\collection\trait\AccessMagicTrait;
  *
  * Represents an array-object structure with dynamic access/modify methods and other inherit utilities.
  *
- * @package froq\collection
- * @object  froq\collection\ArrayLikeObject
+ * @package froq\collection\object
+ * @object  froq\collection\object\ArrayLikeObject
  * @author  Kerem Güneş
  * @since   5.15
  */
