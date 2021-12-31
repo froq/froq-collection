@@ -9,8 +9,8 @@ namespace froq\collection\iterator;
 
 use froq\collection\iterator\{IteratorInterface, IteratorException};
 use froq\collection\trait\{SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait, HasTrait};
-use froq\common\interface\{Arrayable, Jsonable};
-use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataListTrait, DataToArrayTrait, DataToObjectTrait,
+use froq\common\interface\{Listable, Arrayable, Objectable, Jsonable};
+use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataToListTrait, DataToArrayTrait, DataToObjectTrait,
     DataToJsonTrait, DataIteratorTrait, ReadOnlyTrait};
 use froq\util\Arrays;
 use Iterator as _Iterator, Countable, Traversable;
@@ -25,7 +25,8 @@ use Iterator as _Iterator, Countable, Traversable;
  * @author  Kerem Güneş
  * @since   5.3
  */
-class Iterator implements IteratorInterface, Arrayable, Jsonable, _Iterator, Countable
+class Iterator implements IteratorInterface, Listable, Arrayable, Objectable, Jsonable,
+    _Iterator, Countable
 {
     /**
      * @see froq\collection\trait\SortTrait
@@ -40,13 +41,13 @@ class Iterator implements IteratorInterface, Arrayable, Jsonable, _Iterator, Cou
     /**
      * @see froq\common\trait\DataCountTrait
      * @see froq\common\trait\DataEmptyTrait
-     * @see froq\common\trait\DataListTrait
+     * @see froq\common\trait\DataToListTrait
      * @see froq\common\trait\DataToArrayTrait
      * @see froq\common\trait\DataToObjectTrait
      * @see froq\common\trait\DataToJsonTrait
      * @see froq\common\trait\DataIteratorTrait
      */
-    use DataCountTrait, DataEmptyTrait, DataListTrait, DataToArrayTrait, DataToObjectTrait, DataToJsonTrait,
+    use DataCountTrait, DataEmptyTrait, DataToListTrait, DataToArrayTrait, DataToObjectTrait, DataToJsonTrait,
         DataIteratorTrait;
 
     /** @see froq\common\trait\ReadOnlyTrait */
