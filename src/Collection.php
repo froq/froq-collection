@@ -312,7 +312,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        $this->data = array_delete_keys($this->data, $key, ...$keys);
+        $this->data = array_delete_key($this->data, $key, ...$keys);
 
         return $this;
     }
