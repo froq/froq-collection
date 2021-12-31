@@ -236,7 +236,7 @@ trait CollatorTrait
 
         if ($this instanceof ListCollator || $this instanceof SetCollator) {
             if (!is_int($key)) throw new InvalidKeyException(
-                $all ? 'Invalid data, data keys type must be int'
+                $all ? 'Invalid data, data keys must be int'
                      : 'Invalid key type, key type must be int'
             );
 

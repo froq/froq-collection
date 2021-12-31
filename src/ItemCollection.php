@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\AbstractCollection;
+use froq\collection\{AbstractCollection, CollectionException};
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
 use ArrayAccess;
 
@@ -26,11 +26,9 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
 {
     /**
      * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\AccessMagicTrait
      * @see froq\collection\trait\GetTrait
-     * @since 4.0, 5.0
      */
-    use AccessTrait, AccessMagicTrait, GetTrait;
+    use AccessTrait, GetTrait;
 
     /**
      * Constructor.
@@ -49,10 +47,15 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
      * @param  array<int, any> $data
      * @param  bool            $reset
      * @return self
+     * @causes froq\collection\CollectionException
      * @override
      */
     public final function setData(array $data, bool $reset = true): self
     {
+        foreach (array_keys($data) as $index) {
+            $this->indexCheck($index, true);
+        }
+
         return parent::setData($data, $reset);
     }
 
@@ -146,6 +149,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
      */
     public final function set(int $index, $item): self
     {
+        $this->indexCheck($index);
         $this->readOnlyCheck();
 
         $this->data[$index] = $item;
@@ -162,6 +166,8 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
      */
     public final function get(int $index, $default = null)
     {
+        $this->indexCheck($index);
+
         return $this->data[$index] ?? $default;
     }
 
@@ -175,6 +181,7 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
      */
     public final function remove(int $index, &$item = null): bool
     {
+        $this->indexCheck($index);
         $this->readOnlyCheck();
 
         if (array_key_exists($index, $this->data)) {
@@ -202,5 +209,27 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
             return true;
         }
         return false;
+    }
+
+    /**
+     * Check index validity.
+     *
+     * @param  int|null $index
+     * @param  bool     $all
+     * @return void
+     * @throws froq\collection\CollectionException
+     */
+    private function indexCheck(int|null $index, bool $all = false): void
+    {
+        if ($index && !is_int($index)) throw new CollectionException(
+            $all ? 'Invalid data, data indexes must be int'
+                 : 'Invalid index type, index type must be int'
+        );
+
+        // Note: evaluates "'' < 0" true.
+        if ($index < 0) throw new CollectionException(
+            $all ? 'Invalid data, data indexes must be sequential'
+                 : 'Invalid index, index must be greater than or equal to 0'
+        );
     }
 }
