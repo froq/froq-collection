@@ -21,7 +21,7 @@ use ArrayAccess;
  * @package froq\collection\object
  * @object  froq\collection\object\ListObject
  * @author  Kerem Güneş
- * @since   5.14, 5.15 Refactored extending AbstractCollection.
+ * @since   5.27
  */
 class ListObject extends AbstractCollection implements ArrayAccess
 {
