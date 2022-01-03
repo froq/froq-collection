@@ -30,16 +30,16 @@ trait ApplyTrait
      * Apply a given action on data array.
      *
      * @param  callable $func
-     * @param  bool     $useKeys
      * @param  bool     $swapKeys
+     * @param  bool     $recursive
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function apply(callable $func, bool $useKeys = true, bool $swapKeys = false): self
+    public function apply(callable $func, bool $swapKeys = false, bool $recursive = false): self
     {
         $this->readOnlyCall();
 
-        $this->data = Arrays::apply($this->data, $func, $useKeys, $swapKeys);
+        $this->data = Arrays::apply($this->data, $func, $swapKeys, $recursive);
 
         // For some internal data changes.
         if (method_exists($this, 'onDataChange')) {
