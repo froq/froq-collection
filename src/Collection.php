@@ -334,35 +334,72 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Pad data array by given length.
+     * Concat given item(s) with data array.
      *
-     * @param  int      $length
-     * @param  any|null $value
+     * @param  mixed    $item
+     * @param  mixed ...$items
      * @return self
-     * @since  5.0
+     * @since  5.22
      */
-    public function pad(int $length, $value = null): self
+    public function concat(mixed $item, mixed ...$items): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_pad($this->data, $length, $value);
+        $this->data = Arrays::concat($this->data, $item, ...$items);
 
         return $this;
     }
 
     /**
-     * Pad data array by given keys if not set on.
+     * Union given data(s) with data array.
      *
-     * @param  array    $keys
-     * @param  any|null $value
+     * @param  array    $data
+     * @param  array ...$datas
      * @return self
-     * @since  5.0
+     * @since  5.22
      */
-    public function padKeys(array $keys, $value = null): self
+    public function union(array $data, array ...$datas): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_pad_keys($this->data, $keys, $value);
+        $this->data = Arrays::union($this->data, $data, ...$datas);
+
+        return $this;
+    }
+
+    /**
+     * Dedupe items in data array.
+     *
+     * @param  bool $strict
+     * @return self
+     * @since  4.0
+     */
+    public function dedupe(bool $strict = true): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = Arrays::dedupe($this->data, $strict);
+
+        return $this;
+    }
+
+    /**
+     * Use unique items in data array.
+     *
+     * @param  bool $strict
+     * @param  int $flags
+     * @return self
+     * @since  4.0
+     */
+    public function unique(bool $strict = true, int $flags = SORT_REGULAR): self
+    {
+        if ($strict) {
+            return $this->dedupe(true);
+        }
+
+        $this->readOnlyCheck();
+
+        $this->data = array_unique($this->data, $flags);
 
         return $this;
     }
@@ -487,58 +524,6 @@ class Collection extends AbstractCollection implements ArrayAccess
         $data = Arrays::diffKey($this->data, $data);
 
         return new static($data);
-    }
-
-    /**
-     * Concat given item(s) with data array & return a new static instance.
-     *
-     * @param  mixed    $item
-     * @param  mixed ...$items
-     * @return static
-     * @since  5.22
-     */
-    public function concat(mixed $item, mixed ...$items): static
-    {
-        $data = Arrays::concat($this->data, $item, ...$items);
-
-        return new static($data);
-    }
-
-    /**
-     * Union given data(s) with data array & return a new static instance.
-     *
-     * @param  array    $data
-     * @param  array ...$datas
-     * @return static
-     * @since  5.22
-     */
-    public function union(array $data, array ...$datas): static
-    {
-        $data = Arrays::union($this->data, $data, ...$datas);
-
-        return new static($data);
-    }
-
-    /**
-     * Dedupe items in data array & return a new static instance.
-     *
-     * @param  bool $strict
-     * @return static
-     * @since  4.0
-     */
-    public function dedupe(bool $strict = true): static
-    {
-        $data = Arrays::dedupe($this->data, $strict);
-
-        return new static($data);
-    }
-
-    /**
-     * @alias of dedupe()
-     */
-    public function unique()
-    {
-        return $this->dedupe();
     }
 
     /**
@@ -813,18 +798,70 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Fill data array with given value.
+     * Pad data array by given length.
      *
-     * @param  int|null   $count
+     * @param  int        $length
      * @param  mixed|null $value
+     * @param  bool       $append
      * @return self
-     * @since  4.0
+     * @since  5.0
      */
-    public function fill(int $count, mixed $value = null): self
+    public function pad(int $length, mixed $value = null, bool $append = false): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_fill(0, $count, $value);
+        if (!$append) {
+            $this->data = array_pad($this->data, $length, $value);
+        } else {
+            // Don't modify existing indexes.
+            $length = abs($length);
+            while ($length-- > 0) {
+                $this->append($value);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Pad data array by given keys if not set on.
+     *
+     * @param  array      $keys
+     * @param  mixed|null $value
+     * @return self
+     * @since  5.0
+     */
+    public function padKeys(array $keys, mixed $value = null): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_pad_keys($this->data, $keys, $value);
+
+        return $this;
+    }
+
+    /**
+     * Fill data array with given value.
+     *
+     * @param  int|null   $length
+     * @param  mixed|null $value
+     * @param  bool       $append
+     * @return self
+     * @since  4.0
+     */
+    public function fill(int $length, mixed $value = null, bool $append = false): self
+    {
+        $this->readOnlyCheck();
+
+        if (!$append) {
+            $this->data = array_fill(0, $length, $value);
+        } else {
+            // Don't modify existing indexes.
+            $length = abs($length);
+            while ($length-- > 0) {
+                $this->append($value);
+            }
+        }
 
         return $this;
     }
@@ -850,9 +887,9 @@ class Collection extends AbstractCollection implements ArrayAccess
      * Get an item from data array with given key.
      *
      * @param  int|string $key
-     * @return any
+     * @return mixed|null
      */
-    public function item(int|string $key)
+    public function item(int|string $key): mixed
     {
         return $this->get($key);
     }
@@ -861,7 +898,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      * Get all items from data array with/without given keys.
      *
      * @param  array<int|string>|null $keys
-     * @return array
+     * @return array<mixed>
      */
     public function items(array $keys = null): array
     {
