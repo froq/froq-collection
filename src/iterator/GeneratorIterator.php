@@ -9,7 +9,7 @@ namespace froq\collection\iterator;
 
 use froq\collection\iterator\GeneratorIteratorException;
 use froq\common\interface\Arrayable;
-use Countable, IteratorAggregate, ReflectionMethod, ReflectionFunction, Throwable, Generator;
+use Countable, IteratorAggregate, ReflectionMethod, ReflectionFunction, Generator;
 
 /**
  * Generator Iterator.
@@ -29,11 +29,21 @@ class GeneratorIterator implements Arrayable, Countable, IteratorAggregate
     /**
      * Constructor.
      *
-     * @param callable|null $generator
+     * @param callable|iterable|null $generator
      */
-    public function __construct(callable $generator = null)
+    public function __construct(callable|iterable $generator = null)
     {
-        $generator && $this->setGenerator($generator);
+        if ($generator) {
+            if (is_callable($generator)) {
+                $this->setGenerator($generator);
+            } else {
+                $this->setGenerator(static function () use ($generator) {
+                    foreach ($generator as $current) {
+                        yield $current;
+                    }
+                });
+            }
+        }
     }
 
     /**
@@ -49,7 +59,7 @@ class GeneratorIterator implements Arrayable, Countable, IteratorAggregate
             $ref = is_array($generator)
                  ? new ReflectionMethod($generator[0], $generator[1])
                  : new ReflectionFunction($generator);
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw new GeneratorIteratorException($e);
         }
 
