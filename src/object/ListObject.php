@@ -7,23 +7,21 @@ declare(strict_types=1);
 
 namespace froq\collection\object;
 
-use froq\collection\AbstractCollection;
+use froq\collection\{AbstractCollection, CollectionInterface};
 use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
 use froq\common\exception\InvalidIndexException;
-use ArrayAccess;
 
 /**
  * List Object.
  *
- * Represents a simple but very extended list-object structure with
- * some utility methods.
+ * Represents a simple but very extended list-object structure with some utility methods.
  *
  * @package froq\collection\object
  * @object  froq\collection\object\ListObject
  * @author  Kerem Güneş
  * @since   5.27
  */
-class ListObject extends AbstractCollection implements ArrayAccess
+class ListObject extends AbstractCollection implements CollectionInterface, \ArrayAccess
 {
     /**
      * @see froq\collection\trait\AccessTrait

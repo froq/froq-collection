@@ -7,10 +7,9 @@ declare(strict_types=1);
 
 namespace froq\collection\object;
 
-use froq\collection\AbstractCollection;
+use froq\collection\{AbstractCollection, CollectionInterface};
 use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
 use froq\common\exception\InvalidKeyException;
-use ArrayAccess;
 
 /**
  * Array Object.
@@ -21,9 +20,9 @@ use ArrayAccess;
  * @package froq\collection\object
  * @object  froq\collection\object\ArrayObject
  * @author  Kerem Güneş
- * @since   5.14, 5.15 Refactored extending AbstractCollection.
+ * @since   5.14, 5.15
  */
-class ArrayObject extends AbstractCollection implements ArrayAccess
+class ArrayObject extends AbstractCollection implements CollectionInterface, \ArrayAccess
 {
     /**
      * @see froq\collection\trait\AccessTrait

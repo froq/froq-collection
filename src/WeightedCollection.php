@@ -7,8 +7,6 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\AbstractCollection;
-
 /**
  * Weighted Collection.
  *
@@ -19,7 +17,7 @@ use froq\collection\AbstractCollection;
  * @author  Kerem Güneş
  * @since   4.0
  */
-class WeightedCollection extends AbstractCollection
+class WeightedCollection extends AbstractCollection implements CollectionInterface
 {
     /**
      * Constructor.

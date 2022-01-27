@@ -7,9 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\{AbstractCollection, CollectionException};
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
-use ArrayAccess;
 
 /**
  * Item Collection.
@@ -22,7 +20,7 @@ use ArrayAccess;
  * @author  Kerem Güneş
  * @since   4.0
  */
-class ItemCollection extends AbstractCollection implements ArrayAccess
+class ItemCollection extends AbstractCollection implements CollectionInterface, \ArrayAccess
 {
     /**
      * @see froq\collection\trait\AccessTrait
