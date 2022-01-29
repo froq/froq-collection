@@ -126,45 +126,41 @@ class Collection extends AbstractCollection implements CollectionInterface, \Arr
     }
 
     /**
-     * Compact given key(s) with value(s).
+     * Compact given keys with given vars.
      *
-     * @param  int|string|array     $key
-     * @param  mixed            &...$value
+     * @param  int|string|array    $keys
+     * @param  mixed            ...$vars
      * @return self
      * @throws froq\collection\CollectionException
      * @since  5.0
      */
-    public function compact(int|string|array $key, mixed ...$value): self
+    public function compact(int|string|array $keys, mixed ...$vars): self
     {
         $this->readOnlyCheck();
 
-        $value || throw new CollectionException('No value(s) provided');
+        $vars || throw new CollectionException('No vars given');
 
-        foreach ((array) $key as $i => $key) {
-            $this->data[$key] = $value[$i] ?? null;
-        }
+        $this->data = array_compact($keys, ...$vars);
 
         return $this;
     }
 
     /**
-     * Extract given key(s) onto value(s) with ref(s).
+     * Extract given keys to given vars with refs.
      *
-     * @param  int|string|array     $key
-     * @param  mixed            &...$value
-     * @return self
+     * @param  int|string|array     $keys
+     * @param  mixed            &...$vars
+     * @return int
      * @throws froq\collection\CollectionException
      * @since  5.0
      */
-    public function extract(int|string|array $key, mixed &...$value): self
+    public function extract(int|string|array $keys, mixed &...$vars): int
     {
-        $value || throw new CollectionException('No value(s) provided');
+        $vars || throw new CollectionException('No vars given');
 
-        foreach ((array) $key as $i => $key) {
-            $value[$i] = $this->data[$key] ?? null;
-        }
+        $ret = array_extract($this->data, $keys, ...$vars);
 
-        return $this;
+        return $ret;
     }
 
     /**
