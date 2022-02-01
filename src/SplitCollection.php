@@ -28,12 +28,10 @@ class SplitCollection extends Collection
      * @param string   $pattern
      * @param int|null $limit
      * @param int|null $flags
-     * @param bool     $pad
      */
-    public static function split(string $string, string $pattern, int $limit = null, int $flags = null,
-        bool $pad = true)
+    public static function split(string $string, string $pattern, int $limit = null, int $flags = null)
     {
-        return new static(split($pattern, $string, $limit, $flags, $pad));
+        return new static(split($pattern, $string, $limit, $flags));
     }
 
     /**
@@ -43,33 +41,15 @@ class SplitCollection extends Collection
      * @param  string   $pattern
      * @param  int|null $limit
      * @param  int|null $flags
-     * @param  bool     $blanks
-     * @param  bool     $pad
      * @throws froq\collection\CollectionException
      */
-    public static function splitRegExp(string $string, string $pattern, int $limit = null, int $flags = null,
-        bool $pad = true, bool $blanks = false)
+    public static function splitRegExp(string $string, string $pattern, int $limit = null, int $flags = null)
     {
-        $limit ??= -1;
-        $flags ??= 0;
-
-        $data = preg_split($pattern, $string, $limit, $flags);
-        if ($data === false) {
-            throw new CollectionException(
-                preg_error_message('preg_split') ?? 'Unknown error'
-            );
+        try {
+            $regx = \RegExp::fromPattern($pattern, throw: true);
+            return new static($regx->split($string, $limit ?? -1, $flags ?? 0));
+        } catch (\RegExpError $e) {
+            throw new CollectionException($e->getMessage(), code: $e->getCode(), cause: $e);
         }
-
-        // Drop empties if no-empty flag not given.
-        if (!$blanks && !($flags & PREG_SPLIT_NO_EMPTY)) {
-            $data = array_slice($data, 1, -1);
-        }
-
-        // Pad up to given limit.
-        if ($pad && $limit && $limit != count($data)) {
-            $data = array_pad($data, $limit, null);
-        }
-
-        return new static($data);
     }
 }
