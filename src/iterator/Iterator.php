@@ -12,8 +12,6 @@ use froq\collection\trait\{SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTr
 use froq\common\interface\{Listable, Arrayable, Objectable, Jsonable};
 use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataToListTrait, DataToArrayTrait, DataToObjectTrait,
     DataToJsonTrait, DataIteratorTrait, ReadOnlyTrait};
-use froq\util\Arrays;
-use Iterator as _Iterator, Countable, Traversable;
 
 /**
  * Iterator.
@@ -26,7 +24,7 @@ use Iterator as _Iterator, Countable, Traversable;
  * @since   5.3
  */
 class Iterator implements IteratorInterface, Listable, Arrayable, Objectable, Jsonable,
-    _Iterator, Countable
+    \Iterator, \Countable
 {
     /**
      * @see froq\collection\trait\SortTrait
@@ -64,7 +62,7 @@ class Iterator implements IteratorInterface, Listable, Arrayable, Objectable, Js
      */
     public function __construct(iterable $data, bool $readOnly = null)
     {
-        if ($data instanceof Traversable) {
+        if (is_iterator($data)) {
             $data = iterator_to_array($data);
         }
 
