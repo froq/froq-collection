@@ -39,17 +39,15 @@ class ListCollator extends AbstractCollator implements CollatorInterface
     /**
      * Set data.
      *
-     * @param  array<int, any> $data
+     * @param  array<ints, any> $data
      * @param  bool            $reset
      * @return self
-     * @causes froq\common\exception\InvalidKeyException
      * @override
      */
     public final function setData(array $data, bool $reset = true): self
     {
-        foreach (array_keys($data) as $key) {
-            $this->keyCheck($key, true);
-        }
+        // Values as list.
+        $data = array_values($data);
 
         return parent::setData($data, $reset);
     }

@@ -42,15 +42,10 @@ class SetCollator extends AbstractCollator implements CollatorInterface
      * @param  array<int, any> $data
      * @param  bool            $reset
      * @return self
-     * @causes froq\collection\collator\CollatorException
      * @override
      */
     public final function setData(array $data, bool $reset = true): self
     {
-        foreach (array_keys($data) as $key) {
-            $this->keyCheck($key, true);
-        }
-
         // Deduplicate repeating values.
         $data = array_dedupe($data);
 

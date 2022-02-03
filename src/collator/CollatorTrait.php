@@ -46,13 +46,13 @@ trait CollatorTrait
      * @param  int|string $key
      * @param  any        $value
      * @return self
-     * @causes froq\common\exception\InvalidKeyException
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidKeyException
      */
     private function _set(int|string $key, $value): self
     {
-        $this->keyCheck($key);
         $this->readOnlyCheck();
+        $this->keyCheck($key);
 
         $this->data[$key] = $value;
 
@@ -81,13 +81,13 @@ trait CollatorTrait
      * @param  any|null   &$value
      * @param  bool        $reset
      * @return bool
-     * @causes froq\common\exception\InvalidKeyException
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidKeyException
      */
     private function _remove(int|string $key, &$value = null, bool $reset = false): bool
     {
-        $this->keyCheck($key);
         $this->readOnlyCheck();
+        $this->keyCheck($key);
 
         if (array_key_exists($key, $this->data)) {
             $value = $this->data[$key];
@@ -134,13 +134,13 @@ trait CollatorTrait
      * @param  any        $value
      * @return bool
      * @since  5.17
-     * @causes froq\common\exception\InvalidKeyException
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidKeyException
      */
     private function _replace(int|string $key, $value): bool
     {
-        $this->keyCheck($key);
         $this->readOnlyCheck();
+        $this->keyCheck($key);
 
         if (array_key_exists($key, $this->data)) {
             $this->data[$key] = $value;
@@ -219,32 +219,55 @@ trait CollatorTrait
     }
 
     /**
-     * Check given key validity.
+     * Check given offset validity.
      *
-     * @param  int|string|null $key
-     * @param  bool            $all
+     * @param  mixed $offset
+     * @param  bool  $all
      * @return void
      * @throws froq\common\exception\InvalidKeyException
      */
-    private function keyCheck(int|string|null $key, bool $all = false): void
+    public final function keyCheck(mixed $offset, bool $all = false): void
     {
-        if ($this instanceof ArrayCollator || $this instanceof MapCollator) {
-            if ($key === '') throw new InvalidKeyException(
-                'Empty keys are not allowed'
-            );
-        }
+        if ($offset === '') throw new InvalidKeyException(
+            'Empty keys are not allowed'
+        );
 
-        if ($this instanceof ListCollator || $this instanceof SetCollator) {
-            if (!is_int($key)) throw new InvalidKeyException(
-                $all ? 'Invalid data, data keys must be int'
-                     : 'Invalid key type, key type must be int'
-            );
+        switch (true) {
+            case ($this instanceof ArrayCollator):
+                is_int($offset) || is_string($offset) || throw new InvalidKeyException(
+                    $all ? 'Invalid data, data keys must be int|string'
+                         : 'Invalid key type, key type must be int|string'
+                );
+                break;
+            case ($this instanceof MapCollator):
+                is_string($offset) || throw new InvalidKeyException(
+                    $all ? 'Invalid data, data keys must be string'
+                         : 'Invalid key type, key type must be string'
+                );
+                break;
+            case ($this instanceof SetCollator):
+                is_int($offset) || throw new InvalidKeyException(
+                    $all ? 'Invalid data, data keys must be int'
+                         : 'Invalid key type, key type must be int'
+                );
 
-            // Note: evaluates "'' < 0" true.
-            if ($key < 0) throw new InvalidKeyException(
-                $all ? 'Invalid data, data keys must be sequential'
-                     : 'Invalid key, key must be greater than or equal to 0'
-            );
+                // Note: evaluates "'' < 0" true.
+                if ($offset < 0) throw new InvalidKeyException(
+                    $all ? 'Invalid data, data keys must be sequential'
+                         : 'Invalid key, key must be greater than or equal to 0'
+                );
+                break;
+            case ($this instanceof ListCollator):
+                is_int($offset) || throw new InvalidKeyException(
+                    $all ? 'Invalid data, data keys must be int'
+                         : 'Invalid key type, key type must be int'
+                );
+
+                // Note: evaluates "'' < 0" true.
+                if ($offset < 0) throw new InvalidKeyException(
+                    $all ? 'Invalid data, data keys must be sequential'
+                         : 'Invalid key, key must be greater than or equal to 0'
+                );
         }
     }
 }
