@@ -29,7 +29,7 @@ class SplitCollection extends Collection
      * @param int|null $limit
      * @param int|null $flags
      */
-    public static function split(string $string, string $pattern, int $limit = null, int $flags = null)
+    public static final function split(string $string, string $pattern, int $limit = null, int $flags = null)
     {
         return new static(split($pattern, $string, $limit, $flags));
     }
@@ -43,7 +43,7 @@ class SplitCollection extends Collection
      * @param  int|null $flags
      * @throws froq\collection\CollectionException
      */
-    public static function splitRegExp(string $string, string $pattern, int $limit = null, int $flags = null)
+    public static final function splitRegExp(string $string, string $pattern, int $limit = null, int $flags = null)
     {
         try {
             $regx = \RegExp::fromPattern($pattern, throw: true);
