@@ -86,8 +86,8 @@ class WeightedCollection extends AbstractCollection implements CollectionInterfa
             $totalWeight += (float) $item['weight'];
         }
 
-        // No total weight no items to select.
-        if ($totalWeight == 0.0) {
+        // No total weight, no items to select.
+        if (!$totalWeight) {
             return null;
         }
 
