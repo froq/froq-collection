@@ -215,7 +215,7 @@ class ComponentCollection extends AbstractCollection implements CollectionInterf
         }
 
         throw new CollectionException(
-            'Invalid component name `%s` given to %s object, valids are: %s',
+            'Invalid component name `%s` given to %s object [valids: %s]',
             [$name, static::class, join(', ', self::$names)]
         );
     }
