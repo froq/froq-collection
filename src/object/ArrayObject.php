@@ -53,13 +53,13 @@ class ArrayObject extends AbstractCollection implements CollectionInterface, \Ar
      * @param  int|string $key
      * @param  mixed      $value
      * @return self
-     * @causes froq\common\exception\InvalidKeyException
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidKeyException
      */
     public function set(int|string $key, mixed $value): self
     {
-        $this->keyCheck($key);
         $this->readOnlyCheck();
+        $this->keyCheck($key);
 
         $this->data[$key] = $value;
 
@@ -87,13 +87,13 @@ class ArrayObject extends AbstractCollection implements CollectionInterface, \Ar
      * @param  int|string  $key
      * @param  any|null   &$value
      * @return self
-     * @causes froq\common\exception\InvalidKeyException
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidKeyException
      */
     public function remove(int|string $key, &$value = null): bool
     {
-        $this->keyCheck($key);
         $this->readOnlyCheck();
+        $this->keyCheck($key);
 
         if (array_key_exists($key, $this->data)) {
             $value = $this->data[$key];
@@ -126,16 +126,22 @@ class ArrayObject extends AbstractCollection implements CollectionInterface, \Ar
     }
 
     /**
-     * Check key validity.
+     * Check offset validity.
      *
-     * @param  int|string|null $key
+     * @param  mixed $offset
+     * @param  bool  $all
      * @return void
      * @throws froq\collection\InvalidKeyException
      */
-    private function keyCheck(int|string|null $key): void
+    public final function keyCheck(mixed $offset, bool $all = false): void
     {
-        if ($key === '') throw new InvalidKeyException(
-            'Empty keys are not allowed',
+        if ($offset === '') throw new InvalidKeyException(
+            'Empty keys are not allowed'
+        );
+
+        if (!is_int($offset) && !is_string($offset)) throw new InvalidKeyException(
+            $all ? 'Invalid data, data keys must be int'
+                 : 'Invalid key type, key type must be int'
         );
     }
 }

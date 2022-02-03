@@ -9,7 +9,7 @@ namespace froq\collection\object;
 
 use froq\collection\{AbstractCollection, CollectionInterface};
 use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
-use froq\common\exception\InvalidIndexException;
+use froq\common\exception\InvalidKeyException;
 
 /**
  * List Object.
@@ -52,13 +52,13 @@ class ListObject extends AbstractCollection implements CollectionInterface, \Arr
      * @param  int   $index
      * @param  mixed $value
      * @return self
-     * @causes froq\common\exception\InvalidIndexException
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidKeyException
      */
     public function set(int $index, mixed $value): self
     {
-        $this->indexCheck($index);
         $this->readOnlyCheck();
+        $this->keyCheck($index);
 
         // Maintain next index.
         if ($index > $nextIndex = $this->count()) {
@@ -76,11 +76,11 @@ class ListObject extends AbstractCollection implements CollectionInterface, \Arr
      * @param  int        $index
      * @param  mixed|null $default
      * @return mixed|null
-     * @causes froq\common\exception\InvalidIndexException
+     * @causes froq\common\exception\InvalidKeyException
      */
     public function get(int $index, mixed $default = null): mixed
     {
-        $this->indexCheck($index);
+        $this->keyCheck($index);
 
         return $this->data[$index] ?? $default;
     }
@@ -92,11 +92,12 @@ class ListObject extends AbstractCollection implements CollectionInterface, \Arr
      * @param  any|null   &$value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidKeyException
      */
     public function remove(int $index, &$value = null): bool
     {
-        $this->indexCheck($index);
         $this->readOnlyCheck();
+        $this->keyCheck($index);
 
         if (array_key_exists($index, $this->data)) {
             $value = $this->data[$index];
@@ -118,7 +119,6 @@ class ListObject extends AbstractCollection implements CollectionInterface, \Arr
      * @param  any              $newValue
      * @param  int|null        &$index
      * @return bool
-     * @causes froq\common\exception\InvalidIndexException
      * @causes froq\common\exception\ReadOnlyException
      */
     public function replace($oldValue, $newValue, int &$index = null): bool
@@ -135,20 +135,25 @@ class ListObject extends AbstractCollection implements CollectionInterface, \Arr
     }
 
     /**
-     * Check index validity.
+     * Check offset validity.
      *
-     * @param  int|string|null $index
+     * @param  mixed $offset
+     * @param  bool  $all
      * @return void
-     * @throws froq\collection\InvalidIndexException
+     * @throws froq\collection\InvalidKeyException
      */
-    private function indexCheck(int|string|null $index): void
+    public function keyCheck(mixed $offset, bool $all = false): void
     {
-        if ($index && !is_int($index)) throw new InvalidIndexException(
+        if ($offset === '') throw new InvalidKeyException(
+            'Empty keys are not allowed'
+        );
+
+        if (!is_int($offset)) throw new InvalidKeyException(
             'Invalid index type, index type must be int'
         );
 
         // Note: evaluates "'' < 0" true.
-        if ($index < 0) throw new InvalidIndexException(
+        if ($offset < 0) throw new InvalidKeyException(
             'Invalid index, index must be greater than or equal to 0'
         );
     }

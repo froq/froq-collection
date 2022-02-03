@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
+use froq\common\exception\InvalidKeyException;
 
 /**
  * Item Collection.
@@ -45,15 +46,10 @@ class ItemCollection extends AbstractCollection implements CollectionInterface, 
      * @param  array<int, any> $data
      * @param  bool            $reset
      * @return self
-     * @causes froq\collection\CollectionException
      * @override
      */
     public final function setData(array $data, bool $reset = true): self
     {
-        foreach (array_keys($data) as $index) {
-            $this->indexCheck($index, true);
-        }
-
         return parent::setData($data, $reset);
     }
 
@@ -144,11 +140,12 @@ class ItemCollection extends AbstractCollection implements CollectionInterface, 
      * @param  any $item
      * @return self
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidIndexException
      */
     public final function set(int $index, $item): self
     {
-        $this->indexCheck($index);
         $this->readOnlyCheck();
+        $this->keyCheck($index);
 
         $this->data[$index] = $item;
 
@@ -161,10 +158,11 @@ class ItemCollection extends AbstractCollection implements CollectionInterface, 
      * @param  int      $index
      * @param  any|null $default
      * @return any|null
+     * @causes froq\common\exception\InvalidIndexException
      */
     public final function get(int $index, $default = null)
     {
-        $this->indexCheck($index);
+        $this->keyCheck($index);
 
         return $this->data[$index] ?? $default;
     }
@@ -176,11 +174,12 @@ class ItemCollection extends AbstractCollection implements CollectionInterface, 
      * @param  any|null &$item
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidIndexException
      */
     public final function remove(int $index, &$item = null): bool
     {
-        $this->indexCheck($index);
         $this->readOnlyCheck();
+        $this->keyCheck($index);
 
         if (array_key_exists($index, $this->data)) {
             $item = $this->data[$index];
@@ -210,22 +209,26 @@ class ItemCollection extends AbstractCollection implements CollectionInterface, 
     }
 
     /**
-     * Check index validity.
+     * Check offset validity.
      *
-     * @param  int|string|null $index
-     * @param  bool            $all
+     * @param  mixed $offset
+     * @param  bool  $all
      * @return void
-     * @throws froq\collection\CollectionException
+     * @throws froq\collection\InvalidKeyException
      */
-    private function indexCheck(int|string|null $index, bool $all = false): void
+    public final function keyCheck(mixed $offset, bool $all = false): void
     {
-        if ($index && !is_int($index)) throw new CollectionException(
+        if ($offset === '') throw new InvalidKeyException(
+            'Empty keys are not allowed'
+        );
+
+        if (!is_int($offset)) throw new InvalidKeyException(
             $all ? 'Invalid data, data indexes must be int'
                  : 'Invalid index type, index type must be int'
         );
 
         // Note: evaluates "'' < 0" true.
-        if ($index < 0) throw new CollectionException(
+        if ($offset < 0) throw new InvalidKeyException(
             $all ? 'Invalid data, data indexes must be sequential'
                  : 'Invalid index, index must be greater than or equal to 0'
         );
