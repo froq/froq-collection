@@ -137,11 +137,11 @@ class ListObject extends AbstractCollection implements CollectionInterface, \Arr
     /**
      * Check index validity.
      *
-     * @param  int|null $index
+     * @param  int|string|null $index
      * @return void
      * @throws froq\collection\InvalidIndexException
      */
-    private function indexCheck(int|null $index): void
+    private function indexCheck(int|string|null $index): void
     {
         if ($index && !is_int($index)) throw new InvalidIndexException(
             'Invalid index type, index type must be int'

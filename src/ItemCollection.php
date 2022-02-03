@@ -212,12 +212,12 @@ class ItemCollection extends AbstractCollection implements CollectionInterface, 
     /**
      * Check index validity.
      *
-     * @param  int|null $index
-     * @param  bool     $all
+     * @param  int|string|null $index
+     * @param  bool            $all
      * @return void
      * @throws froq\collection\CollectionException
      */
-    private function indexCheck(int|null $index, bool $all = false): void
+    private function indexCheck(int|string|null $index, bool $all = false): void
     {
         if ($index && !is_int($index)) throw new CollectionException(
             $all ? 'Invalid data, data indexes must be int'
