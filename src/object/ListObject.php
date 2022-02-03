@@ -142,7 +142,7 @@ class ListObject extends AbstractCollection implements CollectionInterface, \Arr
      * @return void
      * @throws froq\collection\InvalidKeyException
      */
-    public function keyCheck(mixed $offset, bool $all = false): void
+    public final function keyCheck(mixed $offset, bool $all = false): void
     {
         if ($offset === '') throw new InvalidKeyException(
             'Empty keys are not allowed'
