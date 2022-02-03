@@ -92,11 +92,11 @@ class WeightedCollection extends AbstractCollection implements CollectionInterfa
         }
 
         $accWeight = 0.0;
-        $rndWeight = $this->randomize(0.0, $totalWeight);
+        $ranWeight = $this->randomize(0.0, $totalWeight);
 
         foreach ($items as $item) {
             $accWeight += (float) $item['weight'];
-            if ($accWeight >= $rndWeight) {
+            if ($accWeight >= $ranWeight) {
                 break;
             }
         }
