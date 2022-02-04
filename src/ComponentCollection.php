@@ -34,19 +34,22 @@ class ComponentCollection extends AbstractCollection implements CollectionInterf
     protected static array $names = [];
 
     /** @var bool */
-    protected static bool $throws;
+    protected static bool $throw;
 
     /**
      * Constructor.
      *
      * @param array<string> $names
-     * @param bool          $throws
+     * @param bool          $throw
      * @param bool|null     $readOnly
+     * @throws froq\collection\CollectionException
      */
-    public function __construct(array $names, bool $throws = true, bool $readOnly = null)
+    public function __construct(array $names, bool $throw = true, bool $readOnly = null)
     {
-        self::$names  = $names;
-        self::$throws = $throws;
+        $names || throw new CollectionException('No names given');
+
+        self::$names = $names;
+        self::$throw = $throw;
 
         parent::__construct(array_fill_keys($names, null), $readOnly);
     }
@@ -63,13 +66,16 @@ class ComponentCollection extends AbstractCollection implements CollectionInterf
     {
         // Eg: setFoo('bar') => set('foo', 'bar') or getFoo() => get('foo').
         if (str_starts_with($method, 'set')) {
+            if (!array_key_exists(0, $methodArgs)) {
+                throw new CollectionException('No argument given for %s() call', $method);
+            }
             return $this->set(lcfirst(substr($method, 3)), $methodArgs[0]);
         } elseif (str_starts_with($method, 'get')) {
-            return $this->get(lcfirst(substr($method, 3)));
+            return $this->get(lcfirst(substr($method, 3)), $methodArgs[0] ?? null);
         }
 
         throw new CollectionException(
-            'Invalid method call as %s(), [tip: %s object is a component collection '.
+            'Invalid method call as %s(), [tip: %s class is a component collection '.
             'and only set/get prefixed methods can be called via __call() if not exist]',
             [$method, static::class]
         );
@@ -104,13 +110,13 @@ class ComponentCollection extends AbstractCollection implements CollectionInterf
     }
 
     /**
-     * Get throws state.
+     * Get throw state.
      *
      * @return bool
      */
-    public final function throws(): bool
+    public final function throw(): bool
     {
-        return self::$throws;
+        return self::$throw;
     }
 
     /**
@@ -204,17 +210,17 @@ class ComponentCollection extends AbstractCollection implements CollectionInterf
      * @return void
      * @throws froq\collection\CollectionException
      */
-    private function nameCheck(string $name): void
+    protected final function nameCheck(string $name): void
     {
-        if (!self::$throws) {
+        if (!self::$throw) {
             return;
         }
-        if (in_array($name, self::$names)) {
+        if (in_array($name, self::$names, true)) {
             return;
         }
 
         throw new CollectionException(
-            'Invalid component name `%s` given to %s object [valids: %s]',
+            'Invalid component name `%s` [class: %s, valids: %s]',
             [$name, static::class, join(', ', self::$names)]
         );
     }
