@@ -11,6 +11,7 @@ use froq\collection\trait\{SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTr
 use froq\common\interface\{Listable, Arrayable, Objectable, Jsonable};
 use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataToListTrait, DataToArrayTrait, DataToObjectTrait,
     DataToJsonTrait, DataIteratorTrait, ReadOnlyTrait};
+use froq\util\Util;
 
 /**
  * Abstract Iterator.
@@ -62,23 +63,17 @@ abstract class AbstractIterator implements IteratorInterface, Listable, Arrayabl
     public function __construct(iterable $data, bool $readOnly = null)
     {
         if ($data) {
-            if ($data instanceof \Traversable) {
-                if ($data instanceof \Generator) {
-                    // Prevent "Cannot rewind a generator that was already run" error.
-                    $data = (new GeneratorIterator($data))
-                          ->toArray();
-                } else {
-                    // Rewind for keys after iteration.
-                    $temp = iterator_to_array($data);
-                    $data->rewind();
-                    $data = $temp;
-                }
-            }
-
+            $data = Util::makeArray($data, deep: false);
             $this->data = $data;
         }
 
         $this->readOnly($readOnly);
+    }
+
+    /** @magic */
+    public function __debugInfo(): array
+    {
+        return $this->data;
     }
 
     /**

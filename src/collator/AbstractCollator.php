@@ -10,6 +10,7 @@ namespace froq\collection\collator;
 use froq\common\interface\{Listable, Arrayable, Objectable, Jsonable, Yieldable,
     Iteratable, IteratableReverse};
 use froq\common\trait\{ArrayTrait, ReadOnlyTrait};
+use froq\util\Util;
 
 /**
  * Abstract Collator.
@@ -41,19 +42,7 @@ abstract class AbstractCollator implements CollatorInterface
     public function __construct(iterable $data = null, bool $readOnly = null)
     {
         if ($data) {
-            if ($data instanceof \Traversable) {
-                if ($data instanceof \Generator) {
-                    // Prevent "Cannot rewind a generator that was already run" error.
-                    $data = (new iterator\GeneratorIterator($data))
-                          ->toArray();
-                } else {
-                    // Rewind for keys after iteration.
-                    $temp = iterator_to_array($data);
-                    $data->rewind();
-                    $data = $temp;
-                }
-            }
-
+            $data = Util::makeArray($data, deep: false);
             $this->setData($data);
         }
 
