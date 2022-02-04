@@ -144,10 +144,6 @@ class ListObject extends AbstractCollection implements CollectionInterface, \Arr
      */
     public final function keyCheck(mixed $offset, bool $all = false): void
     {
-        if ($offset === '') throw new InvalidKeyException(
-            'Empty keys are not allowed'
-        );
-
         if (!is_int($offset)) throw new InvalidKeyException(
             'Invalid index type, index type must be int'
         );

@@ -218,10 +218,6 @@ class ItemCollection extends AbstractCollection implements CollectionInterface, 
      */
     public final function keyCheck(mixed $offset, bool $all = false): void
     {
-        if ($offset === '') throw new InvalidKeyException(
-            'Empty keys are not allowed'
-        );
-
         if (!is_int($offset)) throw new InvalidKeyException(
             $all ? 'Invalid data, data indexes must be int'
                  : 'Invalid index type, index type must be int'

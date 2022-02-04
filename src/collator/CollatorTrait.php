@@ -227,10 +227,6 @@ trait CollatorTrait
      */
     public final function keyCheck(mixed $offset, bool $all = false): void
     {
-        if ($offset === '') throw new InvalidKeyException(
-            'Empty keys are not allowed'
-        );
-
         switch (true) {
             case ($this instanceof ArrayCollator):
                 is_int($offset) || is_string($offset) || throw new InvalidKeyException(

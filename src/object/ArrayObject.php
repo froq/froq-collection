@@ -135,10 +135,6 @@ class ArrayObject extends AbstractCollection implements CollectionInterface, \Ar
      */
     public final function keyCheck(mixed $offset, bool $all = false): void
     {
-        if ($offset === '') throw new InvalidKeyException(
-            'Empty keys are not allowed'
-        );
-
         if (!is_int($offset) && !is_string($offset)) throw new InvalidKeyException(
             $all ? 'Invalid data, data keys must be int'
                  : 'Invalid key type, key type must be int'
