@@ -7,23 +7,30 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\collection\collator\{AbstractCollator, CollatorInterface, CollatorTrait};
+use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
 
 /**
  * Map Collator.
  *
- * Represents a class entity designed to check key types and provide read-only state
- * and map-like structure with some utility methods.
+ * A collator class designed to check key types and provide read-only state,
+ * map-like structure with some utility methods.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\MapCollator
  * @author  Kerem Güneş
  * @since   4.0, 5.4
  */
-class MapCollator extends AbstractCollator implements CollatorInterface
+class MapCollator extends AbstractCollator implements \ArrayAccess
 {
     /** @see froq\collection\collator\CollatorTrait */
     use CollatorTrait;
+
+    /**
+     * @see froq\collection\trait\AccessTrait
+     * @see froq\collection\trait\AccessMagicTrait
+     * @see froq\collection\trait\GetTrait
+     */
+    use AccessTrait, AccessMagicTrait, GetTrait;
 
     /**
      * Constructor.

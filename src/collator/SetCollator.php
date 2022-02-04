@@ -7,23 +7,29 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\collection\collator\{AbstractCollator, CollatorInterface, CollatorTrait};
+use froq\collection\trait\{AccessTrait, GetTrait};
 
 /**
  * Set Collator.
  *
- * Represents a class entity designed to check unique values and provide read-only state
- * and set-like structure with some utility methods.
+ * A collator class designed to check unique values and provide read-only state,
+ * set-like structure with some utility methods.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\SetCollator
  * @author  Kerem Güneş
  * @since   4.0, 5.4, 5.16
  */
-class SetCollator extends AbstractCollator implements CollatorInterface
+class SetCollator extends AbstractCollator implements \ArrayAccess
 {
     /** @see froq\collection\collator\CollatorTrait */
     use CollatorTrait;
+
+    /**
+     * @see froq\collection\trait\AccessTrait
+     * @see froq\collection\trait\GetTrait
+     */
+    use AccessTrait, GetTrait;
 
     /**
      * Constructor.

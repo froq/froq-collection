@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\collection\collator\{ListCollator, MapCollator, SetCollator};
 use froq\common\exception\InvalidKeyException;
 
 /**

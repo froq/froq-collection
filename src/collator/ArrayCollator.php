@@ -7,23 +7,30 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\collection\collator\{AbstractCollator, CollatorInterface, CollatorTrait};
+use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
 
 /**
  * Array Collator.
  *
- * Represents a collator class designed to check key types and provide read-only state
- * and array-like structure with some utility methods.
+ * A collator class designed to check key types and provide read-only state,
+ * array-like structure with some utility methods.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\ArrayCollator
  * @author  Kerem Güneş
  * @since   4.0, 5.4, 5.17
  */
-class ArrayCollator extends AbstractCollator implements CollatorInterface
+class ArrayCollator extends AbstractCollator implements \ArrayAccess
 {
     /** @see froq\collection\collator\CollatorTrait */
     use CollatorTrait;
+
+    /**
+     * @see froq\collection\trait\AccessTrait
+     * @see froq\collection\trait\AccessMagicTrait
+     * @see froq\collection\trait\GetTrait
+     */
+    use AccessTrait, AccessMagicTrait, GetTrait;
 
     /**
      * Constructor.
