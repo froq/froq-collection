@@ -8,23 +8,23 @@ declare(strict_types=1);
 namespace froq\collection\iterator;
 
 use froq\collection\iterator\GeneratorIteratorException;
-use froq\common\interface\Arrayable;
-use Countable, IteratorAggregate, ReflectionMethod, ReflectionFunction, Generator;
+use froq\common\interface\{Arrayable, Listable};
+use Closure, Generator;
 
 /**
  * Generator Iterator.
  *
- * Represents a generator iterator class that is countable & reusable.
+ * A generator iterator class which is countable & reusable.
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\GeneratorIterator
  * @author  Kerem Güneş
- * @since   5.0, 5.3 Moved as iterator.GeneratorIterator from Iterator.
+ * @since   5.0, 5.3
  */
-class GeneratorIterator implements Arrayable, Countable, IteratorAggregate
+class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAggregate
 {
-    /** @var callable */
-    private $generator;
+    /** @var Closure */
+    private Closure $generator;
 
     /**
      * Constructor.
@@ -38,8 +38,8 @@ class GeneratorIterator implements Arrayable, Countable, IteratorAggregate
                 $this->setGenerator($generator);
             } else {
                 $this->setGenerator(static function () use ($generator) {
-                    foreach ($generator as $current) {
-                        yield $current;
+                    foreach ($generator as $key => $value) {
+                        yield $key => $value;
                     }
                 });
             }
@@ -56,9 +56,7 @@ class GeneratorIterator implements Arrayable, Countable, IteratorAggregate
     public final function setGenerator(callable $generator): self
     {
         try {
-            $ref = is_array($generator)
-                 ? new ReflectionMethod($generator[0], $generator[1])
-                 : new ReflectionFunction($generator);
+            $ref = new \ReflectionCallable($generator);
         } catch (\Throwable $e) {
             throw new GeneratorIteratorException($e);
         }
@@ -76,10 +74,10 @@ class GeneratorIterator implements Arrayable, Countable, IteratorAggregate
     /**
      * Get generator property.
      *
-     * @return callable
+     * @return Closure
      * @throws froq\collection\iterator\GeneratorIteratorException
      */
-    public final function getGenerator(): callable
+    public final function getGenerator(): Closure
     {
         isset($this->generator) || throw new GeneratorIteratorException(
             'No generator was set yet, try after calling setGenerator() method'
@@ -89,17 +87,67 @@ class GeneratorIterator implements Arrayable, Countable, IteratorAggregate
     }
 
     /**
+     * Apply given action for each item & return a new modified generator iterator.
+     *
+     * @param  callable $func
+     * @return froq\collection\iterator\GeneratorIterator
+     */
+    public function apply(callable $func): GeneratorIterator
+    {
+        $generator = function () use ($func) {
+            // Prevent argument errors.
+            $ref = new \ReflectionCallable($func);
+            $fun = $ref->getParametersCount() > 1
+                 ? static fn($value, $key) => $func($value, $key)
+                 : static fn($value)       => $func($value);
+
+            foreach ($this->generate() as $key => $value) {
+                yield $key => $fun($value, $key);
+            }
+        };
+
+        return new GeneratorIterator($generator);
+    }
+
+    /**
+     * Apply given action for each item.
+     *
+     * @param  callable $func
+     * @return void
+     */
+    public function each(callable $func): void
+    {
+        // Prevent argument errors.
+        $ref = new \ReflectionCallable($func);
+        $fun = $ref->getParametersCount() > 1
+             ? static fn($value, $key) => $func($value, $key)
+             : static fn($value)       => $func($value);
+
+        foreach ($this->generate() as $key => $value) {
+            $fun($value, $key);
+        }
+    }
+
+    /**
      * @inheritDoc froq\common\interface\Arrayable
      */
-    public final function toArray(): array
+    public function toArray(): array
     {
         return iterator_to_array($this->generate());
     }
 
     /**
+     * @inheritDoc froq\common\interface\Listable
+     */
+    public function toList(): array
+    {
+        return array_values(iterator_to_array($this->generate()));
+    }
+
+    /**
      * @inheritDoc Countable
      */
-    public final function count(): int
+    public function count(): int
     {
         return iterator_count($this->generate());
     }
@@ -107,15 +155,13 @@ class GeneratorIterator implements Arrayable, Countable, IteratorAggregate
     /**
      * @inheritDoc IteratorAggregate
      */
-    public final function getIterator(): Generator
+    public function getIterator(): Generator
     {
         return $this->generate();
     }
 
     /**
      * Run generation process.
-     *
-     * @return Generator
      */
     private function generate(): Generator
     {
