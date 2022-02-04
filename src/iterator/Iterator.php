@@ -15,7 +15,7 @@ use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataToListTrait, DataToAr
 /**
  * Iterator.
  *
- * Represents an iterator class that contains some utility methods.
+ * An iterator class that contains some utility methods.
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\Iterator
