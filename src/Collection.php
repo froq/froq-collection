@@ -53,6 +53,7 @@ class Collection extends AbstractCollection implements CollectionInterface, \Arr
     public function set(int|string|array $key, $value = null): self
     {
         $this->readOnlyCheck();
+        $this->keyEmptyCheck($key);
 
         is_array($key) ? Arrays::setAll($this->data, $key)
                        : Arrays::set($this->data, $key, $value);
@@ -69,8 +70,26 @@ class Collection extends AbstractCollection implements CollectionInterface, \Arr
      */
     public function get(int|string|array $key, $default = null)
     {
+        $this->keyEmptyCheck($key);
+
         return is_array($key) ? Arrays::getAll($this->data, $key, $default)
                               : Arrays::get($this->data, $key, $default);
+    }
+
+    /**
+     * Remove an item/items.
+     *
+     * @param  int|string|array<int|string> $key
+     * @return self
+     */
+    public function remove(int|string|array $key): self
+    {
+        $this->readOnlyCheck();
+        $this->keyEmptyCheck($key);
+
+        Arrays::removeAll($this->data, (array) $key);
+
+        return $this;
     }
 
     /**
@@ -84,6 +103,7 @@ class Collection extends AbstractCollection implements CollectionInterface, \Arr
     public function pull(int|string|array $key, $default = null)
     {
         $this->readOnlyCheck();
+        $this->keyEmptyCheck($key);
 
         return is_array($key) ? Arrays::pullAll($this->data, $key, $default)
                               : Arrays::pull($this->data, $key, $default);
@@ -106,21 +126,6 @@ class Collection extends AbstractCollection implements CollectionInterface, \Arr
         foreach ($values as $value) {
             $this->data[] = $value;
         }
-
-        return $this;
-    }
-
-    /**
-     * Remove an item/items.
-     *
-     * @param  int|string|array<int|string> $key
-     * @return self
-     */
-    public function remove(int|string|array $key): self
-    {
-        $this->readOnlyCheck();
-
-        Arrays::removeAll($this->data, (array) $key);
 
         return $this;
     }
