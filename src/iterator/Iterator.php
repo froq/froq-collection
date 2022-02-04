@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace froq\collection\iterator;
 
-use froq\collection\iterator\{IteratorInterface, IteratorException};
 use froq\collection\trait\{SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait, HasTrait};
 use froq\common\interface\{Listable, Arrayable, Objectable, Jsonable};
 use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataToListTrait, DataToArrayTrait, DataToObjectTrait,
@@ -24,7 +23,7 @@ use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataToListTrait, DataToAr
  * @since   5.3
  */
 class Iterator implements IteratorInterface, Listable, Arrayable, Objectable, Jsonable,
-    \Iterator, \Countable
+    \Iterator, \Countable, \JsonSerializable
 {
     /**
      * @see froq\collection\trait\SortTrait
@@ -52,7 +51,7 @@ class Iterator implements IteratorInterface, Listable, Arrayable, Objectable, Js
     use ReadOnlyTrait;
 
     /** @var array */
-    protected array $data;
+    protected array $data = [];
 
     /**
      * Constructor.
@@ -62,11 +61,22 @@ class Iterator implements IteratorInterface, Listable, Arrayable, Objectable, Js
      */
     public function __construct(iterable $data, bool $readOnly = null)
     {
-        if (is_iterator($data)) {
-            $data = iterator_to_array($data);
-        }
+        if ($data) {
+            if ($data instanceof \Traversable) {
+                if ($data instanceof \Generator) {
+                    // Prevent "Cannot rewind a generator that was already run" error.
+                    $data = (new GeneratorIterator($data))
+                          ->toArray();
+                } else {
+                    // Rewind for keys after iteration.
+                    $temp = iterator_to_array($data);
+                    $data->rewind();
+                    $data = $temp;
+                }
+            }
 
-        $this->data = $data;
+            $this->data = $data;
+        }
 
         $this->readOnly($readOnly);
     }
@@ -82,7 +92,7 @@ class Iterator implements IteratorInterface, Listable, Arrayable, Objectable, Js
     {
         $this->readOnlyCheck();
 
-        $values || throw new IteratorException('No values provided');
+        $values || throw new IteratorException('No value(s) given');
 
         foreach ($values as $value) {
             $this->data[] = $value;
@@ -105,5 +115,13 @@ class Iterator implements IteratorInterface, Listable, Arrayable, Objectable, Js
         $this->data[$key] = $value;
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc JsonSerializable
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->data;
     }
 }
