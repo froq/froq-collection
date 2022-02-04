@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace froq\collection\collator;
 
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
+use Map;
 
 /**
  * Map Collator.
@@ -35,10 +36,10 @@ class MapCollator extends AbstractCollator implements \ArrayAccess
     /**
      * Constructor.
      *
-     * @param array<string, any>|null $data
-     * @param bool|null               $readOnly
+     * @param array<string, any>|Map|null $data
+     * @param bool|null                   $readOnly
      */
-    public function __construct(array $data = null, bool $readOnly = null)
+    public function __construct(array|Map $data = null, bool $readOnly = null)
     {
         parent::__construct($data, $readOnly);
     }

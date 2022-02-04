@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace froq\collection\collator;
 
 use froq\collection\trait\{AccessTrait, GetTrait};
+use Set;
 
 /**
  * Set Collator.
@@ -34,10 +35,10 @@ class SetCollator extends AbstractCollator implements \ArrayAccess
     /**
      * Constructor.
      *
-     * @param array<int, any>|null $data
-     * @param bool|null            $readOnly
+     * @param array<int, any>|Set|null $data
+     * @param bool|null                $readOnly
      */
-    public function __construct(array $data = null, bool $readOnly = null)
+    public function __construct(array|Set $data = null, bool $readOnly = null)
     {
         parent::__construct($data, $readOnly);
     }
