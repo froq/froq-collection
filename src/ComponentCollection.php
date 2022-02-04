@@ -81,7 +81,6 @@ class ComponentCollection extends AbstractCollection implements CollectionInterf
      * @param  array<string, any> $data
      * @param  bool               $reset
      * @return self
-     * @since  4.0
      * @causes froq\collection\CollectionException
      * @override
      */
