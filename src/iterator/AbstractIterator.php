@@ -63,8 +63,10 @@ abstract class AbstractIterator implements IteratorInterface, Listable, Arrayabl
     public function __construct(iterable $data, bool $readOnly = null)
     {
         if ($data) {
-            $this->data = is_array($data) ? $data
-                : Util::makeArray($data, deep: false);
+            $this->data = (
+                is_array($data) ? $data
+                    : Util::makeArray($data, deep: false)
+            );
         }
 
         $this->readOnly($readOnly);
