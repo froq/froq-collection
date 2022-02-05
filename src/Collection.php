@@ -655,18 +655,36 @@ class Collection extends AbstractCollection implements CollectionInterface, \Arr
     }
 
     /**
-     * Clean data array dropping empty (null, '', []) items.
+     * Clean data array dropping null, "", [] items.
      *
-     * @param  array|null $ignoredKeys
      * @param  bool       $keepKeys
+     * @param  array|null $ignoredKeys
      * @return self
      * @since  4.0
      */
-    public function clean(array $ignoredKeys = null, bool $keepKeys = true): self
+    public function clean(bool $keepKeys = true, array $ignoredKeys = null): self
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::clean($this->data, $ignoredKeys, $keepKeys);
+        $this->data = Arrays::clean($this->data, $keepKeys, $ignoredKeys);
+
+        return $this;
+    }
+
+    /**
+     * Clear data array dropping given items.
+     *
+     * @param  array      $values
+     * @param  bool       $keepKeys
+     * @param  array|null $ignoredKeys
+     * @return self
+     * @since  6.0
+     */
+    public function clear(array $values, bool $keepKeys = true, array $ignoredKeys = null): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = Arrays::clear($this->data, $values, $keepKeys, $ignoredKeys);
 
         return $this;
     }
