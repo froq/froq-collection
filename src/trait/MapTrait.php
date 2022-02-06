@@ -85,6 +85,31 @@ trait MapTrait
     }
 
     /**
+     * Apply multi map actions on data array.
+     *
+     * @param  callable|string $funcs
+     * @param  bool            $recursive
+     * @param  bool            $keepKeys
+     * @return self
+     * @causes froq\common\exception\ReadOnlyException
+     * @since  6.0
+     */
+    public function mapMulti(string|array $funcs, bool $recursive = false, bool $keepKeys = true): self
+    {
+        $this->readOnlyCall();
+
+        if (is_string($funcs)) {
+            $funcs = explode('|', trim($funcs, '|'));
+        }
+
+        foreach ($funcs as $func) {
+            $this->map($func, $recursive, $keepKeys);
+        }
+
+        return $this;
+    }
+
+    /**
      * Map all data items as properties to given class.
      *
      * @notice This method must be used on list-data containing objects, not single-dimensions.
