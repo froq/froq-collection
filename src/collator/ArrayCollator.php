@@ -12,8 +12,8 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
 /**
  * Array Collator.
  *
- * A collator class designed to check key types and provide read-only state,
- * array-like structure with some utility methods.
+ * A collator class designed to check key types and provide read-only state, array-like
+ * structure with some utility methods.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\ArrayCollator
@@ -41,19 +41,6 @@ class ArrayCollator extends AbstractCollator implements \ArrayAccess
     public function __construct(array $data = null, bool $readOnly = null)
     {
         parent::__construct($data, $readOnly);
-    }
-
-    /**
-     * Set data.
-     *
-     * @param  array<int|string, any> $data
-     * @param  bool                   $reset
-     * @return self
-     * @override
-     */
-    public final function setData(array $data, bool $reset = true): self
-    {
-        return parent::setData($data, $reset);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */

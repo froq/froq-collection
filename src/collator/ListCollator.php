@@ -12,8 +12,8 @@ use froq\collection\trait\{AccessTrait, GetTrait};
 /**
  * List Collator.
  *
- * A collator class designed to check key types and provide read-only state,
- * list-like structure with some utility methods.
+ * A collator class designed to check key types and provide read-only state, list-like
+ * structure with some utility methods.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\ListCollator
@@ -39,23 +39,12 @@ class ListCollator extends AbstractCollator implements \ArrayAccess
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {
-        parent::__construct($data, $readOnly);
-    }
-
-    /**
-     * Set data.
-     *
-     * @param  array<int, any> $data
-     * @param  bool            $reset
-     * @return self
-     * @override
-     */
-    public final function setData(array $data, bool $reset = true): self
-    {
         // Values as list.
-        $data = array_values($data);
+        if ($data) {
+            $data = array_values($data);
+        }
 
-        return parent::setData($data, $reset);
+        parent::__construct($data, $readOnly);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */

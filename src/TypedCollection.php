@@ -12,14 +12,14 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait, HasTrait};
 /**
  * Typed Collection.
  *
- * Represents a typed array structure that accepts strict values only which forced with `$dataType` property.
+ * A typed-array structure that accepts strict values only forced by `$dataType` property.
  *
  * @package froq\collection
  * @object  froq\collection\TypedCollection
  * @author  Kerem Güneş
  * @since   4.0
  */
-class TypedCollection extends AbstractCollection implements CollectionInterface, \ArrayAccess
+class TypedCollection extends AbstractCollection implements \ArrayAccess
 {
     /**
      * @see froq\collection\trait\AccessTrait
@@ -46,11 +46,17 @@ class TypedCollection extends AbstractCollection implements CollectionInterface,
         // Data type might be defined in extender class.
         $this->dataType = $dataType ?? $this->dataType ?? '';
 
-        if ($this->dataType == '') {
+        if (!$this->dataType) {
             throw new CollectionException(
                 'Data type is required, it must be defined like `protected string $dataType = \'int\'` '.
                 'or given at constructor calls as second argument'
             );
+        }
+
+        if ($data) {
+            foreach ($data as $value) {
+                $this->typeCheck($value);
+            }
         }
 
         parent::__construct($data, $readOnly);
@@ -61,27 +67,9 @@ class TypedCollection extends AbstractCollection implements CollectionInterface,
      *
      * @return string
      */
-    public final function getDataType(): string
+    public final function dataType(): string
     {
         return $this->dataType;
-    }
-
-    /**
-     * Set data.
-     *
-     * @param  array<int|string, any> $data
-     * @param  bool                   $reset
-     * @return self
-     * @causes froq\collection\CollectionException
-     * @override
-     */
-    public final function setData(array $data, bool $reset = true): self
-    {
-        foreach ($data as $value) {
-            $this->typeCheck($value);
-        }
-
-        return parent::setData($data, $reset);
     }
 
     /**
@@ -114,6 +102,7 @@ class TypedCollection extends AbstractCollection implements CollectionInterface,
     public final function set(int|string $key, $value): self
     {
         $this->readOnlyCheck();
+        $this->keyCheck($key);
         $this->typeCheck($value);
 
         $this->data[$key] = $value;
@@ -143,6 +132,7 @@ class TypedCollection extends AbstractCollection implements CollectionInterface,
     public final function remove(int|string $key): void
     {
         $this->readOnlyCheck();
+        $this->keyCheck($key);
 
         unset($this->data[$key]);
     }

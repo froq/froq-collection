@@ -12,7 +12,7 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
 /**
  * Component Collection.
  *
- * Represents a named array structure that restricts all access and mutation operations considering
+ * A named-array structure that restricts all access and mutation operations considering
  * given names only, also provides calls via `__call()` magic for given names.
  *
  * @package froq\collection
@@ -20,7 +20,7 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
  * @author  Kerem Güneş
  * @since   3.5
  */
-class ComponentCollection extends AbstractCollection implements CollectionInterface, \ArrayAccess
+class ComponentCollection extends AbstractCollection implements \ArrayAccess
 {
     /**
      * @see froq\collection\trait\AccessTrait
@@ -79,24 +79,6 @@ class ComponentCollection extends AbstractCollection implements CollectionInterf
             'and only set/get prefixed methods can be called via __call() if not exist]',
             [$method, static::class]
         );
-    }
-
-    /**
-     * Set data.
-     *
-     * @param  array<string, any> $data
-     * @param  bool               $reset
-     * @return self
-     * @causes froq\collection\CollectionException
-     * @override
-     */
-    public final function setData(array $data, bool $reset = true): self
-    {
-        foreach (array_keys($data) as $name) {
-            $this->nameCheck((string) $name);
-        }
-
-        return parent::setData($data, $reset);
     }
 
     /**

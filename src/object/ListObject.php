@@ -7,21 +7,20 @@ declare(strict_types=1);
 
 namespace froq\collection\object;
 
-use froq\collection\{AbstractCollection, CollectionInterface};
+use froq\collection\AbstractCollection;
 use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
-use froq\common\exception\InvalidKeyException;
 
 /**
  * List Object.
  *
- * Represents a simple but very extended list-object structure with some utility methods.
+ * A simple but extended list-object structure with some utility methods.
  *
  * @package froq\collection\object
  * @object  froq\collection\object\ListObject
  * @author  Kerem Güneş
  * @since   5.27
  */
-class ListObject extends AbstractCollection implements CollectionInterface, \ArrayAccess
+class ListObject extends AbstractCollection implements \ArrayAccess
 {
     /**
      * @see froq\collection\trait\AccessTrait
@@ -29,6 +28,22 @@ class ListObject extends AbstractCollection implements CollectionInterface, \Arr
      * @see froq\collection\trait\HasTrait
      */
     use AccessTrait, GetTrait, HasTrait;
+
+    /**
+     * Constructor.
+     *
+     * @param array<int, any>|null $data
+     * @param bool|null            $readOnly
+     */
+    public function __construct(array $data = null, bool $readOnly = null)
+    {
+        // Values as list.
+        if ($data) {
+            $data = array_values($data);
+        }
+
+        parent::__construct($data, $readOnly);
+    }
 
     /**
      * Add an item.
@@ -132,25 +147,5 @@ class ListObject extends AbstractCollection implements CollectionInterface, \Arr
         }
 
         return false;
-    }
-
-    /**
-     * Check offset validity.
-     *
-     * @param  mixed $offset
-     * @param  bool  $all
-     * @return void
-     * @throws froq\collection\InvalidKeyException
-     */
-    public final function keyCheck(mixed $offset, bool $all = false): void
-    {
-        if (!is_int($offset)) throw new InvalidKeyException(
-            'Invalid index type, index type must be int'
-        );
-
-        // Note: evaluates "'' < 0" true.
-        if ($offset < 0) throw new InvalidKeyException(
-            'Invalid index, index must be greater than or equal to 0'
-        );
     }
 }

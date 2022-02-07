@@ -13,8 +13,8 @@ use Map;
 /**
  * Map Collator.
  *
- * A collator class designed to check key types and provide read-only state,
- * map-like structure with some utility methods.
+ * A collator class designed to check key types and provide read-only state, map-like
+ * structure with some utility methods.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\MapCollator
@@ -42,19 +42,6 @@ class MapCollator extends AbstractCollator implements \ArrayAccess
     public function __construct(array|Map $data = null, bool $readOnly = null)
     {
         parent::__construct($data, $readOnly);
-    }
-
-    /**
-     * Set data.
-     *
-     * @param  array<string, any> $data
-     * @param  bool               $reset
-     * @return self
-     * @override
-     */
-    public final function setData(array $data, bool $reset = true): self
-    {
-        return parent::setData($data, $reset);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */

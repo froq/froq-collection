@@ -7,13 +7,10 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
-use froq\common\exception\InvalidKeyException;
-
 /**
  * Collator Trait.
  *
- * Represents a trait entity that used in `froq\collection\collator` internally
- * to avoid code repetition.
+ * An internal trait that used in `froq\collection\collator` internally to avoid code repetition.
  *
  * @package  froq\collection\collator
  * @object   froq\collection\collator\CollatorTrait
@@ -215,54 +212,5 @@ trait CollatorTrait
     private function resetKeys(): void
     {
         $this->data = array_values($this->data);
-    }
-
-    /**
-     * Check given offset validity.
-     *
-     * @param  mixed $offset
-     * @param  bool  $all
-     * @return void
-     * @throws froq\common\exception\InvalidKeyException
-     */
-    public final function keyCheck(mixed $offset, bool $all = false): void
-    {
-        switch (true) {
-            case ($this instanceof ArrayCollator):
-                is_int($offset) || is_string($offset) || throw new InvalidKeyException(
-                    $all ? 'Invalid data, data keys must be int|string'
-                         : 'Invalid key type, key type must be int|string'
-                );
-                break;
-            case ($this instanceof MapCollator):
-                is_string($offset) || throw new InvalidKeyException(
-                    $all ? 'Invalid data, data keys must be string'
-                         : 'Invalid key type, key type must be string'
-                );
-                break;
-            case ($this instanceof SetCollator):
-                is_int($offset) || throw new InvalidKeyException(
-                    $all ? 'Invalid data, data keys must be int'
-                         : 'Invalid key type, key type must be int'
-                );
-
-                // Note: evaluates "'' < 0" true.
-                if ($offset < 0) throw new InvalidKeyException(
-                    $all ? 'Invalid data, data keys must be sequential'
-                         : 'Invalid key, key must be greater than or equal to 0'
-                );
-                break;
-            case ($this instanceof ListCollator):
-                is_int($offset) || throw new InvalidKeyException(
-                    $all ? 'Invalid data, data keys must be int'
-                         : 'Invalid key type, key type must be int'
-                );
-
-                // Note: evaluates "'' < 0" true.
-                if ($offset < 0) throw new InvalidKeyException(
-                    $all ? 'Invalid data, data keys must be sequential'
-                         : 'Invalid key, key must be greater than or equal to 0'
-                );
-        }
     }
 }

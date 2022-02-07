@@ -8,12 +8,11 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
-use froq\common\exception\InvalidKeyException;
 
 /**
  * Item Collection.
  *
- * Represents a simple array structure that accepts int keys only, and also prevents modifications
+ * A simple array structure that accepts int keys only, and also prevents modifications
  * in read-only mode. Inspired by JavaScript's DOMTokenList.
  *
  * @package froq\collection
@@ -21,7 +20,7 @@ use froq\common\exception\InvalidKeyException;
  * @author  Kerem Güneş
  * @since   4.0
  */
-class ItemCollection extends AbstractCollection implements CollectionInterface, \ArrayAccess
+class ItemCollection extends AbstractCollection implements \ArrayAccess
 {
     /**
      * @see froq\collection\trait\AccessTrait
@@ -38,19 +37,6 @@ class ItemCollection extends AbstractCollection implements CollectionInterface, 
     public function __construct(array $data = null, bool $readOnly = null)
     {
         parent::__construct($data, $readOnly);
-    }
-
-    /**
-     * Set data.
-     *
-     * @param  array<int, any> $data
-     * @param  bool            $reset
-     * @return self
-     * @override
-     */
-    public final function setData(array $data, bool $reset = true): self
-    {
-        return parent::setData($data, $reset);
     }
 
     /**
@@ -72,7 +58,7 @@ class ItemCollection extends AbstractCollection implements CollectionInterface, 
      */
     public final function items(array $indexes = null): array
     {
-        if ($indexes == null) {
+        if (!func_num_args()) {
             return $this->data;
         }
 
@@ -184,8 +170,10 @@ class ItemCollection extends AbstractCollection implements CollectionInterface, 
         if (array_key_exists($index, $this->data)) {
             $item = $this->data[$index];
             unset($this->data[$index]);
+
             return true;
         }
+
         return false;
     }
 
@@ -203,30 +191,10 @@ class ItemCollection extends AbstractCollection implements CollectionInterface, 
 
         if (array_value_exists($oldItem, $this->data, key: $index)) {
             $this->data[$index] = $newItem;
+
             return true;
         }
+
         return false;
-    }
-
-    /**
-     * Check offset validity.
-     *
-     * @param  mixed $offset
-     * @param  bool  $all
-     * @return void
-     * @throws froq\collection\InvalidKeyException
-     */
-    public final function keyCheck(mixed $offset, bool $all = false): void
-    {
-        if (!is_int($offset)) throw new InvalidKeyException(
-            $all ? 'Invalid data, data indexes must be int'
-                 : 'Invalid index type, index type must be int'
-        );
-
-        // Note: evaluates "'' < 0" true.
-        if ($offset < 0) throw new InvalidKeyException(
-            $all ? 'Invalid data, data indexes must be sequential'
-                 : 'Invalid index, index must be greater than or equal to 0'
-        );
     }
 }

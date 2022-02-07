@@ -13,8 +13,8 @@ use Set;
 /**
  * Set Collator.
  *
- * A collator class designed to check unique values and provide read-only state,
- * set-like structure with some utility methods.
+ * A collator class designed to check unique values and provide read-only state, set-like
+ * structure with some utility methods.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\SetCollator
@@ -40,23 +40,12 @@ class SetCollator extends AbstractCollator implements \ArrayAccess
      */
     public function __construct(array|Set $data = null, bool $readOnly = null)
     {
+        // Values as list.
+        if ($data && is_array($data)) {
+            $data = array_values($data);
+        }
+
         parent::__construct($data, $readOnly);
-    }
-
-    /**
-     * Set data.
-     *
-     * @param  array<int, any> $data
-     * @param  bool            $reset
-     * @return self
-     * @override
-     */
-    public final function setData(array $data, bool $reset = true): self
-    {
-        // Deduplicate repeating values.
-        $data = array_dedupe($data);
-
-        return parent::setData($data, $reset);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */

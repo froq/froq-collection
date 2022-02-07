@@ -7,22 +7,21 @@ declare(strict_types=1);
 
 namespace froq\collection\object;
 
-use froq\collection\{AbstractCollection, CollectionInterface};
+use froq\collection\AbstractCollection;
 use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
-use froq\common\exception\InvalidKeyException;
 
 /**
  * Array Object.
  *
- * Represents a simple but very extended array-object structure (not like `ArrayObject`) with
- * some utility methods.
+ * A simple but extended array-object structure (not like `ArrayObject`) with some
+ * utility methods.
  *
  * @package froq\collection\object
  * @object  froq\collection\object\ArrayObject
  * @author  Kerem Güneş
  * @since   5.14, 5.15
  */
-class ArrayObject extends AbstractCollection implements CollectionInterface, \ArrayAccess
+class ArrayObject extends AbstractCollection implements \ArrayAccess
 {
     /**
      * @see froq\collection\trait\AccessTrait
@@ -30,6 +29,17 @@ class ArrayObject extends AbstractCollection implements CollectionInterface, \Ar
      * @see froq\collection\trait\HasTrait
      */
     use AccessTrait, GetTrait, HasTrait;
+
+    /**
+     * Constructor.
+     *
+     * @param array<int|string, any>|null $data
+     * @param bool|null                   $readOnly
+     */
+    public function __construct(array $data = null, bool $readOnly = null)
+    {
+        parent::__construct($data, $readOnly);
+    }
 
     /**
      * Add an item.
@@ -120,24 +130,10 @@ class ArrayObject extends AbstractCollection implements CollectionInterface, \Ar
 
         if (array_value_exists($oldValue, $this->data, key: $key)) {
             $this->data[$key] = $newValue;
+
             return true;
         }
-        return false;
-    }
 
-    /**
-     * Check offset validity.
-     *
-     * @param  mixed $offset
-     * @param  bool  $all
-     * @return void
-     * @throws froq\collection\InvalidKeyException
-     */
-    public final function keyCheck(mixed $offset, bool $all = false): void
-    {
-        if (!is_int($offset) && !is_string($offset)) throw new InvalidKeyException(
-            $all ? 'Invalid data, data keys must be int'
-                 : 'Invalid key type, key type must be int'
-        );
+        return false;
     }
 }

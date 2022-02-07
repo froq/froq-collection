@@ -7,8 +7,6 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\{Collection, CollectionException};
-
 /**
  * Split Collection.
  *

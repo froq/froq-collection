@@ -13,7 +13,7 @@ use froq\util\Arrays;
 /**
  * Collection.
  *
- * Represents a collection entity that contains a bunch of utility methods and behaves like a simple
+ * A collection class that contains a couple of utility methods and behaves like a simple
  * object.
  *
  * @package froq\collection
@@ -21,7 +21,7 @@ use froq\util\Arrays;
  * @author  Kerem Güneş
  * @since   1.0
  */
-class Collection extends AbstractCollection implements CollectionInterface, \ArrayAccess
+class Collection extends AbstractCollection implements \ArrayAccess
 {
     /**
      * @see froq\collection\trait\AccessTrait
@@ -53,7 +53,7 @@ class Collection extends AbstractCollection implements CollectionInterface, \Arr
     public function set(int|string|array $key, $value = null): self
     {
         $this->readOnlyCheck();
-        $this->keyEmptyCheck($key);
+        $this->keyCheck($key);
 
         is_array($key) ? Arrays::setAll($this->data, $key)
                        : Arrays::set($this->data, $key, $value);
@@ -70,8 +70,6 @@ class Collection extends AbstractCollection implements CollectionInterface, \Arr
      */
     public function get(int|string|array $key, $default = null)
     {
-        $this->keyEmptyCheck($key);
-
         return is_array($key) ? Arrays::getAll($this->data, $key, $default)
                               : Arrays::get($this->data, $key, $default);
     }
@@ -85,7 +83,7 @@ class Collection extends AbstractCollection implements CollectionInterface, \Arr
     public function remove(int|string|array $key): self
     {
         $this->readOnlyCheck();
-        $this->keyEmptyCheck($key);
+        $this->keyCheck($key);
 
         Arrays::removeAll($this->data, (array) $key);
 
@@ -103,7 +101,7 @@ class Collection extends AbstractCollection implements CollectionInterface, \Arr
     public function pull(int|string|array $key, $default = null)
     {
         $this->readOnlyCheck();
-        $this->keyEmptyCheck($key);
+        $this->keyCheck($key);
 
         return is_array($key) ? Arrays::pullAll($this->data, $key, $default)
                               : Arrays::pull($this->data, $key, $default);
