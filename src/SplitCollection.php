@@ -12,7 +12,7 @@ use froq\collection\{Collection, CollectionException};
 /**
  * Split Collection.
  *
- * Represents a collection structure that utilies string splitting stuff.
+ * A collection structure that utilies string splitting stuff.
  *
  * @package froq\collection
  * @object  froq\collection\SplitCollection
