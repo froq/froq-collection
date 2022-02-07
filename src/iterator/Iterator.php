@@ -20,6 +20,17 @@ namespace froq\collection\iterator;
 class Iterator extends AbstractIterator
 {
     /**
+     * Constructor.
+     *
+     * @param iterable  $data
+     * @param bool|null $readOnly
+     */
+    public function __construct(iterable $data, bool $readOnly = null)
+    {
+        parent::__construct($data, $readOnly);
+    }
+
+    /**
      * Append values to data array.
      *
      * @param  mixed ...$values
