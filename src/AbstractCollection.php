@@ -20,7 +20,7 @@ use froq\util\Util;
  * @package froq\collection
  * @object  froq\collection\AbstractCollection
  * @author  Kerem Güneş
- * @since   4.0
+ * @since   4.0, 6.0
  */
 abstract class AbstractCollection implements CollectionInterface, Listable, Arrayable, Objectable, Jsonable, Yieldable,
     Iteratable, IteratableReverse, \Iterator, \Countable, \JsonSerializable
@@ -69,45 +69,52 @@ abstract class AbstractCollection implements CollectionInterface, Listable, Arra
     protected function keyCheck(mixed $key, int $offset = null): void
     {
         if ($key === '') {
-            if ($offset === null) {
-                $message = 'Empty/null keys not allowed';
-                $messageParams = null;
-            } else {
-                $message = 'Empty/null keys not allowed [offset: %s]';
-                $messageParams = [$offset];
-            }
+            $message = ($offset === null)
+                ? 'Empty/null keys not allowed'
+                : 'Empty/null keys not allowed [offset: %s]';
 
-            throw new InvalidKeyException($message, $messageParams);
+            throw new InvalidKeyException($message, [$offset]);
         }
 
         switch (true) {
             case ($this instanceof Collection):
+                if (!is_int($key) && !is_string($key) && !is_array($key)) {
+                    $message = ($offset !== null)
+                        ? 'Invalid data, data keys must be int|string|array [type: %t, offset: %s]'
+                        : 'Invalid key type, key type must be int|string|array [type: %t]';
+
+                    throw new InvalidKeyException($message, [$key, $offset]);
+                }
+                break;
             case ($this instanceof TypedCollection):
             case ($this instanceof WeightedCollection):
             case ($this instanceof object\ArrayObject):
-                is_int($key) || is_string($key) || throw new InvalidKeyException(
-                    ($offset !== null)
-                        ? 'Invalid data, data keys must be int|string [offset: %s]'
-                        : 'Invalid key type, key type must be int|string'
-                    , [$offset]
-                );
+                if (!is_int($key) && !is_string($key)) {
+                    $message = ($offset !== null)
+                        ? 'Invalid data, data keys must be int|string [type: %t, offset: %s]'
+                        : 'Invalid key type, key type must be int|string [type: %t]';
+
+                    throw new InvalidKeyException($message, [$key, $offset]);
+                }
                 break;
             case ($this instanceof ItemCollection):
             case ($this instanceof object\ListObject):
-                is_int($key) || throw new InvalidKeyException(
-                    ($offset !== null)
-                        ? 'Invalid data, data keys must be int [offset: %s]'
-                        : 'Invalid key type, key type must be int'
-                    , [$offset]
-                );
+                if (!is_int($key)) {
+                    $message = ($offset !== null)
+                        ? 'Invalid data, data keys must be int [type: %t, offset: %s]'
+                        : 'Invalid key type, key type must be int[type: %t]';
+
+                    throw new InvalidKeyException($message, [$key, $offset]);
+                }
 
                 // Note: evaluates "'' < 0" true.
-                if ($key < 0) throw new InvalidKeyException(
-                    ($offset !== null)
-                        ? 'Invalid data, data keys must be sequential [offset: %s]'
-                        : 'Invalid key, key must be greater than or equal to 0'
-                    , [$offset]
-                );
+                if ($key < 0) {
+                    $message = ($offset !== null)
+                        ? 'Invalid data, data keys must be sequential [key: %s, offset: %s]'
+                        : 'Invalid key, key must be greater than or equal to 0 [key: %s]';
+
+                    throw new InvalidKeyException($message, [$key, $offset]);
+                }
         }
     }
 }
