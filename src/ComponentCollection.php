@@ -55,12 +55,13 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Magic call for a non-existing method but an existing component.
+     * Call for a non-existing method but an existing component.
      *
      * @param  string $method
      * @param  array  $methodArgs
      * @return self|any
      * @throws froq\collection\CollectionException
+     * @magic
      */
     public final function __call(string $method, array $methodArgs = [])
     {
