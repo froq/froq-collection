@@ -466,64 +466,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Get mutual items in given data array & return a new static instance.
-     *
-     * @param  array $data
-     * @return static
-     * @since  5.0
-     */
-    public function mutual(array $data): static
-    {
-        $data = Arrays::mutual($this->data, $data);
-
-        return new static($data);
-    }
-
-    /**
-     * Get unmutual items & return a new static instance.
-     *
-     * @param  array $data
-     * @return static
-     * @since  5.0
-     */
-    public function unmutual(array $data): static
-    {
-        $data = Arrays::unmutual($this->data, $data);
-
-        return new static($data);
-    }
-
-    /**
-     * Get different items & return a new static instance.
-     *
-     * @param  array  $data
-     * @param  bool   $assoc
-     * @return static
-     * @since  5.21
-     */
-    public function diff(array $data, bool $assoc = false): static
-    {
-        $data = Arrays::diff($this->data, $data, $assoc);
-
-        return new static($data);
-    }
-
-    /**
-     * Get different (keyed) items & return a new static instance.
-     *
-     * @param  array  $data
-     * @param  bool   $assoc
-     * @return static
-     * @since  5.21
-     */
-    public function diffKey(array $data): static
-    {
-        $data = Arrays::diffKey($this->data, $data);
-
-        return new static($data);
-    }
-
-    /**
      * Slice data array & return a new static instance.
      *
      * @param  int      $start
