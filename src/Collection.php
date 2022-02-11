@@ -579,17 +579,17 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Flat data array.
      *
-     * @param  bool $useKeys
+     * @param  bool $keepKeys
      * @param  bool $fixKeys
      * @param  bool $multi
      * @return self
      * @since  4.0
      */
-    public function flat(bool $useKeys = false, bool $fixKeys = false, bool $multi = true): self
+    public function flat(bool $keepKeys = false, bool $fixKeys = false, bool $multi = true): self
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::flat($this->data, $useKeys, $fixKeys, $multi);
+        $this->data = Arrays::flat($this->data, $keepKeys, $fixKeys, $multi);
 
         return $this;
     }
