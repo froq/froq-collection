@@ -630,27 +630,14 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Search given value returning value's hit count.
-     *
-     * @param  any  $value
-     * @param  bool $strict
-     * @return int
-     * @since  4.0
-     */
-    public function search($value, bool $strict = true): int
-    {
-        return Arrays::search($this->data, $value, $strict);
-    }
-
-    /**
      * Search given value's key.
      *
-     * @param  any  $value
-     * @param  bool $strict
+     * @param  mixed $value
+     * @param  bool  $strict
      * @return int|string|null
      * @since  5.2
      */
-    public function searchKey($value, bool $strict = true): int|string|null
+    public function searchKey(mixed $value, bool $strict = true): int|string|null
     {
         return Arrays::searchKey($this->data, $value, $strict);
     }
@@ -658,12 +645,12 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Search given value's last key.
      *
-     * @param  any  $value
-     * @param  bool $strict
+     * @param  mixed $value
+     * @param  bool  $strict
      * @return int|string|null
      * @since  5.5
      */
-    public function searchLastKey($value, bool $strict = true): int|string|null
+    public function searchLastKey(mixed $value, bool $strict = true): int|string|null
     {
         return Arrays::searchLastKey($this->data, $value, $strict);
     }
