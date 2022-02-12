@@ -83,22 +83,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Remove an item/items.
-     *
-     * @param  int|string|array<int|string> $key
-     * @return self
-     */
-    public function remove(int|string|array $key): self
-    {
-        $this->readOnlyCheck();
-        $this->keyCheck($key);
-
-        Arrays::removeAll($this->data, (array) $key);
-
-        return $this;
-    }
-
-    /**
      * Pull an item/items.
      *
      * @param  int|string|array<int|string> $key
@@ -118,6 +102,22 @@ class Collection extends AbstractCollection implements \ArrayAccess
         }
 
         return $value;
+    }
+
+    /**
+     * Remove an item/items.
+     *
+     * @param  int|string|array<int|string> $key
+     * @return self
+     */
+    public function remove(int|string|array $key): self
+    {
+        $this->readOnlyCheck();
+        $this->keyCheck($key);
+
+        Arrays::removeAll($this->data, (array) $key);
+
+        return $this;
     }
 
     /**
