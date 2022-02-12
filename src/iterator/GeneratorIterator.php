@@ -37,7 +37,7 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
             if (is_callable($generator)) {
                 $this->setGenerator($generator);
             } else {
-                $this->setGenerator(static function () use ($generator) {
+                $this->setGenerator(function () use ($generator) {
                     foreach ($generator as $key => $value) {
                         yield $key => $value;
                     }
