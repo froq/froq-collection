@@ -71,7 +71,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * @param  mixed|null                   $default
      * @return mixed|null
      */
-    public function get(int|string|array $key, mixed $default = null)
+    public function get(int|string|array $key, mixed $default = null): mixed
     {
         if (is_array($key)) {
             $value = Arrays::getAll($this->data, $key, (array) $default);
@@ -90,7 +90,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * @return mixed|null
      * @since  3.0
      */
-    public function pull(int|string|array $key, mixed $default = null)
+    public function pull(int|string|array $key, mixed $default = null): mixed
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
