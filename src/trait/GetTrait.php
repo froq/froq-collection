@@ -7,8 +7,6 @@ declare(strict_types=1);
 
 namespace froq\collection\trait;
 
-use froq\util\Arrays;
-
 /**
  * Get Trait.
  *
@@ -72,32 +70,5 @@ trait GetTrait
     public function getBool(int|string $key, $default = null): bool
     {
         return (bool) $this->get($key, $default);
-    }
-
-    /**
-     * Get a value as given type.
-     *
-     * @param  int|string $key
-     * @param  string     $type
-     * @param  mixed|null $default
-     * @return mixed|null
-     * @since  5.0
-     */
-    public function getAs(int|string $key, string $type, mixed $default = null)
-    {
-        return Arrays::getAs($this->data, $key, $type, $default);
-    }
-
-    /**
-     * Get random item(s).
-     *
-     * @param  int        $limit
-     * @param  mixed|null $default
-     * @return mixed|null
-     * @since  5.25
-     */
-    public function getRandom(int $limit = 1, mixed $default = null): mixed
-    {
-        return Arrays::getRandom($this->data, $limit, drop: $drop) ?? $default;
     }
 }
