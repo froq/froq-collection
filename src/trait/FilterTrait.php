@@ -13,7 +13,7 @@ use froq\util\Arrays;
 /**
  * Filter Trait.
  *
- * Represents a trait entity that provides `filter()` method.
+ * Represents a trait entity that provides `filter()` and `filterKeys()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\FilterTrait
@@ -29,15 +29,39 @@ trait FilterTrait
      * Apply a filter action on data array.
      *
      * @param  callable|null $func
+     * @param  bool          $recursive
+     * @param  bool          $useKeys
      * @param  bool          $keepKeys
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function filter(callable $func = null, bool $keepKeys = true): self
+    public function filter(callable $func = null, bool $recursive = false, bool $useKeys = false, bool $keepKeys = true): array
     {
         $this->readOnlyCall();
 
-        $this->data = Arrays::filter($this->data, $func, $keepKeys);
+        $this->data = Arrays::filter($this->data, $func, $recursive, $useKeys, $keepKeys);
+
+        // For some internal data changes.
+        if (method_exists($this, 'onDataChange')) {
+            $this->onDataChange(__function__);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Apply a filter action on data array keys.
+     *
+     * @param  callable|string $func
+     * @param  bool            $recursive
+     * @return self
+     * @causes froq\common\exception\ReadOnlyException
+     */
+    public function filterKeys(callable $func, bool $recursive = false): array
+    {
+        $this->readOnlyCall();
+
+        $this->data = Arrays::filterKeys($this->data, $func, $recursive);
 
         // For some internal data changes.
         if (method_exists($this, 'onDataChange')) {
