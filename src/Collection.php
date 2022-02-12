@@ -35,8 +35,8 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Constructor.
      *
-     * @param array<int|string, any>|null $data
-     * @param bool|null                   $readOnly
+     * @param array|null $data
+     * @param bool|null  $readOnly
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {
@@ -47,16 +47,19 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * Set an item/items.
      *
      * @param  int|string|array<int|string> $key
-     * @param  any|null                     $value
+     * @param  mixed|null                   $value
      * @return self
      */
-    public function set(int|string|array $key, $value = null): self
+    public function set(int|string|array $key, mixed $value = null): self
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
 
-        is_array($key) ? Arrays::setAll($this->data, $key)
-                       : Arrays::set($this->data, $key, $value);
+        if (is_array($key)) {
+            Arrays::setAll($this->data, $key);
+        } else {
+            Arrays::set($this->data, $key, $value);
+        }
 
         return $this;
     }
@@ -65,13 +68,18 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * Get an item/items.
      *
      * @param  int|string|array<int|string> $key
-     * @param  any|null                     $default
-     * @return any|null
+     * @param  mixed|null                   $default
+     * @return mixed|null
      */
-    public function get(int|string|array $key, $default = null)
+    public function get(int|string|array $key, mixed $default = null)
     {
-        return is_array($key) ? Arrays::getAll($this->data, $key, $default)
-                              : Arrays::get($this->data, $key, $default);
+        if (is_array($key)) {
+            $value = Arrays::getAll($this->data, $key, (array) $default);
+        } else {
+            $value = Arrays::get($this->data, $key, $default);
+        }
+
+        return $value;
     }
 
     /**
@@ -94,32 +102,34 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * Pull an item/items.
      *
      * @param  int|string|array<int|string> $key
-     * @param  any|null                     $default
-     * @return any|null
+     * @param  mixed|null                   $default
+     * @return mixed|null
      * @since  3.0
      */
-    public function pull(int|string|array $key, $default = null)
+    public function pull(int|string|array $key, mixed $default = null)
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
 
-        return is_array($key) ? Arrays::pullAll($this->data, $key, $default)
-                              : Arrays::pull($this->data, $key, $default);
+        if (is_array($key)) {
+            $value = Arrays::pullAll($this->data, $key, (array) $default);
+        } else {
+            $value = Arrays::pull($this->data, $key, $default);
+        }
+
+        return $value;
     }
 
     /**
-     * Add (append) an item/items.
+     * Add (append) items.
      *
-     * @param  any  ...$value
+     * @param  mixed ...$values
      * @return self
-     * @throws froq\collection\CollectionException
      * @since  3.0
      */
-    public function add(...$values): self
+    public function add(mixed ...$values): self
     {
         $this->readOnlyCheck();
-
-        $values || throw new CollectionException('No value(s) provided');
 
         foreach ($values as $value) {
             $this->data[] = $value;
@@ -131,17 +141,14 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Compact given keys with given vars.
      *
-     * @param  int|string|array    $keys
+     * @param  int|string|array $keys
      * @param  mixed            ...$vars
      * @return self
-     * @throws froq\collection\CollectionException
      * @since  5.0
      */
     public function compact(int|string|array $keys, mixed ...$vars): self
     {
         $this->readOnlyCheck();
-
-        $vars || throw new CollectionException('No vars given');
 
         $this->data = array_compact($keys, ...$vars);
 
@@ -151,16 +158,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Extract given keys to given vars with refs.
      *
-     * @param  int|string|array     $keys
+     * @param  int|string|array $keys
      * @param  mixed            &...$vars
      * @return int
-     * @throws froq\collection\CollectionException
      * @since  5.0
      */
     public function extract(int|string|array $keys, mixed &...$vars): int
     {
-        $vars || throw new CollectionException('No vars given');
-
         $ret = array_extract($this->data, $keys, ...$vars);
 
         return $ret;
