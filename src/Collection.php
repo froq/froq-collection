@@ -772,14 +772,15 @@ class Collection extends AbstractCollection implements \ArrayAccess
      *
      * @param  array      $keys
      * @param  mixed|null $value
+     * @param  bool       $isset
      * @return self
      * @since  5.0
      */
-    public function padKeys(array $keys, mixed $value = null): self
+    public function padKeys(array $keys, mixed $value = null, bool $isset = false): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_pad_keys($this->data, $keys, $value);
+        $this->data = array_pad_keys($this->data, $keys, $value, $isset);
 
         return $this;
     }
