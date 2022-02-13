@@ -387,17 +387,12 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Use unique items in data array.
      *
-     * @param  bool $strict
      * @param  int $flags
      * @return self
      * @since  4.0
      */
-    public function unique(bool $strict = true, int $flags = SORT_REGULAR): self
+    public function unique(int $flags = SORT_REGULAR): self
     {
-        if ($strict) {
-            return $this->dedupe(true);
-        }
-
         $this->readOnlyCheck();
 
         $this->data = array_unique($this->data, $flags);
