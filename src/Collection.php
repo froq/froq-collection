@@ -702,26 +702,27 @@ class Collection extends AbstractCollection implements \ArrayAccess
      *
      * @param  int  $limit
      * @param  bool $pack
-     * @return any|null
+     * @param  bool $drop
+     * @return mixed|null
      * @since  4.0
      */
-    public function random(int $limit = 1, bool $pack = false)
+    public function random(int $limit = 1, bool $pack = false, bool $drop = false): mixed
     {
-        return Arrays::random($this->data, $limit, $pack);
+        return Arrays::random($this->data, $limit, $pack, $drop);
     }
 
     /**
      * Shuffle data array.
      *
-     * @param  bool $assoc
+     * @param  bool|null $assoc
      * @return self
      * @since  4.0
      */
-    public function shuffle(bool $assoc = false)
+    public function shuffle(bool $assoc = null)
     {
         $this->readOnlyCheck();
 
-        Arrays::shuffle($this->data, $assoc);
+        $this->data = array_shuffle($this->data, $assoc);
 
         return $this;
     }
