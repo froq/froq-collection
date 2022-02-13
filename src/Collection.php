@@ -404,13 +404,14 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * Select item(s) from data array by given key(s) & return a new static instance.
      *
      * @param  int|string|array<int|string> $key
-     * @param  bool                         $combine (AKA keep-keys directive).
+     * @param  mixed|null                   $default
+     * @param  bool                         $combine
      * @return static
      * @since  5.0
      */
-    public function select(int|string|array $key, bool $combine = true): static
+    public function select(int|string|array $key, mixed $default = null, bool $combine = true): static
     {
-        $data = (array) array_select($this->data, $key, combine: $combine);
+        $data = (array) array_select($this->data, $key, $default, $combine);
 
         return new static($data);
     }
