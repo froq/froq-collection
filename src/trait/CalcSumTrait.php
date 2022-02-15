@@ -31,8 +31,11 @@ trait CalcSumTrait
             return 0;
         }
 
-        return ($precision === null)
-             ? array_sum($this->data)
-             : round(array_sum($this->data), $precision);
+        $ret = array_sum($this->data);
+        if ($precision !== null) {
+            $ret = round($ret, $precision);
+        }
+
+        return $ret;
     }
 }

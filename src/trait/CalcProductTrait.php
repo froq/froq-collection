@@ -31,8 +31,11 @@ trait CalcProductTrait
             return 0;
         }
 
-        return ($precision === null)
-             ? array_product($this->data)
-             : round(array_product($this->data), $precision);
+        $ret = array_product($this->data);
+        if ($precision !== null) {
+            $ret = round($ret, $precision);
+        }
+
+        return $ret;
     }
 }

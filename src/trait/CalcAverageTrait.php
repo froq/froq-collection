@@ -31,9 +31,12 @@ trait CalcAverageTrait
             return 0;
         }
 
-        return ($precision === null)
-             ? array_average($this->data)
-             : round(array_average($this->data), $precision);
+        $ret = array_average($this->data);
+        if ($precision !== null) {
+            $ret = round($ret, $precision);
+        }
+
+        return $ret;
     }
 
     /**
