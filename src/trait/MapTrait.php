@@ -51,8 +51,8 @@ trait MapTrait
     /**
      * Apply a map action on data array keys.
      *
-     * @param  callable|string $func
-     * @param  bool            $recursive
+     * @param  callable $func
+     * @param  bool     $recursive
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
