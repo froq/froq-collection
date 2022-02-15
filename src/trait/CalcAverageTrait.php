@@ -10,7 +10,7 @@ namespace froq\collection\trait;
 /**
  * Calc-Average Trait.
  *
- * Represents a trait that provides `average()` method.
+ * Represents a trait that provides `average()` and `avg()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\CalcAverageTrait
@@ -34,5 +34,13 @@ trait CalcAverageTrait
         return ($precision === null)
              ? array_average($this->data)
              : round(array_average($this->data), $precision);
+    }
+
+    /**
+     * @alias average()
+     */
+    public function avg(...$args)
+    {
+        return $this->average(...$args);
     }
 }
