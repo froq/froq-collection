@@ -35,7 +35,7 @@ trait FilterTrait
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function filter(callable $func = null, bool $recursive = false, bool $useKeys = false, bool $keepKeys = true): array
+    public function filter(callable $func = null, bool $recursive = false, bool $useKeys = false, bool $keepKeys = true): self
     {
         $this->readOnlyCall();
 
@@ -57,7 +57,7 @@ trait FilterTrait
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function filterKeys(callable $func, bool $recursive = false): array
+    public function filterKeys(callable $func, bool $recursive = false): self
     {
         $this->readOnlyCall();
 
