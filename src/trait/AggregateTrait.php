@@ -26,10 +26,12 @@ trait AggregateTrait
      *
      * @param  callable   $func
      * @param  array|null $carry
-     * @return array
+     * @return static
      */
-    public function aggregate(callable $func, array $carry = null): array
+    public function aggregate(callable $func, array $carry = null): static
     {
-        return Arrays::aggregate($this->data, $func, $carry);
+        $data = Arrays::aggregate($this->data, $func, $carry);
+
+        return new static($data);
     }
 }
