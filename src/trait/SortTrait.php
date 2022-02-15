@@ -13,7 +13,8 @@ use froq\util\Arrays;
 /**
  * Sort Trait.
  *
- * Represents a trait entity that provides some sorting methods.
+ * Represents a trait entity that provides `sort()`, `sortKey()`, `sortLocale()`
+ * and `sortNatural()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\SortTrait
