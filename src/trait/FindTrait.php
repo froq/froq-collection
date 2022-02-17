@@ -39,9 +39,9 @@ trait FindTrait
      * @param  callable $func
      * @param  bool     $reverse
      * @param  bool     $keepKeys
-     * @return array<mixed|null>
+     * @return array|null
      */
-    public function findAll(callable $func, bool $reverse = false, bool $keepKeys = true): array
+    public function findAll(callable $func, bool $reverse = false, bool $keepKeys = true): array|null
     {
         return Arrays::findAll($this->data, $func, $reverse, $keepKeys);
     }
@@ -51,7 +51,7 @@ trait FindTrait
      *
      * @param  callable $func
      * @param  bool     $reverse
-     * @return any|null
+     * @return int|string|null
      */
     public function findKey(callable $func, bool $reverse = false): int|string|null
     {
@@ -63,9 +63,9 @@ trait FindTrait
      *
      * @param  callable $func
      * @param  bool     $reverse
-     * @return array<int|string|null>
+     * @return array<int|string>|null
      */
-    public function findKeys(callable $func, bool $reverse = false): array
+    public function findKeys(callable $func, bool $reverse = false): array|null
     {
         return Arrays::findKeys($func, $reverse);
     }
