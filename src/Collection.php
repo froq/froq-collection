@@ -69,14 +69,15 @@ class Collection extends AbstractCollection implements \ArrayAccess
      *
      * @param  int|string|array<int|string> $key
      * @param  mixed|null                   $default
+     * @param  bool                         $drop
      * @return mixed|null
      */
-    public function get(int|string|array $key, mixed $default = null): mixed
+    public function get(int|string|array $key, mixed $default = null, bool $drop = false): mixed
     {
         if (is_array($key)) {
-            $value = Arrays::getAll($this->data, $key, (array) $default);
+            $value = Arrays::getAll($this->data, $key, (array) $default, $drop);
         } else {
-            $value = Arrays::get($this->data, $key, $default);
+            $value = Arrays::get($this->data, $key, $default, $drop);
         }
 
         return $value;
@@ -93,7 +94,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
     public function pull(int|string|array $key, mixed $default = null): mixed
     {
         $this->readOnlyCheck();
-        $this->keyCheck($key);
 
         if (is_array($key)) {
             $value = Arrays::pullAll($this->data, $key, (array) $default);
@@ -113,7 +113,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
     public function remove(int|string|array $key): self
     {
         $this->readOnlyCheck();
-        $this->keyCheck($key);
 
         Arrays::removeAll($this->data, (array) $key);
 
