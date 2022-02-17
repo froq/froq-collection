@@ -38,12 +38,11 @@ trait FindTrait
      *
      * @param  callable $func
      * @param  bool     $reverse
-     * @param  bool     $keepKeys
      * @return array|null
      */
-    public function findAll(callable $func, bool $reverse = false, bool $keepKeys = true): array|null
+    public function findAll(callable $func, bool $reverse = false): array|null
     {
-        return Arrays::findAll($this->data, $func, $reverse, $keepKeys);
+        return Arrays::findAll($this->data, $func, $reverse);
     }
 
     /**
