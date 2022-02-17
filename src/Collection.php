@@ -44,7 +44,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Set an item/items.
+     * Set one/many items.
      *
      * @param  int|string|array<int|string> $key
      * @param  mixed|null                   $value
@@ -65,7 +65,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Get an item/items.
+     * Get one/many items.
      *
      * @param  int|string|array<int|string> $key
      * @param  mixed|null                   $default
@@ -84,28 +84,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Pull an item/items.
-     *
-     * @param  int|string|array<int|string> $key
-     * @param  mixed|null                   $default
-     * @return mixed|null
-     * @since  3.0
-     */
-    public function pull(int|string|array $key, mixed $default = null): mixed
-    {
-        $this->readOnlyCheck();
-
-        if (is_array($key)) {
-            $value = Arrays::pullAll($this->data, $key, (array) $default);
-        } else {
-            $value = Arrays::pull($this->data, $key, $default);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Remove an item/items.
+     * Remove one/many items.
      *
      * @param  int|string|array<int|string> $key
      * @return self
@@ -114,7 +93,11 @@ class Collection extends AbstractCollection implements \ArrayAccess
     {
         $this->readOnlyCheck();
 
-        Arrays::removeAll($this->data, (array) $key);
+        if (is_array($key)) {
+            Arrays::removeAll($this->data, $key);
+        } else {
+            Arrays::remove($this->data, $key);
+        }
 
         return $this;
     }
@@ -284,7 +267,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Delete an item/items from data array by given value(s).
+     * Delete one/many items by given value(s).
      *
      * @param  mixed    $value
      * @param  mixed ...$values
@@ -301,7 +284,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Delete an item/items from data array by given key(s).
+     * Delete one/many items by given key(s).
      *
      * @param  int|string    $key
      * @param  int|string ...$keys
@@ -594,7 +577,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Clean data array dropping null, "", [] items.
+     * Clean data array dropping null, "", [] values.
      *
      * @param  bool       $keepKeys
      * @param  array|null $ignoredKeys
@@ -611,7 +594,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Clear data array dropping given items.
+     * Clear data array dropping given values.
      *
      * @param  array      $values
      * @param  bool       $keepKeys
