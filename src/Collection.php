@@ -833,7 +833,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * Get an item from data array with given key.
      *
      * @param  int|string $key
-     * @return mixed|null
+     * @return mixed
      */
     public function item(int|string $key): mixed
     {
@@ -844,11 +844,11 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * Get all items from data array with/without given keys.
      *
      * @param  array<int|string>|null $keys
-     * @return array<mixed>
+     * @return array
      */
     public function items(array $keys = null): array
     {
-        if ($keys == null) {
+        if ($keys === null) {
             return $this->data;
         }
 
