@@ -157,8 +157,10 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
                 return;
             }
 
-            throw new CollectionException('Each value must be type of %s, %s given',
-                [$this->dataType, $value::class]);
+            throw new CollectionException(
+                'Each value must be type of %s, %s given',
+                [$this->dataType, $value::class]
+            );
         }
 
         if (($this->dataType == 'scalar' && is_scalar($value))
@@ -176,8 +178,10 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
                 return;
             }
 
-            throw new CollectionException('Each value must be type of %s, %s given',
-                [$this->dataType, $type]);
+            throw new CollectionException(
+                'Each value must be type of %s, %s given',
+                [$this->dataType, $type]
+            );
         }
     }
 }
