@@ -35,13 +35,10 @@ class Iterator extends AbstractIterator
      *
      * @param  mixed ...$values
      * @return self
-     * @throws froq\collection\iterator\IteratorException
      */
     public function append(mixed ...$values): self
     {
         $this->readOnlyCheck();
-
-        $values || throw new IteratorException('No value(s) given');
 
         foreach ($values as $value) {
             $this->data[] = $value;

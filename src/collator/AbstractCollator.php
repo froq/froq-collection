@@ -100,7 +100,7 @@ abstract class AbstractCollator implements CollatorInterface, Listable, Arrayabl
                 if (!is_int($key)) {
                     $message = ($offset !== null)
                         ? 'Invalid data, data keys must be int [type: %t, offset: %s]'
-                        : 'Invalid key type, key type must be int[type: %t]';
+                        : 'Invalid key type, key type must be int [type: %t]';
 
                     throw new InvalidKeyException($message, [$key, $offset]);
                 }
