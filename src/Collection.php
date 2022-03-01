@@ -8,7 +8,6 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait, HasTrait};
-use froq\util\Arrays;
 
 /**
  * Collection.
@@ -55,11 +54,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
         $this->readOnlyCheck();
         $this->keyCheck($key);
 
-        if (is_array($key)) {
-            Arrays::setAll($this->data, $key);
-        } else {
-            Arrays::set($this->data, $key, $value);
-        }
+        array_set($this->data, $key, $value);
 
         return $this;
     }
@@ -74,11 +69,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function get(int|string|array $key, mixed $default = null, bool $drop = false): mixed
     {
-        if (is_array($key)) {
-            $value = Arrays::getAll($this->data, $key, (array) $default, $drop);
-        } else {
-            $value = Arrays::get($this->data, $key, $default, $drop);
-        }
+        $value = array_get($this->data, $key, $default, $drop);
 
         return $value;
     }
@@ -93,11 +84,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     {
         $this->readOnlyCheck();
 
-        if (is_array($key)) {
-            Arrays::removeAll($this->data, $key);
-        } else {
-            Arrays::remove($this->data, $key);
-        }
+        array_remove($this->data, $key);
 
         return $this;
     }
@@ -328,7 +315,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::concat($this->data, $item, ...$items);
+        $this->data = array_concat($this->data, $item, ...$items);
 
         return $this;
     }
@@ -345,7 +332,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::union($this->data, $data, ...$datas);
+        $this->data = array_union($this->data, $data, ...$datas);
 
         return $this;
     }
@@ -354,14 +341,15 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * Dedupe items in data array.
      *
      * @param  bool $strict
+     * @param  bool $list
      * @return self
      * @since  4.0
      */
-    public function dedupe(bool $strict = true): self
+    public function dedupe(bool $strict = true, bool $list = false): self
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::dedupe($this->data, $strict);
+        $this->data = array_dedupe($this->data, $strict, $list);
 
         return $this;
     }
@@ -571,7 +559,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::flat($this->data, $keepKeys, $fixKeys, $multi);
+        $this->data = array_flat($this->data, $keepKeys, $fixKeys, $multi);
 
         return $this;
     }
@@ -588,7 +576,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::clean($this->data, $keepKeys, $ignoredKeys);
+        $this->data = array_clean($this->data, $keepKeys, $ignoredKeys);
 
         return $this;
     }
@@ -606,7 +594,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::clear($this->data, $values, $keepKeys, $ignoredKeys);
+        $this->data = array_clear($this->data, $values, $keepKeys, $ignoredKeys);
 
         return $this;
     }
@@ -621,7 +609,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function searchKey(mixed $value, bool $strict = true): int|string|null
     {
-        return Arrays::searchKey($this->data, $value, $strict);
+        return array_search_key($this->data, $value, $strict);
     }
 
     /**
@@ -634,7 +622,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function searchLastKey(mixed $value, bool $strict = true): int|string|null
     {
-        return Arrays::searchLastKey($this->data, $value, $strict);
+        return array_search_key($this->data, $value, $strict, true);
     }
 
     /**
@@ -664,7 +652,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function test(callable $func): bool
     {
-        return Arrays::test($this->data, $func);
+        return array_test($this->data, $func);
     }
 
     /**
@@ -676,7 +664,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function testAll(callable $func): bool
     {
-        return Arrays::testAll($this->data, $func);
+        return array_test_all($this->data, $func);
     }
 
     /**
@@ -690,7 +678,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function random(int $limit = 1, bool $pack = false, bool $drop = false): mixed
     {
-        return Arrays::random($this->data, $limit, $pack, $drop);
+        return array_random($this->data, $limit, $pack, $drop);
     }
 
     /**
