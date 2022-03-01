@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
+use froq\collection\trait\{AccessTrait, GetTrait};
 
 /**
  * Item Collection.

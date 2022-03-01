@@ -7,8 +7,6 @@ declare(strict_types=1);
 
 namespace froq\collection\iterator;
 
-use froq\collection\iterator\Iterator;
-
 /**
  * Reverse Iterator.
  *

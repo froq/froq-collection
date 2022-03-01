@@ -8,7 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 use froq\common\trait\ReadOnlyCallTrait;
-use froq\common\exception\{InvalidArgumentException, RuntimeException};
 use froq\util\Arrays;
 
 /**
