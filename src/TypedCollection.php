@@ -172,8 +172,7 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
         if ($type != $this->dataType) {
             $types = explode('|', $this->dataType);
 
-            // @fix @todo: Make namespace resolution for short class names.
-            if (in_array($type, $types)) {
+            if (in_array($type, $types, true)) {
                 return;
             }
 
