@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection\trait;
 
-use froq\common\trait\ReadOnlyCallTrait;
+use froq\common\trait\CallTrait;
 use froq\util\Arrays;
 
 /**
@@ -22,8 +22,8 @@ use froq\util\Arrays;
  */
 trait MapTrait
 {
-    /** @see froq\common\trait\ReadOnlyCallTrait */
-    use ReadOnlyCallTrait;
+    /** @see froq\common\trait\CallTrait */
+    use CallTrait;
 
     /**
      * Apply a map action on data array.
@@ -36,14 +36,13 @@ trait MapTrait
      */
     public function map(callable|string|array $func, bool $recursive = false, bool $useKeys = false, bool $keepKeys = true): self
     {
-        $this->readOnlyCall();
+        // For read-only check.
+        $this->call('readOnlyCheck');
 
         $this->data = Arrays::map($this->data, $func, $recursive, $useKeys, $keepKeys);
 
         // For some internal data changes.
-        if (method_exists($this, 'onDataChange')) {
-            $this->onDataChange(__function__);
-        }
+        $this->call('onDataChange', __function__);
 
         return $this;
     }
@@ -58,14 +57,13 @@ trait MapTrait
      */
     public function mapKeys(callable $func, bool $recursive = false): self
     {
-        $this->readOnlyCall();
+        // For read-only check.
+        $this->call('readOnlyCheck');
 
         $this->data = Arrays::mapKeys($this->data, $func, $recursive);
 
         // For some internal data changes.
-        if (method_exists($this, 'onDataChange')) {
-            $this->onDataChange(__function__);
-        }
+        $this->call('onDataChange', __function__);
 
         return $this;
     }

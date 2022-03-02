@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace froq\collection\trait;
 
-use froq\common\trait\ReadOnlyCallTrait;
+use froq\common\trait\CallTrait;
 use froq\util\Arrays;
 
 /**
@@ -22,8 +22,8 @@ use froq\util\Arrays;
  */
 trait FilterTrait
 {
-    /** @see froq\common\trait\ReadOnlyCallTrait */
-    use ReadOnlyCallTrait;
+    /** @see froq\common\trait\CallTrait */
+    use CallTrait;
 
     /**
      * Apply a filter action on data array.
@@ -37,14 +37,13 @@ trait FilterTrait
      */
     public function filter(callable $func = null, bool $recursive = false, bool $useKeys = false, bool $keepKeys = true): self
     {
-        $this->readOnlyCall();
+        // For read-only check.
+        $this->call('readOnlyCheck');
 
         $this->data = Arrays::filter($this->data, $func, $recursive, $useKeys, $keepKeys);
 
         // For some internal data changes.
-        if (method_exists($this, 'onDataChange')) {
-            $this->onDataChange(__function__);
-        }
+        $this->call('onDataChange', __function__);
 
         return $this;
     }
@@ -59,14 +58,13 @@ trait FilterTrait
      */
     public function filterKeys(callable $func, bool $recursive = false): self
     {
-        $this->readOnlyCall();
+        // For read-only check.
+        $this->call('readOnlyCheck');
 
         $this->data = Arrays::filterKeys($this->data, $func, $recursive);
 
         // For some internal data changes.
-        if (method_exists($this, 'onDataChange')) {
-            $this->onDataChange(__function__);
-        }
+        $this->call('onDataChange', __function__);
 
         return $this;
     }
