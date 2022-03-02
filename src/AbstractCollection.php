@@ -15,7 +15,7 @@ use froq\util\Util;
 /**
  * Abstract Collection.
  *
- * An abstract collection class that used by collection classes.
+ * An abstract collection class, used by collection classes.
  *
  * @package froq\collection
  * @object  froq\collection\AbstractCollection

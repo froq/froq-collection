@@ -12,7 +12,7 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
 /**
  * Component Collection.
  *
- * A named-array structure that restricts all access and mutation operations considering
+ * A named-array collection, restricts all access/mutation operations considering
  * given names only, also provides calls via `__call()` magic for given names.
  *
  * @package froq\collection
@@ -26,22 +26,21 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @see froq\collection\trait\AccessTrait
      * @see froq\collection\trait\AccessMagicTrait
      * @see froq\collection\trait\GetTrait
-     * @since 4.0, 5.0
      */
     use AccessTrait, AccessMagicTrait, GetTrait;
 
     /** @var array */
-    protected static array $names = [];
+    private static array $names = [];
 
     /** @var bool */
-    protected static bool $throw;
+    private static bool $throw;
 
     /**
      * Constructor.
      *
-     * @param array<string> $names
-     * @param bool          $throw
-     * @param bool|null     $readOnly
+     * @param array     $names
+     * @param bool      $throw
+     * @param bool|null $readOnly
      * @throws froq\collection\CollectionException
      */
     public function __construct(array $names, bool $throw = true, bool $readOnly = null)
@@ -85,7 +84,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Get names.
      *
-     * @return array<string>
+     * @return array
      */
     public final function names(): array
     {
@@ -203,8 +202,8 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
         }
 
         throw new CollectionException(
-            'Invalid component name `%s` [class: %s, valids: %s]',
-            [$name, static::class, join(', ', self::$names)]
+            'Invalid component name `%s` [class: %s, valids: %a]',
+            [$name, static::class, self::$names]
         );
     }
 }

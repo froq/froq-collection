@@ -12,7 +12,7 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait, HasTrait};
 /**
  * Typed Collection.
  *
- * A typed-array structure that accepts strict values only forced by `$dataType` property.
+ * A typed-array class, accepts strict values only forced by `$dataType` property.
  *
  * @package froq\collection
  * @object  froq\collection\TypedCollection
@@ -26,7 +26,6 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      * @see froq\collection\trait\AccessMagicTrait
      * @see froq\collection\trait\GetTrait
      * @see froq\collection\trait\HasTrait
-     * @since 5.4, 5.15
      */
     use AccessTrait, AccessMagicTrait, GetTrait, HasTrait;
 

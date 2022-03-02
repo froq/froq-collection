@@ -10,7 +10,7 @@ namespace froq\collection;
 /**
  * Split Collection.
  *
- * A collection structure that utilies string splitting stuff.
+ * A collection class, utilies string splitting stuff.
  *
  * @package froq\collection
  * @object  froq\collection\SplitCollection

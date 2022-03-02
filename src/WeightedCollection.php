@@ -10,7 +10,7 @@ namespace froq\collection;
 /**
  * Weighted Collection.
  *
- * A weighted-array structure that utilizes items selection operations by their weights.
+ * A weighted-array class, utilizes item selection operations by their weights.
  *
  * @package froq\collection
  * @object  froq\collection\WeightedCollection

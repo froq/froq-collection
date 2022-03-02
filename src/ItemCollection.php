@@ -12,8 +12,7 @@ use froq\collection\trait\{AccessTrait, GetTrait};
 /**
  * Item Collection.
  *
- * A simple array structure that accepts int keys only, and also prevents modifications
- * in read-only mode. Inspired by JavaScript's DOMTokenList.
+ * A simple array class, accepts int keys only.
  *
  * @package froq\collection
  * @object  froq\collection\ItemCollection

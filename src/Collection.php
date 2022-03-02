@@ -12,8 +12,7 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait, HasTrait};
 /**
  * Collection.
  *
- * A collection class that contains a couple of utility methods and behaves like a simple
- * object.
+ * A collection class, contains a couple of utility methods and behaves like a simple object.
  *
  * @package froq\collection
  * @object  froq\collection\Collection
@@ -27,7 +26,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * @see froq\collection\trait\AccessMagicTrait
      * @see froq\collection\trait\GetTrait
      * @see froq\collection\trait\HasTrait
-     * @since 4.0, 5.0, 5.15
      */
     use AccessTrait, AccessMagicTrait, GetTrait, HasTrait;
 
