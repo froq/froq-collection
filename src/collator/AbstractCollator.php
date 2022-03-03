@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace froq\collection\collator;
 
 use froq\collection\trait\ArrayTrait;
-use froq\common\interface\{Listable, Arrayable, Objectable, Jsonable, Yieldable, Iteratable, IteratableReverse};
+use froq\common\interface\{Arrayable, Objectable, Listable, Jsonable, Yieldable, Iteratable, IteratableReverse};
 use froq\common\trait\ReadOnlyTrait;
 use froq\common\exception\InvalidKeyException;
 use froq\util\Util;
@@ -23,7 +23,7 @@ use froq\util\Util;
  * @author  Kerem Güneş
  * @since   5.17, 6.0
  */
-abstract class AbstractCollator implements CollatorInterface, Listable, Arrayable, Objectable, Jsonable, Yieldable,
+abstract class AbstractCollator implements CollatorInterface, Arrayable, Objectable, Listable, Jsonable, Yieldable,
     Iteratable, IteratableReverse, \Iterator, \Countable, \JsonSerializable
 {
     /** @see froq\collection\trait\ArrayTrait */

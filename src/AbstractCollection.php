@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace froq\collection;
 
 use froq\collection\trait\ArrayTrait;
-use froq\common\interface\{Listable, Arrayable, Objectable, Jsonable, Yieldable, Iteratable, IteratableReverse};
+use froq\common\interface\{Arrayable, Objectable, Listable, Jsonable, Yieldable, Iteratable, IteratableReverse};
 use froq\common\trait\ReadOnlyTrait;
 use froq\common\exception\InvalidKeyException;
 use froq\util\Util;
@@ -23,7 +23,7 @@ use froq\util\Util;
  * @author  Kerem Güneş
  * @since   4.0, 6.0
  */
-abstract class AbstractCollection implements CollectionInterface, Listable, Arrayable, Objectable, Jsonable, Yieldable,
+abstract class AbstractCollection implements CollectionInterface, Arrayable, Objectable, Listable, Jsonable, Yieldable,
     Iteratable, IteratableReverse, \Iterator, \Countable, \JsonSerializable
 {
     /** @see froq\collection\trait\ArrayTrait */
