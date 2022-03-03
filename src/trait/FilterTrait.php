@@ -13,7 +13,7 @@ use froq\util\Arrays;
 /**
  * Filter Trait.
  *
- * Represents a trait entity that provides `filter()` and `filterKeys()` methods.
+ * A trait, provides `filter()` and `filterKeys()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\FilterTrait

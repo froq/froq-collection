@@ -12,7 +12,7 @@ use froq\util\Arrays;
 /**
  * Reduce Trait.
  *
- * Represents a trait entity that provides `reduce()` and `reduceRight()` methods.
+ * A trait, provides `reduce()` and `reduceRight()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\ReduceTrait

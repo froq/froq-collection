@@ -12,7 +12,7 @@ use froq\util\Arrays;
 /**
  * Find Trait.
  *
- * Represents a trait entity that provides `find*()` utility methods.
+ * A trait, provides `find()`, `findAll()`, `findKey()` and `findKeys()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\FindTrait
@@ -38,7 +38,7 @@ trait FindTrait
      *
      * @param  callable $func
      * @param  bool     $reverse
-     * @return array|null
+     * @return array<mixed>|null
      */
     public function findAll(callable $func, bool $reverse = false): array|null
     {

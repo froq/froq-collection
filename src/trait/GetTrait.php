@@ -10,13 +10,13 @@ namespace froq\collection\trait;
 /**
  * Get Trait.
  *
- * Represents a trait that provides `get*()` utility methods for expected returns such as
- * int/bool/string/float for those classes define `get()` method and `getRandom()` method as well.
+ * A trait, provides `get*()` methods for desired returns such as int, bool
+ * etc. for the classes defining `get()` method.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\GetTrait
  * @author  Kerem Güneş
- * @since   5.0, 5.8 Separated from "AccessTrait" methods.
+ * @since   5.0, 5.8
  */
 trait GetTrait
 {

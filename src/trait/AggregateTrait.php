@@ -12,7 +12,7 @@ use froq\util\Arrays;
 /**
  * Aggregate Trait.
  *
- * Represents a trait entity that provides `aggregate()` method.
+ * A trait, provides `aggregate()` method.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\AggregateTrait

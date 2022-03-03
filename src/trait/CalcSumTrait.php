@@ -10,7 +10,7 @@ namespace froq\collection\trait;
 /**
  * Calc-Sum Trait.
  *
- * Represents a trait that provides `sum()` method.
+ * A trait, provides `sum()` method.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\CalcSumTrait
@@ -20,14 +20,14 @@ namespace froq\collection\trait;
 trait CalcSumTrait
 {
     /**
-     * Calculate the sum of values in data array.
+     * Calculate the sum of values of data array.
      *
      * @param  int|null $precision
      * @return int|float
      */
     public function sum(int $precision = null): int|float
     {
-        if (empty($this->data)) {
+        if (!$this->data) {
             return 0;
         }
 

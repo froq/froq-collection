@@ -10,7 +10,7 @@ namespace froq\collection\trait;
 /**
  * Calc-Average Trait.
  *
- * Represents a trait that provides `average()` and `avg()` methods.
+ * A trait, provides `average()` and `avg()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\CalcAverageTrait
@@ -20,14 +20,14 @@ namespace froq\collection\trait;
 trait CalcAverageTrait
 {
     /**
-     * Calculate the average of values in data array.
+     * Calculate the average of values of data array.
      *
      * @param  int|null $precision
      * @return int|float
      */
     public function average(int $precision = null): int|float
     {
-        if (empty($this->data)) {
+        if (!$this->data) {
             return 0;
         }
 

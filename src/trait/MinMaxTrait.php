@@ -10,7 +10,7 @@ namespace froq\collection\trait;
 /**
  * Min-Max Trait.
  *
- * Represents a trait that provides `min()` and `max()` methods.
+ * A trait, provides `min()` and `max()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\MinMaxTrait
@@ -20,7 +20,7 @@ namespace froq\collection\trait;
 trait MinMaxTrait
 {
     /**
-     * Get min item from data array.
+     * Get min value from data array.
      *
      * @return mixed|null
      */
@@ -30,7 +30,7 @@ trait MinMaxTrait
     }
 
     /**
-     * Get max item from data array.
+     * Get max value from data array.
      *
      * @return mixed|null
      */

@@ -13,7 +13,7 @@ use froq\util\Arrays;
 /**
  * Apply Trait.
  *
- * Represents a trait entity that provides `apply()` method.
+ * A trait, provides `apply()` method.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\ApplyTrait
@@ -26,7 +26,7 @@ trait ApplyTrait
     use CallTrait;
 
     /**
-     * Apply a given action on data array.
+     * Apply given action on data array.
      *
      * @param  callable $func
      * @param  bool     $recursive

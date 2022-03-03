@@ -10,7 +10,7 @@ namespace froq\collection\trait;
 /**
  * Has Trait.
  *
- * Represents a trait entity that provides `has()`, `hasKey()` and `hasValue()` methods.
+ * A trait, provides `has()`, `hasKey()` and `hasValue()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\HasTrait
