@@ -7,15 +7,16 @@ declare(strict_types=1);
 
 namespace froq\collection\collator;
 
+use froq\collection\trait\ArrayTrait;
 use froq\common\interface\{Listable, Arrayable, Objectable, Jsonable, Yieldable, Iteratable, IteratableReverse};
-use froq\common\trait\{ArrayTrait, ReadOnlyTrait};
+use froq\common\trait\ReadOnlyTrait;
 use froq\common\exception\InvalidKeyException;
 use froq\util\Util;
 
 /**
  * Abstract Collator.
  *
- * An abstract collator class that used by collator classes.
+ * An abstract collator class, extended by collection classes.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\AbstractCollator
@@ -25,7 +26,7 @@ use froq\util\Util;
 abstract class AbstractCollator implements CollatorInterface, Listable, Arrayable, Objectable, Jsonable, Yieldable,
     Iteratable, IteratableReverse, \Iterator, \Countable, \JsonSerializable
 {
-    /** @see froq\common\trait\ArrayTrait */
+    /** @see froq\collection\trait\ArrayTrait */
     use ArrayTrait;
 
     /** @see froq\common\trait\ReadOnlyTrait */

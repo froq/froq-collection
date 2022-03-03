@@ -7,15 +7,16 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
+use froq\collection\trait\ArrayTrait;
 use froq\common\interface\{Listable, Arrayable, Objectable, Jsonable, Yieldable, Iteratable, IteratableReverse};
-use froq\common\trait\{ArrayTrait, ReadOnlyTrait};
+use froq\common\trait\ReadOnlyTrait;
 use froq\common\exception\InvalidKeyException;
 use froq\util\Util;
 
 /**
  * Abstract Collection.
  *
- * An abstract collection class, used by collection classes.
+ * An abstract collection class, extended by collection classes.
  *
  * @package froq\collection
  * @object  froq\collection\AbstractCollection
@@ -25,7 +26,7 @@ use froq\util\Util;
 abstract class AbstractCollection implements CollectionInterface, Listable, Arrayable, Objectable, Jsonable, Yieldable,
     Iteratable, IteratableReverse, \Iterator, \Countable, \JsonSerializable
 {
-    /** @see froq\common\trait\ArrayTrait */
+    /** @see froq\collection\trait\ArrayTrait */
     use ArrayTrait;
 
     /** @see froq\common\trait\ReadOnlyTrait */
