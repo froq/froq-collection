@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 use froq\collection\iterator\{ArrayIterator, ReverseArrayIterator};
-use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataToArrayTrait, DataToObjectTrait, DataToListTrait,
-    DataToJsonTrait, DataIteratorTrait};
 
 /**
  * Array Trait.
@@ -23,32 +21,11 @@ use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataToArrayTrait, DataToO
  */
 trait ArrayTrait
 {
-    /**
-     * @see froq\collection\trait\SortTrait
-     * @see froq\collection\trait\EachTrait
-     * @see froq\collection\trait\FilterTrait
-     * @see froq\collection\trait\MapTrait
-     * @see froq\collection\trait\ReduceTrait
-     * @see froq\collection\trait\ApplyTrait
-     * @see froq\collection\trait\AggregateTrait
-     * @see froq\collection\trait\FindTrait
-     * @see froq\collection\trait\MinMaxTrait
-     * @see froq\collection\trait\FirstLastTrait
-     */
-    use SortTrait, EachTrait, FilterTrait, MapTrait, ReduceTrait, ApplyTrait, AggregateTrait,
-        FindTrait, MinMaxTrait, FirstLastTrait;
-
-    /**
-     * @see froq\common\trait\DataCountTrait
-     * @see froq\common\trait\DataEmptyTrait
-     * @see froq\common\trait\DataToArrayTrait
-     * @see froq\common\trait\DataToObjectTrait
-     * @see froq\common\trait\DataToListTrait
-     * @see froq\common\trait\DataToJsonTrait
-     * @see froq\common\trait\DataIteratorTrait
-     */
-    use DataCountTrait, DataEmptyTrait, DataToArrayTrait, DataToObjectTrait, DataToListTrait,
-        DataToJsonTrait, DataIteratorTrait;
+    /** @see froq\collection\trait\*Trait */
+    use SortTrait, FilterTrait, MapTrait, ReduceTrait, ApplyTrait, AggregateTrait,
+        EachTrait, CountTrait, EmptyTrait, FindTrait, MinMaxTrait, FirstLastTrait,
+        CalcAverageTrait, CalcProductTrait, CalcSumTrait, IteratorTrait,
+        ToArrayTrait, ToJsonTrait, ToListTrait, ToObjectTrait;
 
     /** @magic */
     public function __serialize(): array
