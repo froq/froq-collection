@@ -11,7 +11,7 @@ namespace froq\collection\trait;
  * Access Trait.
  *
  * A trait, provides related methods for the classes implementing `ArrayAccess` interface
- * and defining `set()`, `get(), `remove()` and `count()`.
+ * and defining `set()`, `get(), `remove()` and `count()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\AccessTrait
