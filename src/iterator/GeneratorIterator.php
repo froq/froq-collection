@@ -36,11 +36,7 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
             if (is_callable($generator)) {
                 $this->setGenerator($generator);
             } else {
-                $this->setGenerator(function () use ($generator) {
-                    foreach ($generator as $key => $value) {
-                        yield $key => $value;
-                    }
-                });
+                $this->setGenerator(static fn() => yield from $generator);
             }
         }
     }
@@ -140,7 +136,7 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
      */
     public function toList(): array
     {
-        return array_values(iterator_to_array($this->generate()));
+        return array_list(iterator_to_array($this->generate()));
     }
 
     /**
