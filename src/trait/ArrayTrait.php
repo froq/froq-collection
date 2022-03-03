@@ -7,14 +7,14 @@ declare(strict_types=1);
 
 namespace froq\collection\trait;
 
+use froq\collection\iterator\{ArrayIterator, ReverseArrayIterator};
 use froq\common\trait\{DataCountTrait, DataEmptyTrait, DataToArrayTrait, DataToObjectTrait, DataToListTrait,
     DataToJsonTrait, DataIteratorTrait};
-use froq\collection\iterator\{ArrayIterator, ReverseArrayIterator};
 
 /**
  * Array Trait.
  *
- * A trait, for array-like classes defining `$data` property as array.
+ * A trait, provides some basic methods for array-like classes.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\ArrayTrait
