@@ -35,9 +35,9 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Constructor.
      *
-     * @param array<int|string, any>|null $data
-     * @param  string|null                $dataType
-     * @param  bool|null                  $readOnly
+     * @param  array|null   $data
+     * @param  string|null $dataType
+     * @param  bool|null   $readOnly
      * @throws froq\collection\CollectionException
      */
     public function __construct(array $data = null, string $dataType = null, bool $readOnly = null)
@@ -74,12 +74,12 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Add (append) an item.
      *
-     * @param  any $value
+     * @param  mixed $value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\collection\CollectionException
      */
-    public final function add($value): self
+    public final function add(mixed $value): self
     {
         $this->readOnlyCheck();
         $this->typeCheck($value);
@@ -93,12 +93,12 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      * Set an item.
      *
      * @param  int|string $key
-     * @param  any        $value
+     * @param  mixed      $value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\collection\CollectionException
      */
-    public final function set(int|string $key, $value): self
+    public final function set(int|string $key, mixed $value): self
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
@@ -113,10 +113,10 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      * Get an item.
      *
      * @param  int|string $key
-     * @param  any|null   $default
-     * @return any|null
+     * @param  mixed|null $default
+     * @return mixed|null
      */
-    public final function get(int|string $key, $default = null)
+    public final function get(int|string $key, mixed $default = null): mixed
     {
         return $this->data[$key] ?? $default;
     }
@@ -139,14 +139,14 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Check data type.
      *
-     * @param  any $value
+     * @param  mixed $value
      * @return void
      * @throws froq\collection\CollectionException
      */
-    private function typeCheck($value): void
+    private function typeCheck(mixed $value): void
     {
         // Any type?
-        if ($this->dataType == 'any') {
+        if ($this->dataType == 'any' || $this->dataType == 'mixed') {
             return;
         }
 

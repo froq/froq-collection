@@ -13,8 +13,7 @@ use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
 /**
  * Array Object.
  *
- * A simple but extended array-object structure (not like `ArrayObject`) with some
- * utility methods.
+ * A simple array-object structure (not like `ArrayObject`) with some utility methods.
  *
  * @package froq\collection\object
  * @object  froq\collection\object\ArrayObject
@@ -23,18 +22,14 @@ use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
  */
 class ArrayObject extends AbstractCollection implements \ArrayAccess
 {
-    /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\GetTrait
-     * @see froq\collection\trait\HasTrait
-     */
+    /** @see froq\collection\trait\*Trait */
     use AccessTrait, GetTrait, HasTrait;
 
     /**
      * Constructor.
      *
-     * @param array<int|string, any>|null $data
-     * @param bool|null                   $readOnly
+     * @param array|null $data
+     * @param bool|null  $readOnly
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {
@@ -95,12 +90,12 @@ class ArrayObject extends AbstractCollection implements \ArrayAccess
      * Remove an item.
      *
      * @param  int|string  $key
-     * @param  any|null   &$value
+     * @param  mixed|null &$value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\common\exception\InvalidKeyException
      */
-    public function remove(int|string $key, &$value = null): bool
+    public function remove(int|string $key, mixed &$value = null): bool
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
@@ -118,13 +113,13 @@ class ArrayObject extends AbstractCollection implements \ArrayAccess
     /**
      * Replace an item with new one.
      *
-     * @param  any              $oldValue
-     * @param  any              $newValue
+     * @param  mixed            $oldValue
+     * @param  mixed            $newValue
      * @param  int|string|null &$key
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function replace($oldValue, $newValue, int|string &$key = null): bool
+    public function replace(mixed $oldValue, mixed $newValue, int|string &$key = null): bool
     {
         $this->readOnlyCheck();
 

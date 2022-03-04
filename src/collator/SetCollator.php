@@ -23,33 +23,27 @@ use Set;
  */
 class SetCollator extends AbstractCollator implements \ArrayAccess
 {
-    /** @see froq\collection\collator\CollatorTrait */
-    use CollatorTrait;
-
-    /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\GetTrait
-     */
+    /** @see froq\collection\trait\*Trait */
     use AccessTrait, GetTrait;
 
     /**
      * Constructor.
      *
-     * @param array<int, any>|Set|null $data
-     * @param bool|null                $readOnly
+     * @param array|Set|null $data
+     * @param bool|null      $readOnly
      */
     public function __construct(array|Set $data = null, bool $readOnly = null)
     {
-        // Values as list.
         if ($data && is_array($data)) {
-            $data = array_values($data);
+            $data = array_list($data);
+            $data = array_dedupe($data);
         }
 
         parent::__construct($data, $readOnly);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function add($value): self
+    public final function add(mixed $value): self
     {
         if (!$this->_hasValue($value)) {
             $this->_add($value);
@@ -59,7 +53,7 @@ class SetCollator extends AbstractCollator implements \ArrayAccess
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function set(int $key, $value): self
+    public final function set(int $key, mixed $value): self
     {
         if (!$this->_hasValue($value)) {
             // Maintain next key.
@@ -74,31 +68,31 @@ class SetCollator extends AbstractCollator implements \ArrayAccess
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function get(int $key, $default = null)
+    public final function get(int $key, mixed $default = null): mixed
     {
         return $this->_get($key, $default);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function remove(int $key, &$value = null): bool
+    public final function remove(int $key, mixed &$value = null): bool
     {
         return $this->_remove($key, $value, true);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function removeValue($value, int &$key = null): bool
+    public final function removeValue(mixed $value, int &$key = null): bool
     {
         return $this->_removeValue($value, $key, true);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function replace(int $key, $value): bool
+    public final function replace(int $key, mixed $value): bool
     {
         return $this->_replace($key, $value);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function replaceValue($oldValue, $newValue, int &$key = null): bool
+    public final function replaceValue(mixed $oldValue, mixed $newValue, int &$key = null): bool
     {
         return $this->_replaceValue($oldValue, $newValue, $key);
     }
@@ -116,7 +110,7 @@ class SetCollator extends AbstractCollator implements \ArrayAccess
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function hasValue($value, int &$key = null): bool
+    public final function hasValue(mixed $value, int &$key = null): bool
     {
         return $this->_hasValue($value, $key);
     }

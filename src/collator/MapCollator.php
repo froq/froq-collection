@@ -23,21 +23,14 @@ use Map;
  */
 class MapCollator extends AbstractCollator implements \ArrayAccess
 {
-    /** @see froq\collection\collator\CollatorTrait */
-    use CollatorTrait;
-
-    /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\AccessMagicTrait
-     * @see froq\collection\trait\GetTrait
-     */
+    /** @see froq\collection\trait\*Trait */
     use AccessTrait, AccessMagicTrait, GetTrait;
 
     /**
      * Constructor.
      *
-     * @param array<string, any>|Map|null $data
-     * @param bool|null                   $readOnly
+     * @param array|Map|null $data
+     * @param bool|null      $readOnly
      */
     public function __construct(array|Map $data = null, bool $readOnly = null)
     {
@@ -45,37 +38,37 @@ class MapCollator extends AbstractCollator implements \ArrayAccess
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function set(string $key, $value): self
+    public final function set(string $key, mixed $value): self
     {
         return $this->_set($key, $value);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function get(string $key, $default = null)
+    public final function get(string $key, mixed $default = null): mixed
     {
         return $this->_get($key, $default);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function remove(string $key, &$value = null): bool
+    public final function remove(string $key, mixed &$value = null): bool
     {
         return $this->_remove($key, $value);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function removeValue($value, string &$key = null): bool
+    public final function removeValue(mixed $value, string &$key = null): bool
     {
         return $this->_removeValue($value, $key);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function replace(string $key, $value): bool
+    public final function replace(string $key, mixed $value): bool
     {
         return $this->_replace($key, $value);
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function replaceValue($oldValue, $newValue, string &$key = null): bool
+    public final function replaceValue(mixed $oldValue, mixed $newValue, string &$key = null): bool
     {
         return $this->_replaceValue($oldValue, $newValue, $key);
     }
@@ -93,7 +86,7 @@ class MapCollator extends AbstractCollator implements \ArrayAccess
     }
 
     /** @inheritDoc froq\collection\collator\CollatorTrait */
-    public final function hasValue($value, string &$key = null): bool
+    public final function hasValue(mixed $value, string &$key = null): bool
     {
         return $this->_hasValue($value, $key);
     }

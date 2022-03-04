@@ -24,11 +24,11 @@ trait GetTrait
      * Get a value as int.
      *
      * @param  int|string $key
-     * @param  any|null   $default
+     * @param  mixed|null $default
      * @return int
      * @since  4.2
      */
-    public function getInt(int|string $key, $default = null): int
+    public function getInt(int|string $key, mixed $default = null): int
     {
         return (int) $this->get($key, $default);
     }
@@ -37,11 +37,11 @@ trait GetTrait
      * Get a value as float.
      *
      * @param  int|string $key
-     * @param  any|null   $default
+     * @param  mixed|null $default
      * @return float
      * @since  4.2
      */
-    public function getFloat(int|string $key, $default = null): float
+    public function getFloat(int|string $key, mixed $default = null): float
     {
         return (float) $this->get($key, $default);
     }
@@ -50,11 +50,11 @@ trait GetTrait
      * Get a value as string.
      *
      * @param  int|string $key
-     * @param  any|null   $default
+     * @param  mixed|null $default
      * @return string
      * @since  4.2
      */
-    public function getString(int|string $key, $default = null): string
+    public function getString(int|string $key, mixed $default = null): string
     {
         return (string) $this->get($key, $default);
     }
@@ -63,11 +63,11 @@ trait GetTrait
      * Get a value as bool.
      *
      * @param  int|string $key
-     * @param  any|null   $default
+     * @param  mixed|null $default
      * @return bool
      * @since  4.2
      */
-    public function getBool(int|string $key, $default = null): bool
+    public function getBool(int|string $key, mixed $default = null): bool
     {
         return (bool) $this->get($key, $default);
     }

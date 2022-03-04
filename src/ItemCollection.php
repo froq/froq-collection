@@ -30,8 +30,8 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Constructor.
      *
-     * @param array<int, any>|null $data
-     * @param bool|null            $readOnly
+     * @param array|null $data
+     * @param bool|null  $readOnly
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {
@@ -42,9 +42,9 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
      * Get an item by given index.
      *
      * @param  int $index
-     * @return any|null
+     * @return mixed|null
      */
-    public final function item(int $index)
+    public final function item(int $index): mixed
     {
         return $this->data[$index] ?? null;
     }
@@ -53,7 +53,7 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
      * Get all items.
      *
      * @param  array<int>|null $indexes
-     * @return array<int, any>
+     * @return array<int, mixed>
      */
     public final function items(array $indexes = null): array
     {
@@ -93,11 +93,11 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Check whether given item exists in data array (with/without strict mode).
      *
-     * @param  any  $item
-     * @param  bool $strict
+     * @param  mixed $item
+     * @param  bool  $strict
      * @return bool
      */
-    public final function hasItem($item, bool $strict = true): bool
+    public final function hasItem(mixed $item, bool $strict = true): bool
     {
         return array_value_exists($item, $this->data, $strict);
     }
@@ -105,11 +105,11 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Add (append) an item to data array.
      *
-     * @param  any $item
+     * @param  mixed $item
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public final function add($item): self
+    public final function add(mixed $item): self
     {
         $this->readOnlyCheck();
 
@@ -121,13 +121,13 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Put an item by given index to data array.
      *
-     * @param  int $index
-     * @param  any $item
+     * @param  int   $index
+     * @param  mixed $item
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\common\exception\InvalidIndexException
      */
-    public final function set(int $index, $item): self
+    public final function set(int $index, mixed $item): self
     {
         $this->readOnlyCheck();
         $this->keyCheck($index);
@@ -140,12 +140,12 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Get an item by given index from data array.
      *
-     * @param  int      $index
-     * @param  any|null $default
-     * @return any|null
+     * @param  int        $index
+     * @param  mixed|null $default
+     * @return mixed|null
      * @causes froq\common\exception\InvalidIndexException
      */
-    public final function get(int $index, $default = null)
+    public final function get(int $index, mixed $default = null): mixed
     {
         $this->keyCheck($index);
 
@@ -155,13 +155,13 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Remove an item by given index from data array by given index.
      *
-     * @param  int       $index
-     * @param  any|null &$item
+     * @param  int         $index
+     * @param  mixed|null &$item
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\common\exception\InvalidIndexException
      */
-    public final function remove(int $index, &$item = null): bool
+    public final function remove(int $index, mixed &$item = null): bool
     {
         $this->readOnlyCheck();
         $this->keyCheck($index);
@@ -179,12 +179,12 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Replace an item with new one.
      *
-     * @param  any $oldItem
-     * @param  any $newItem
+     * @param  mixed $oldItem
+     * @param  mixed $newItem
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
      */
-    public final function replace($oldItem, $newItem): bool
+    public final function replace(mixed $oldItem, mixed $newItem): bool
     {
         $this->readOnlyCheck();
 

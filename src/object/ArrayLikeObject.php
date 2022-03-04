@@ -28,8 +28,8 @@ class ArrayLikeObject extends ArrayObject
     /**
      * Constructor.
      *
-     * @param array<int|string, any>|stdClass|null $data
-     * @param bool|null                            $readOnly
+     * @param array|stdClass|null $data
+     * @param bool|null           $readOnly
      */
     public function __construct(array|stdClass $data = null, bool $readOnly = null)
     {

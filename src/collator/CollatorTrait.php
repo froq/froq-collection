@@ -10,7 +10,7 @@ namespace froq\collection\collator;
 /**
  * Collator Trait.
  *
- * An internal trait that used in `froq\collection\collator` internally to avoid code repetition.
+ * An trait, used in `froq\collection\collator` internally.
  *
  * @package  froq\collection\collator
  * @object   froq\collection\collator\CollatorTrait
@@ -23,11 +23,11 @@ trait CollatorTrait
     /**
      * Add (append) a value to data array.
      *
-     * @param  any $value
+     * @param  mixed $value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    private function _add($value): self
+    private function _add(mixed $value): self
     {
         $this->readOnlyCheck();
 
@@ -40,12 +40,12 @@ trait CollatorTrait
      * Set a value to data array by given key.
      *
      * @param  int|string $key
-     * @param  any        $value
+     * @param  mixed      $value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\common\exception\InvalidKeyException
      */
-    private function _set(int|string $key, $value): self
+    private function _set(int|string $key, mixed $value): self
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
@@ -59,11 +59,11 @@ trait CollatorTrait
      * Get a value from data array by given key.
      *
      * @param  int|string $key
-     * @param  any|null   $default
-     * @return any|null
+     * @param  mixed|null $default
+     * @return mixed|null
      * @causes froq\common\exception\InvalidKeyException
      */
-    private function _get(int|string $key, $default = null)
+    private function _get(int|string $key, mixed $default = null): mixed
     {
         $this->keyCheck($key);
 
@@ -74,13 +74,13 @@ trait CollatorTrait
      * Remove a value from data array by given key & fill ref if success.
      *
      * @param  int|string  $key
-     * @param  any|null   &$value
+     * @param  mixed|null &$value
      * @param  bool        $reset
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\common\exception\InvalidKeyException
      */
-    private function _remove(int|string $key, &$value = null, bool $reset = false): bool
+    private function _remove(int|string $key, mixed &$value = null, bool $reset = false): bool
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
@@ -101,13 +101,13 @@ trait CollatorTrait
     /**
      * Remove a value from data array.
      *
-     * @param  any              $value
+     * @param  mixed            $value
      * @param  int|string|null &$key
      * @param  bool             $reset
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
      */
-    private function _removeValue($value, int|string &$key = null, bool $reset = false): bool
+    private function _removeValue(mixed $value, int|string &$key = null, bool $reset = false): bool
     {
         $this->readOnlyCheck();
 
@@ -127,13 +127,13 @@ trait CollatorTrait
      * Replace a value by given key if key exists.
      *
      * @param  int|string $key
-     * @param  any        $value
+     * @param  mixed      $value
      * @return bool
      * @since  5.17
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\common\exception\InvalidKeyException
      */
-    private function _replace(int|string $key, $value): bool
+    private function _replace(int|string $key, mixed $value): bool
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
@@ -150,14 +150,14 @@ trait CollatorTrait
     /**
      * Replace a value with given new value if value exists.
      *
-     * @param  any              $oldValue
-     * @param  any              $newValue
+     * @param  mixed            $oldValue
+     * @param  mixed            $newValue
      * @param  int|string|null &$key
      * @return bool
      * @since  5.17
      * @causes froq\common\exception\ReadOnlyException
      */
-    private function _replaceValue($oldValue, $newValue, int|string &$key = null): bool
+    private function _replaceValue(mixed $oldValue, mixed $newValue, int|string &$key = null): bool
     {
         $this->readOnlyCheck();
 
@@ -195,11 +195,11 @@ trait CollatorTrait
     /**
      * Check whether given value exists in data array with strict mode.
      *
-     * @param  any              $value
+     * @param  mixed            $value
      * @param  int|string|null &$key
      * @return bool
      */
-    private function _hasValue($value, int|string &$key = null): bool
+    private function _hasValue(mixed $value, int|string &$key = null): bool
     {
         return array_value_exists($value, $this->data, key: $key);
     }

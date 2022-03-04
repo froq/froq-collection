@@ -140,11 +140,11 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Push an item.
      *
-     * @param  any $value
+     * @param  mixed $value
      * @return self
      * @since  5.11
      */
-    public function push($value): self
+    public function push(mixed $value): self
     {
         $this->readOnlyCheck();
 
@@ -156,10 +156,10 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Pop an item.
      *
-     * @return any
+     * @return mixed
      * @since  4.0
      */
-    public function pop()
+    public function pop(): mixed
     {
         $this->readOnlyCheck();
 
@@ -169,7 +169,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Unpop an item (aka push).
      *
-     * @param  array<int|string, any> $data
+     * @param  array $data
      * @return self
      * @since  4.0
      */
@@ -191,10 +191,10 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Shift an item.
      *
-     * @return any
+     * @return mixed
      * @since  4.0
      */
-    public function shift()
+    public function shift(): mixed
     {
         $this->readOnlyCheck();
 
@@ -204,7 +204,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Unshift an item.
      *
-     * @param  array<int|string, any> $data
+     * @param  array $data
      * @return self
      * @since  4.0
      */

@@ -58,11 +58,11 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      *
      * @param  string $method
      * @param  array  $methodArgs
-     * @return self|any
+     * @return self|mixed
      * @throws froq\collection\CollectionException
      * @magic
      */
-    public final function __call(string $method, array $methodArgs = [])
+    public final function __call(string $method, array $methodArgs = []): mixed
     {
         // Eg: setFoo('bar') => set('foo', 'bar') or getFoo() => get('foo').
         if (str_starts_with($method, 'set')) {
@@ -126,11 +126,11 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Check whether given value exists in data array (with/without strict mode).
      *
-     * @param  any  $value
-     * @param  bool $strict
+     * @param  mixed $value
+     * @param  bool  $strict
      * @return bool
      */
-    public final function hasValue($value, bool $strict = true): bool
+    public final function hasValue(mixed $value, bool $strict = true): bool
     {
         return array_value_exists($value, $this->data, $strict);
     }
@@ -139,12 +139,12 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * Set a component.
      *
      * @param  string $name
-     * @param  any    $value
+     * @param  mixed  $value
      * @return self
      * @causes froq\collection\CollectionException
      * @causes froq\common\exception\ReadOnlyException
      */
-    public final function set(string $name, $value): self
+    public final function set(string $name, mixed $value): self
     {
         $this->readOnlyCheck();
         $this->nameCheck($name);
@@ -157,12 +157,12 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Get a component.
      *
-     * @param  string   $name
-     * @param  any|null $default
-     * @return any|null
+     * @param  string     $name
+     * @param  mixed|null $default
+     * @return mixed|null
      * @causes froq\collection\CollectionException
      */
-    public final function get(string $name, $default = null)
+    public final function get(string $name, mixed $default = null): mixed
     {
         $this->nameCheck($name);
 

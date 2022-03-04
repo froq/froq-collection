@@ -16,7 +16,7 @@ use froq\util\Util;
 /**
  * Abstract Collator.
  *
- * An abstract collator class, extended by collection classes.
+ * An abstract collator class, extended by collator classes.
  *
  * @package froq\collection\collator
  * @object  froq\collection\collator\AbstractCollator
@@ -26,6 +26,9 @@ use froq\util\Util;
 abstract class AbstractCollator implements CollatorInterface, Arrayable, Objectable, Listable, Jsonable, Yieldable,
     Iteratable, IteratableReverse, \Iterator, \Countable, \JsonSerializable
 {
+    /** @see froq\collection\collator\CollatorTrait */
+    use CollatorTrait;
+
     /** @see froq\collection\trait\ArrayTrait */
     use ArrayTrait;
 

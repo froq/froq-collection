@@ -78,7 +78,7 @@ trait ArrayTrait
     /**
      * Get keys of data array.
      *
-     * @return array<int|string>
+     * @return array
      */
     public function keys(): array
     {
@@ -88,7 +88,7 @@ trait ArrayTrait
     /**
      * Get values of data array.
      *
-     * @return array<any>
+     * @return array
      */
     public function values(): array
     {

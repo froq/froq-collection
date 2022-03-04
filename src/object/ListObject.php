@@ -13,7 +13,7 @@ use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
 /**
  * List Object.
  *
- * A simple but extended list-object structure with some utility methods.
+ * A simple list-object structure with some utility methods.
  *
  * @package froq\collection\object
  * @object  froq\collection\object\ListObject
@@ -22,24 +22,20 @@ use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
  */
 class ListObject extends AbstractCollection implements \ArrayAccess
 {
-    /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\GetTrait
-     * @see froq\collection\trait\HasTrait
-     */
+    /** @see froq\collection\trait\*Trait */
     use AccessTrait, GetTrait, HasTrait;
 
     /**
      * Constructor.
      *
-     * @param array<int, any>|null $data
-     * @param bool|null            $readOnly
+     * @param array|null $data
+     * @param bool|null  $readOnly
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {
         // Values as list.
         if ($data) {
-            $data = array_values($data);
+            $data = array_list($data);
         }
 
         parent::__construct($data, $readOnly);
@@ -104,12 +100,12 @@ class ListObject extends AbstractCollection implements \ArrayAccess
      * Remove an item.
      *
      * @param  int         $index
-     * @param  any|null   &$value
+     * @param  mixed|null &$value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\common\exception\InvalidKeyException
      */
-    public function remove(int $index, &$value = null): bool
+    public function remove(int $index, mixed &$value = null): bool
     {
         $this->readOnlyCheck();
         $this->keyCheck($index);
@@ -130,13 +126,13 @@ class ListObject extends AbstractCollection implements \ArrayAccess
     /**
      * Replace an item with new one.
      *
-     * @param  any              $oldValue
-     * @param  any              $newValue
+     * @param  mixed            $oldValue
+     * @param  mixed            $newValue
      * @param  int|null        &$index
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function replace($oldValue, $newValue, int &$index = null): bool
+    public function replace(mixed $oldValue, mixed $newValue, int &$index = null): bool
     {
         $this->readOnlyCheck();
 
