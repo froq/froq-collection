@@ -401,7 +401,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * @alias of selectColumn()
+     * @alias selectColumn()
      */
     public function column(...$args)
     {
@@ -425,7 +425,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * @alias of indexColumn()
+     * @alias indexColumn()
      * @since 5.5
      */
     public function index(...$args)
@@ -624,7 +624,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * @alias of searchKey()
+     * @alias searchKey()
      * @since 5.5
      */
     public function indexOf(...$args)
@@ -633,7 +633,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * @alias of searchLastKey()
+     * @alias searchLastKey()
      * @since 5.5
      */
     public function lastIndexOf(...$args)
