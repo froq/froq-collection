@@ -27,7 +27,7 @@ trait CollatorTrait
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    private function _add(mixed $value): self
+    protected function _add(mixed $value): self
     {
         $this->readOnlyCheck();
 
@@ -45,7 +45,7 @@ trait CollatorTrait
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\common\exception\InvalidKeyException
      */
-    private function _set(int|string $key, mixed $value): self
+    protected function _set(int|string $key, mixed $value): self
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
@@ -63,7 +63,7 @@ trait CollatorTrait
      * @return mixed|null
      * @causes froq\common\exception\InvalidKeyException
      */
-    private function _get(int|string $key, mixed $default = null): mixed
+    protected function _get(int|string $key, mixed $default = null): mixed
     {
         $this->keyCheck($key);
 
@@ -80,7 +80,7 @@ trait CollatorTrait
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\common\exception\InvalidKeyException
      */
-    private function _remove(int|string $key, mixed &$value = null, bool $reset = false): bool
+    protected function _remove(int|string $key, mixed &$value = null, bool $reset = false): bool
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
@@ -107,7 +107,7 @@ trait CollatorTrait
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
      */
-    private function _removeValue(mixed $value, int|string &$key = null, bool $reset = false): bool
+    protected function _removeValue(mixed $value, int|string &$key = null, bool $reset = false): bool
     {
         $this->readOnlyCheck();
 
@@ -133,7 +133,7 @@ trait CollatorTrait
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\common\exception\InvalidKeyException
      */
-    private function _replace(int|string $key, mixed $value): bool
+    protected function _replace(int|string $key, mixed $value): bool
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
@@ -157,7 +157,7 @@ trait CollatorTrait
      * @since  5.17
      * @causes froq\common\exception\ReadOnlyException
      */
-    private function _replaceValue(mixed $oldValue, mixed $newValue, int|string &$key = null): bool
+    protected function _replaceValue(mixed $oldValue, mixed $newValue, int|string &$key = null): bool
     {
         $this->readOnlyCheck();
 
@@ -176,7 +176,7 @@ trait CollatorTrait
      * @param  int|string $key
      * @return bool
      */
-    private function _has(int|string $key): bool
+    protected function _has(int|string $key): bool
     {
         return isset($this->data[$key]);
     }
@@ -187,7 +187,7 @@ trait CollatorTrait
      * @param  int|string $key
      * @return bool
      */
-    private function _hasKey(int|string $key): bool
+    protected function _hasKey(int|string $key): bool
     {
         return array_key_exists($key, $this->data);
     }
@@ -199,7 +199,7 @@ trait CollatorTrait
      * @param  int|string|null &$key
      * @return bool
      */
-    private function _hasValue(mixed $value, int|string &$key = null): bool
+    protected function _hasValue(mixed $value, int|string &$key = null): bool
     {
         return array_value_exists($value, $this->data, key: $key);
     }
@@ -209,7 +209,7 @@ trait CollatorTrait
      *
      * @return void
      */
-    private function resetKeys(): void
+    protected function resetKeys(): void
     {
         $this->data = array_values($this->data);
     }
