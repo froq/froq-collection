@@ -10,7 +10,7 @@ namespace froq\collection\iterator;
 /**
  * Iterator.
  *
- * An iterator class that contains some utility methods.
+ * An iterator class, contains some utility methods.
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\Iterator
