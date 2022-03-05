@@ -10,7 +10,7 @@ namespace froq\collection\collator;
 /**
  * Collator Trait.
  *
- * An trait, used in `froq\collection\collator` internally.
+ * A trait, used in `froq\collection\collator` internally.
  *
  * @package  froq\collection\collator
  * @object   froq\collection\collator\CollatorTrait
