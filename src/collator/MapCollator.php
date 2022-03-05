@@ -19,7 +19,7 @@ use Map;
  * @package froq\collection\collator
  * @object  froq\collection\collator\MapCollator
  * @author  Kerem Güneş
- * @since   4.0, 5.4
+ * @since   4.0, 5.4, 5.16
  */
 class MapCollator extends AbstractCollator implements \ArrayAccess
 {
