@@ -5,24 +5,23 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection\collator;
+namespace froq\collection\collector;
 
 use froq\collection\trait\{AccessTrait, GetTrait};
 
 /**
- * List Collator.
+ * List Collector.
  *
- * A collator class designed to check key types and provide read-only state, list-like
+ * A collector class designed to provide key-type check and read-only state, a list-like
  * structure with some utility methods.
  *
- * @package froq\collection\collator
- * @object  froq\collection\collator\ListCollator
+ * @package froq\collection\collector
+ * @object  froq\collection\collector\ListCollector
  * @author  Kerem Güneş
- * @since   4.0, 5.4, 5.16
+ * @since   4.0, 5.4, 5.16, 6.0
  */
-class ListCollator extends AbstractCollator implements \ArrayAccess
+class ListCollector extends AbstractCollector implements \ArrayAccess
 {
-    /** @see froq\collection\trait\*Trait */
     use AccessTrait, GetTrait;
 
     /**
@@ -40,13 +39,17 @@ class ListCollator extends AbstractCollator implements \ArrayAccess
         parent::__construct($data, $readOnly);
     }
 
-    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    /**
+     * @inheritDoc froq\collection\collector\CollectorTrait
+     */
     public final function add(mixed $value): self
     {
         return $this->_add($value);
     }
 
-    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    /**
+     * @inheritDoc froq\collection\collector\CollectorTrait
+     */
     public final function set(int $key, mixed $value): self
     {
         // Maintain next key.
@@ -57,49 +60,65 @@ class ListCollator extends AbstractCollator implements \ArrayAccess
         return $this->_set($key, $value);
     }
 
-    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    /**
+     * @inheritDoc froq\collection\collector\CollectorTrait
+     */
     public final function get(int $key, mixed $default = null): mixed
     {
         return $this->_get($key, $default);
     }
 
-    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    /**
+     * @inheritDoc froq\collection\collector\CollectorTrait
+     */
     public final function remove(int $key, mixed &$value = null, bool $reset = true): bool
     {
         return $this->_remove($key, $value, $reset);
     }
 
-    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    /**
+     * @inheritDoc froq\collection\collector\CollectorTrait
+     */
     public final function removeValue(mixed $value, int &$key = null, bool $reset = true): bool
     {
         return $this->_removeValue($value, $key, $reset);
     }
 
-    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    /**
+     * @inheritDoc froq\collection\collector\CollectorTrait
+     */
     public final function replace(int $key, mixed $value): bool
     {
         return $this->_replace($key, $value);
     }
 
-    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    /**
+     * @inheritDoc froq\collection\collector\CollectorTrait
+     */
     public final function replaceValue(mixed $oldValue, mixed $newValue, int &$key = null): bool
     {
         return $this->_replaceValue($oldValue, $newValue, $key);
     }
 
-    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    /**
+     * @inheritDoc froq\collection\collector\CollectorTrait
+     */
     public final function has(int $key): bool
     {
         return $this->_has($key);
     }
 
-    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    /**
+     * @inheritDoc froq\collection\collector\CollectorTrait
+     */
     public final function hasKey(int $key): bool
     {
         return $this->_hasKey($key);
     }
 
-    /** @inheritDoc froq\collection\collator\CollatorTrait */
+    /**
+     * @inheritDoc froq\collection\collector\CollectorTrait
+     */
     public final function hasValue(mixed $value, int &$key = null): bool
     {
         return $this->_hasValue($value, $key);

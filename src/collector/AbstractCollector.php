@@ -5,35 +5,27 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection\collator;
+namespace froq\collection\collector;
 
 use froq\collection\trait\ArrayTrait;
 use froq\common\interface\{Arrayable, Objectable, Listable, Jsonable, Yieldable, Iteratable, IteratableReverse};
-use froq\common\trait\ReadOnlyTrait;
-use froq\common\exception\InvalidKeyException;
+use froq\common\{trait\ReadOnlyTrait, exception\InvalidKeyException};
 use froq\util\Util;
 
 /**
- * Abstract Collator.
+ * Abstract Collector.
  *
- * An abstract collator class, extended by collator classes.
+ * An abstract collector class, extended by collector classes.
  *
- * @package froq\collection\collator
- * @object  froq\collection\collator\AbstractCollator
+ * @package froq\collection\collector
+ * @object  froq\collection\collector\AbstractCollector
  * @author  Kerem Güneş
  * @since   5.17, 6.0
  */
-abstract class AbstractCollator implements CollatorInterface, Arrayable, Objectable, Listable, Jsonable, Yieldable,
+abstract class AbstractCollector implements CollectorInterface, Arrayable, Objectable, Listable, Jsonable, Yieldable,
     Iteratable, IteratableReverse, \Iterator, \Countable, \JsonSerializable
 {
-    /** @see froq\collection\collator\CollatorTrait */
-    use CollatorTrait;
-
-    /** @see froq\collection\trait\ArrayTrait */
-    use ArrayTrait;
-
-    /** @see froq\common\trait\ReadOnlyTrait */
-    use ReadOnlyTrait;
+    use CollectorTrait, ArrayTrait, ReadOnlyTrait;
 
     /** @var array */
     protected array $data = [];
@@ -81,7 +73,7 @@ abstract class AbstractCollator implements CollatorInterface, Arrayable, Objecta
         }
 
         switch (true) {
-            case ($this instanceof ArrayCollator):
+            case ($this instanceof ArrayCollector):
                 if (!is_int($key) && !is_string($key)) {
                     $message = ($offset !== null)
                         ? 'Invalid data, data keys must be int|string [type: %t, offset: %s]'
@@ -90,7 +82,7 @@ abstract class AbstractCollator implements CollatorInterface, Arrayable, Objecta
                     throw new InvalidKeyException($message, [$key, $offset]);
                 }
                 break;
-            case ($this instanceof MapCollator):
+            case ($this instanceof MapCollector):
                 if (!is_string($key)) {
                     $message = ($offset !== null)
                         ? 'Invalid data, data keys must be string [type: %t, offset: %s]'
@@ -99,8 +91,8 @@ abstract class AbstractCollator implements CollatorInterface, Arrayable, Objecta
                     throw new InvalidKeyException($message, [$key, $offset]);
                 }
                 break;
-            case ($this instanceof SetCollator):
-            case ($this instanceof ListCollator):
+            case ($this instanceof SetCollector):
+            case ($this instanceof ListCollector):
                 if (!is_int($key)) {
                     $message = ($offset !== null)
                         ? 'Invalid data, data keys must be int [type: %t, offset: %s]'

@@ -9,8 +9,7 @@ namespace froq\collection;
 
 use froq\collection\trait\ArrayTrait;
 use froq\common\interface\{Arrayable, Objectable, Listable, Jsonable, Yieldable, Iteratable, IteratableReverse};
-use froq\common\trait\ReadOnlyTrait;
-use froq\common\exception\InvalidKeyException;
+use froq\common\{trait\ReadOnlyTrait, exception\InvalidKeyException};
 use froq\util\Util;
 
 /**

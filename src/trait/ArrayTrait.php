@@ -21,11 +21,10 @@ use froq\collection\iterator\{ArrayIterator, ReverseArrayIterator};
  */
 trait ArrayTrait
 {
-    /** @see froq\collection\trait\*Trait */
     use SortTrait, FilterTrait, MapTrait, ReduceTrait, ApplyTrait, AggregateTrait,
         EachTrait, CountTrait, EmptyTrait, FindTrait, MinMaxTrait, FirstLastTrait,
         CalcAverageTrait, CalcProductTrait, CalcSumTrait, IteratorTrait,
-        ToArrayTrait, ToJsonTrait, ToListTrait, ToObjectTrait;
+        ToArrayTrait, ToListTrait, ToObjectTrait, ToJsonTrait;
 
     /** @magic */
     public function __serialize(): array

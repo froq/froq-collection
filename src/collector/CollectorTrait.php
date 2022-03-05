@@ -5,20 +5,20 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection\collator;
+namespace froq\collection\collector;
 
 /**
- * Collator Trait.
+ * Collector Trait.
  *
- * A trait, used in `froq\collection\collator` internally.
+ * A trait, used in `froq\collection\collector` internally.
  *
- * @package  froq\collection\collator
- * @object   froq\collection\collator\CollatorTrait
+ * @package  froq\collection\collector
+ * @object   froq\collection\collector\CollectorTrait
  * @author   Kerem Güneş
- * @since    4.0, 5.4
+ * @since    4.0, 5.4, 6.0
  * @internal
  */
-trait CollatorTrait
+trait CollectorTrait
 {
     /**
      * Add (append) a value to data array.
