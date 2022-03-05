@@ -25,11 +25,7 @@ use froq\util\Util;
 abstract class AbstractCollection implements CollectionInterface, Arrayable, Objectable, Listable, Jsonable, Yieldable,
     Iteratable, IteratableReverse, \Iterator, \Countable, \JsonSerializable
 {
-    /** @see froq\collection\trait\ArrayTrait */
-    use ArrayTrait;
-
-    /** @see froq\common\trait\ReadOnlyTrait */
-    use ReadOnlyTrait;
+    use ArrayTrait, ReadOnlyTrait;
 
     /** @var array */
     protected array $data = [];

@@ -22,7 +22,6 @@ use froq\util\Arrays;
  */
 trait SortTrait
 {
-    /** @see froq\common\trait\CallTrait */
     use CallTrait;
 
     /**

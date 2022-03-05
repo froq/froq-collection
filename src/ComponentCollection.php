@@ -22,11 +22,6 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
  */
 class ComponentCollection extends AbstractCollection implements \ArrayAccess
 {
-    /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\AccessMagicTrait
-     * @see froq\collection\trait\GetTrait
-     */
     use AccessTrait, AccessMagicTrait, GetTrait;
 
     /** @var array */

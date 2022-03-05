@@ -22,7 +22,6 @@ use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
  */
 class ListObject extends AbstractCollection implements \ArrayAccess
 {
-    /** @see froq\collection\trait\*Trait */
     use AccessTrait, GetTrait, HasTrait;
 
     /**

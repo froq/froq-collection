@@ -22,7 +22,6 @@ use froq\util\Arrays;
  */
 trait MapTrait
 {
-    /** @see froq\common\trait\CallTrait */
     use CallTrait;
 
     /**

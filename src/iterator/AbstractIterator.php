@@ -26,11 +26,9 @@ use froq\util\Util;
 abstract class AbstractIterator implements IteratorInterface, Arrayable, Objectable, Listable, Jsonable,
     \Iterator, \Countable, \JsonSerializable
 {
-    /** @see froq\common\trait\*Trait */
     use SortTrait, FilterTrait, MapTrait, ReduceTrait, EachTrait, CountTrait, EmptyTrait, HasTrait,
         CalcAverageTrait, CalcProductTrait, CalcSumTrait, IteratorTrait, ToArrayTrait, ToObjectTrait, ToListTrait, ToJsonTrait;
 
-    /** @see froq\common\trait\ReadOnlyTrait */
     use ReadOnlyTrait;
 
     /** @var array */

@@ -22,7 +22,6 @@ use stdClass;
  */
 class ArrayLikeObject extends ArrayObject
 {
-    /** @see froq\collection\trait\AccessMagicTrait */
     use AccessMagicTrait;
 
     /**

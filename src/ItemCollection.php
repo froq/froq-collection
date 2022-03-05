@@ -21,10 +21,6 @@ use froq\collection\trait\{AccessTrait, GetTrait};
  */
 class ItemCollection extends AbstractCollection implements \ArrayAccess
 {
-    /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\GetTrait
-     */
     use AccessTrait, GetTrait;
 
     /**
