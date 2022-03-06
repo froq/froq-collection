@@ -71,4 +71,30 @@ trait GetTrait
     {
         return (bool) $this->get($key, $default);
     }
+
+    /**
+     * Get a value as array.
+     *
+     * @param  int|string $key
+     * @param  mixed|null $default
+     * @return array
+     * @since  6.0
+     */
+    public function getArray(int|string $key, mixed $default = null): array
+    {
+        return (array) $this->get($key, $default);
+    }
+
+    /**
+     * Get a value as object.
+     *
+     * @param  int|string $key
+     * @param  mixed|null $default
+     * @return object
+     * @since  6.0
+     */
+    public function getObject(int|string $key, mixed $default = null): object
+    {
+        return (object) $this->get($key, $default);
+    }
 }
