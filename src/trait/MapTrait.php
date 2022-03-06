@@ -49,12 +49,12 @@ trait MapTrait
     /**
      * Apply a map action on data array keys.
      *
-     * @param  callable $func
-     * @param  bool     $recursive
+     * @param  callable|string|array $func
+     * @param  bool                  $recursive
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function mapKeys(callable $func, bool $recursive = false): self
+    public function mapKeys(callable|string|array $func, bool $recursive = false): self
     {
         // For read-only check.
         $this->call('readOnlyCheck');
