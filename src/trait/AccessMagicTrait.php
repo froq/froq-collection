@@ -11,7 +11,7 @@ namespace froq\collection\trait;
  * Access Magic Trait.
  *
  * A trait, provides magic-access methods for the classes defining `set()`, `get(),
- * `remove()` and `count()` methods.
+ * and `remove()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\AccessMagicTrait
