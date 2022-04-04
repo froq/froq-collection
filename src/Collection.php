@@ -333,15 +333,14 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * Dedupe items in data array.
      *
      * @param  bool $strict
-     * @param  bool $list
      * @return self
      * @since  4.0
      */
-    public function dedupe(bool $strict = true, bool $list = false): self
+    public function dedupe(bool $strict = true): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_dedupe($this->data, $strict, $list);
+        $this->data = array_dedupe($this->data, $strict);
 
         return $this;
     }
