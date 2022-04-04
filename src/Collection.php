@@ -346,6 +346,22 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
+     * Refine items in data array.
+     *
+     * @param  array|null $values
+     * @return self
+     * @since  4.0
+     */
+    public function refine(array $values = null): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_refine($this->data, $values);
+
+        return $this;
+    }
+
+    /**
      * Use unique items in data array.
      *
      * @param  int $flags
@@ -551,41 +567,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
         $this->readOnlyCheck();
 
         $this->data = array_flat($this->data, $keepKeys, $fixKeys, $multi);
-
-        return $this;
-    }
-
-    /**
-     * Clean data array dropping null, "", [] values.
-     *
-     * @param  bool       $keepKeys
-     * @param  array|null $ignoredKeys
-     * @return self
-     * @since  4.0
-     */
-    public function clean(bool $keepKeys = true, array $ignoredKeys = null): self
-    {
-        $this->readOnlyCheck();
-
-        $this->data = array_clean($this->data, $keepKeys, $ignoredKeys);
-
-        return $this;
-    }
-
-    /**
-     * Clear data array dropping given values.
-     *
-     * @param  array      $values
-     * @param  bool       $keepKeys
-     * @param  array|null $ignoredKeys
-     * @return self
-     * @since  6.0
-     */
-    public function clear(array $values, bool $keepKeys = true, array $ignoredKeys = null): self
-    {
-        $this->readOnlyCheck();
-
-        $this->data = array_clear($this->data, $values, $keepKeys, $ignoredKeys);
 
         return $this;
     }
