@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * Get Trait.
- *
  * A trait, provides `get*()` methods for desired returns such as int, bool
  * etc. for the classes defining `get()` method.
  *

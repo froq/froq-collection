@@ -11,8 +11,6 @@ use froq\common\trait\CallTrait;
 use froq\util\Arrays;
 
 /**
- * Filter Trait.
- *
  * A trait, provides `filter()` and `filterKeys()` methods.
  *
  * @package froq\collection\trait

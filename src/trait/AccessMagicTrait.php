@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * Access Magic Trait.
- *
  * A trait, provides magic-access methods for the classes defining `set()`, `get(),
  * and `remove()` methods.
  *

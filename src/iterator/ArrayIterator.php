@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\iterator;
 
 /**
- * Array Iterator.
- *
  * An array iterator class that contains some utility methods (by its parent).
  *
  * @package froq\collection\iterator

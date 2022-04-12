@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * Access Trait.
- *
  * A trait, provides related methods for the classes implementing `ArrayAccess` interface
  * and defining `set()`, `get(), `remove()` and `count()` methods.
  *

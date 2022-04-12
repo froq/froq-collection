@@ -14,8 +14,6 @@ use froq\common\trait\ReadOnlyTrait;
 use froq\util\Util;
 
 /**
- * Abstract Iterator.
- *
  * An abstract iterator class, extended by iterator classes.
  *
  * @package froq\collection\iterator

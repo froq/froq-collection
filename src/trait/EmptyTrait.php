@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * Empty Trait.
- *
  * A trait, provides `empty()`, `isEmpty()` and `isNotEmpty()` methods.
  *
  * @package froq\collection\trait

@@ -11,8 +11,6 @@ use froq\common\trait\CallTrait;
 use froq\util\Arrays;
 
 /**
- * Sort Trait.
- *
  * A trait, provides `sort()`, `sortKey()`, `sortLocale()` and `sortNatural()` methods.
  *
  * @package froq\collection\trait

@@ -11,8 +11,6 @@ use froq\collection\AbstractCollection;
 use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
 
 /**
- * Array Object.
- *
  * A simple array-object structure (not like `ArrayObject`) with some utility methods.
  *
  * @package froq\collection\object

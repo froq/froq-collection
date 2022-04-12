@@ -10,8 +10,6 @@ namespace froq\collection;
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait, HasTrait};
 
 /**
- * Collection.
- *
  * A collection class, contains a couple of utility methods and behaves like a simple object.
  *
  * @package froq\collection

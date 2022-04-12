@@ -10,8 +10,6 @@ namespace froq\collection;
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
 
 /**
- * Component Collection.
- *
  * A named-array collection, restricts all access/mutation operations considering
  * given names only, also provides calls via `__call()` magic for given names.
  *

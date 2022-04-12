@@ -11,8 +11,6 @@ use froq\common\interface\{Arrayable, Listable};
 use Closure, Generator;
 
 /**
- * Generator Iterator.
- *
  * A generator iterator class which is countable & reusable.
  *
  * @package froq\collection\iterator

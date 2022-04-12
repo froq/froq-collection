@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * To-Json Trait.
- *
  * A trait, provides `toJson()` and `json()` methods.
  *
  * @package froq\collection\trait

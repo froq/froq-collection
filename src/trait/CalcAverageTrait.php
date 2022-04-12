@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * Calc-Average Trait.
- *
  * A trait, provides `average()` and `avg()` methods.
  *
  * @package froq\collection\trait
@@ -27,13 +25,13 @@ trait CalcAverageTrait
      */
     public function average(int $precision = null): int|float
     {
-        if (!$this->data) {
-            return 0;
-        }
+        $ret = 0;
 
-        $ret = array_average($this->data);
-        if ($precision !== null) {
-            $ret = round($ret, $precision);
+        if ($this->data) {
+            $ret = array_average($this->data);
+            if ($precision !== null) {
+                $ret = round($ret, $precision);
+            }
         }
 
         return $ret;

@@ -10,8 +10,6 @@ namespace froq\collection\trait;
 use froq\util\Arrays;
 
 /**
- * Aggregate Trait.
- *
  * A trait, provides `aggregate()` method.
  *
  * @package froq\collection\trait

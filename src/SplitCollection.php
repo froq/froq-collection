@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection;
 
 /**
- * Split Collection.
- *
  * A collection class, utilies string splitting stuff.
  *
  * @package froq\collection

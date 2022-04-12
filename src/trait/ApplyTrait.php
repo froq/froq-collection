@@ -11,8 +11,6 @@ use froq\common\trait\CallTrait;
 use froq\util\Arrays;
 
 /**
- * Apply Trait.
- *
  * A trait, provides `apply()` method.
  *
  * @package froq\collection\trait

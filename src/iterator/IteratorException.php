@@ -7,15 +7,11 @@ declare(strict_types=1);
 
 namespace froq\collection\iterator;
 
-use froq\collection\CollectionException;
-
 /**
- * Iterator Exception.
- *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\IteratorException
  * @author  Kerem Güneş
  * @since   5.7
  */
-class IteratorException extends CollectionException
+class IteratorException extends \froq\collection\CollectionException
 {}

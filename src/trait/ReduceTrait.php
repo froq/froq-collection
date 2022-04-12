@@ -10,8 +10,6 @@ namespace froq\collection\trait;
 use froq\util\Arrays;
 
 /**
- * Reduce Trait.
- *
  * A trait, provides `reduce()` and `reduceRight()` methods.
  *
  * @package froq\collection\trait

@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * To-Array Trait.
- *
  * A trait, provides `toArray()` and `array()` methods.
  *
  * @package froq\collection\trait

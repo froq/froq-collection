@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection;
 
 /**
- * Weighted Collection.
- *
  * A weighted-array class, utilizes item selection operations by their weights.
  *
  * @package froq\collection

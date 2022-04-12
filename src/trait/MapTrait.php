@@ -11,8 +11,6 @@ use froq\common\trait\CallTrait;
 use froq\util\Arrays;
 
 /**
- * Map Trait.
- *
  * A trait, provides `map()` and `mapKeys()` methods.
  *
  * @package froq\collection\trait

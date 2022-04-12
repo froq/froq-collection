@@ -11,8 +11,6 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
 use Map;
 
 /**
- * Map Collector.
- *
  * A collector class designed to provide key-type check and read-only state, a map-like
  * structure with some utility methods.
  *

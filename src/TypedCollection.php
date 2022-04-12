@@ -10,8 +10,6 @@ namespace froq\collection;
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait, HasTrait};
 
 /**
- * Typed Collection.
- *
  * A typed-array class, accepts strict values only forced by `$dataType` property.
  *
  * @package froq\collection

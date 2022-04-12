@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * First-Last Trait.
- *
  * A trait, provides `first()`, `firstKey()`, `last()` and `lastKey()` methods.
  *
  * @package froq\collection\trait

@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * To-Object Trait.
- *
  * A trait, provides `toObject()` and `object()` methods.
  *
  * @package froq\collection\trait

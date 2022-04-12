@@ -10,8 +10,6 @@ namespace froq\collection\trait;
 use froq\collection\iterator\{ArrayIterator, ReverseArrayIterator};
 
 /**
- * Array Trait.
- *
  * A trait, provides some basic methods for array-like classes.
  *
  * @package froq\collection\trait

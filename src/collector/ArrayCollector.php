@@ -10,8 +10,6 @@ namespace froq\collection\collector;
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
 
 /**
- * Array Collector.
- *
  * A collector class designed to provide key-type check and read-only state, an array-like
  * structure with some utility methods.
  *

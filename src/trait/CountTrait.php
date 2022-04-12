@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * Count Trait.
- *
  * A trait, provides `count()` method.
  *
  * @package froq\collection\trait

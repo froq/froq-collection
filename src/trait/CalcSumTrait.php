@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * Calc-Sum Trait.
- *
  * A trait, provides `sum()` method.
  *
  * @package froq\collection\trait
@@ -27,13 +25,13 @@ trait CalcSumTrait
      */
     public function sum(int $precision = null): int|float
     {
-        if (!$this->data) {
-            return 0;
-        }
+        $ret = 0;
 
-        $ret = array_sum($this->data);
-        if ($precision !== null) {
-            $ret = round($ret, $precision);
+        if ($this->data) {
+            $ret = array_sum($this->data);
+            if ($precision !== null) {
+                $ret = round($ret, $precision);
+            }
         }
 
         return $ret;

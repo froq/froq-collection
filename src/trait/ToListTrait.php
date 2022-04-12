@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * To-List Trait.
- *
  * A trait, provides `toList()` and `list()` methods.
  *
  * @package froq\collection\trait

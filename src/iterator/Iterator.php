@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\iterator;
 
 /**
- * Iterator.
- *
  * An iterator class, contains some utility methods.
  *
  * @package froq\collection\iterator

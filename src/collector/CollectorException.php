@@ -7,15 +7,11 @@ declare(strict_types=1);
 
 namespace froq\collection\collector;
 
-use froq\collection\CollectionException;
-
 /**
- * Collector Exception.
- *
  * @package froq\collection\collector
  * @object  froq\collection\collector\CollectorException
  * @author  Kerem Güneş
  * @since   4.0, 5.4, 6.0
  */
-class CollectorException extends CollectionException
+class CollectorException extends \froq\collection\CollectionException
 {}

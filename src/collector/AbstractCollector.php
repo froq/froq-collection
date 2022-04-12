@@ -13,8 +13,6 @@ use froq\common\{trait\ReadOnlyTrait, exception\InvalidKeyException};
 use froq\util\Util;
 
 /**
- * Abstract Collector.
- *
  * An abstract collector class, extended by collector classes.
  *
  * @package froq\collection\collector

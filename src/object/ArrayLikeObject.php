@@ -11,8 +11,6 @@ use froq\collection\trait\AccessMagicTrait;
 use stdClass;
 
 /**
- * Array-like Object.
- *
  * An array-object structure with dynamic access/modify methods and other inherit utilities.
  *
  * @package froq\collection\object

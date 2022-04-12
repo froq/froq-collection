@@ -10,8 +10,6 @@ namespace froq\collection\collector;
 use froq\collection\trait\{AccessTrait, GetTrait};
 
 /**
- * List Collector.
- *
  * A collector class designed to provide key-type check and read-only state, a list-like
  * structure with some utility methods.
  *

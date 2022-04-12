@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * Iterator Trait.
- *
  * A trait, provides related methods for the classes implementing `Iterator` interface.
  *
  * @package froq\collection\trait

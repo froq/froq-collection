@@ -11,8 +11,6 @@ use froq\collection\trait\{AccessTrait, GetTrait};
 use Set;
 
 /**
- * Set Collector.
- *
  * A collector class designed to provide key-type check and read-only state, a set-like
  * structure with some utility methods, ensures unique values.
  *

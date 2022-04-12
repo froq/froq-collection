@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * Min-Max Trait.
- *
  * A trait, provides `min()` and `max()` methods.
  *
  * @package froq\collection\trait

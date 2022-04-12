@@ -7,15 +7,11 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\common\Exception;
-
 /**
- * Collection Exception.
- *
  * @package froq\collection
  * @object  froq\collection\CollectionException
  * @author  Kerem Güneş
  * @since   1.0
  */
-class CollectionException extends Exception
+class CollectionException extends \froq\common\Exception
 {}

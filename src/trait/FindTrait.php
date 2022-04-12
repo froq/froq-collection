@@ -10,8 +10,6 @@ namespace froq\collection\trait;
 use froq\util\Arrays;
 
 /**
- * Find Trait.
- *
  * A trait, provides `find()`, `findAll()`, `findKey()` and `findKeys()` methods.
  *
  * @package froq\collection\trait

@@ -10,8 +10,6 @@ namespace froq\collection\trait;
 use froq\util\Arrays;
 
 /**
- * Each Trait.
- *
  * A trait, provides `each()` method.
  *
  * @package froq\collection\trait

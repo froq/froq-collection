@@ -10,8 +10,6 @@ namespace froq\collection;
 use froq\collection\trait\{AccessTrait, GetTrait};
 
 /**
- * Item Collection.
- *
  * A simple array class, accepts int keys only.
  *
  * @package froq\collection

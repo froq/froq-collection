@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\collector;
 
 /**
- * Collector Trait.
- *
  * A trait, used in `froq\collection\collector` internally.
  *
  * @package  froq\collection\collector

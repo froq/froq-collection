@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * Has Trait.
- *
  * A trait, provides `has()`, `hasKey()` and `hasValue()` methods.
  *
  * @package froq\collection\trait
