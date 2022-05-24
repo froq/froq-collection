@@ -64,6 +64,6 @@ trait FindTrait
      */
     public function findKeys(callable $func, bool $reverse = false): array|null
     {
-        return Arrays::findKeys($func, $reverse);
+        return Arrays::findKeys($this->data, $func, $reverse);
     }
 }
