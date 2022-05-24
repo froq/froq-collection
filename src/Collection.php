@@ -366,7 +366,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * @return self
      * @since  4.0
      */
-    public function unique(int $flags = SORT_REGULAR): self
+    public function unique(int $flags = SORT_STRING): self
     {
         $this->readOnlyCheck();
 
