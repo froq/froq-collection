@@ -386,7 +386,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function select(int|string|array $key, mixed $default = null, bool $combine = true): static
     {
-        $data = (array) array_select($this->data, $key, $default, $combine);
+        $data = (array) array_select($this->data, $key, $default, combine: $combine);
 
         return new static($data);
     }
