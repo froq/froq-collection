@@ -175,7 +175,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
         $this->readOnlyCheck();
         $this->nameCheck($name);
 
-        unset($this->data[$name]);
+        $this->data[$name] = null;
     }
 
     /**
@@ -185,7 +185,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @return void
      * @throws froq\collection\CollectionException
      */
-    protected final function nameCheck(string $name): void
+    private function nameCheck(string $name): void
     {
         if (!self::$throw) {
             return;
