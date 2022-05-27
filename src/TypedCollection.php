@@ -44,10 +44,8 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
             );
         }
 
-        if ($data) {
-            foreach ($data as $value) {
-                $this->typeCheck($value);
-            }
+        if ($data) foreach ($data as $value) {
+            $this->typeCheck($value);
         }
 
         parent::__construct($data, $readOnly);
