@@ -76,7 +76,7 @@ class SplitCollection extends Collection
 
             return new static('', '', data: $data, readOnly: $readOnly);
         } catch (\RegExpError $e) {
-            throw new CollectionException($e->message, code: $e->code, cause: $e);
+            throw new CollectionException($e);
         }
     }
 
