@@ -109,6 +109,7 @@ abstract class AbstractCollection implements CollectionInterface, Arrayable, Obj
 
                     throw new InvalidKeyException($message, [$key, $offset]);
                 }
+                break;
         }
     }
 }
