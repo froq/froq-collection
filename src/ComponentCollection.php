@@ -38,9 +38,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      */
     public function __construct(array $names, bool $throw = true, bool $readOnly = null)
     {
-        $names || throw new CollectionException('No names given');
-
-        self::$names = $names;
+        self::$names = $names ?: throw new CollectionException('No names given');
         self::$throw = $throw;
 
         parent::__construct(array_fill_keys($names, null), $readOnly);
