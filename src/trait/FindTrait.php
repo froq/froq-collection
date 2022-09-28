@@ -10,9 +10,7 @@ namespace froq\collection\trait;
 use froq\util\Arrays;
 
 /**
- * Find Trait.
- *
- * Represents a trait entity that provides `find*()` utility methods.
+ * A trait, provides `find()`, `findAll()`, `findKey()` and `findKeys()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\FindTrait
@@ -38,12 +36,11 @@ trait FindTrait
      *
      * @param  callable $func
      * @param  bool     $reverse
-     * @param  bool     $useKeys
-     * @return array<mixed|null>
+     * @return array<mixed>|null
      */
-    public function findAll(callable $func, bool $reverse = false, bool $useKeys = true): array
+    public function findAll(callable $func, bool $reverse = false): array|null
     {
-        return Arrays::findAll($this->data, $func, $reverse, $useKeys);
+        return Arrays::findAll($this->data, $func, $reverse);
     }
 
     /**
@@ -51,7 +48,7 @@ trait FindTrait
      *
      * @param  callable $func
      * @param  bool     $reverse
-     * @return any|null
+     * @return int|string|null
      */
     public function findKey(callable $func, bool $reverse = false): int|string|null
     {
@@ -63,10 +60,10 @@ trait FindTrait
      *
      * @param  callable $func
      * @param  bool     $reverse
-     * @return array<int|string|null>
+     * @return array<int|string>|null
      */
-    public function findKeys(callable $func, bool $reverse = false): array
+    public function findKeys(callable $func, bool $reverse = false): array|null
     {
-        return Arrays::findKeys($func, $reverse);
+        return Arrays::findKeys($this->data, $func, $reverse);
     }
 }

@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace froq\collection\iterator;
 
 /**
- * Iterator Interface.
+ * An interface, for type hint purposes only for iterator classes.
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\IteratorInterface

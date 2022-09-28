@@ -7,18 +7,14 @@ declare(strict_types=1);
 
 namespace froq\collection\trait;
 
-use froq\util\Arrays;
-
 /**
- * Get Trait.
- *
- * Represents a trait that provides `get*()` utility methods for expected returns such as
- * int/bool/string/float for those classes define `get()` method and `getRandom()` method as well.
+ * A trait, provides `get*()` methods for desired returns such as int, bool
+ * etc. for the classes defining `get()` method.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\GetTrait
  * @author  Kerem Güneş
- * @since   5.0, 5.8 Separated from "AccessTrait" methods.
+ * @since   5.0, 5.8
  */
 trait GetTrait
 {
@@ -26,11 +22,11 @@ trait GetTrait
      * Get a value as int.
      *
      * @param  int|string $key
-     * @param  any|null   $default
+     * @param  mixed|null $default
      * @return int
      * @since  4.2
      */
-    public function getInt(int|string $key, $default = null): int
+    public function getInt(int|string $key, mixed $default = null): int
     {
         return (int) $this->get($key, $default);
     }
@@ -39,11 +35,11 @@ trait GetTrait
      * Get a value as float.
      *
      * @param  int|string $key
-     * @param  any|null   $default
+     * @param  mixed|null $default
      * @return float
      * @since  4.2
      */
-    public function getFloat(int|string $key, $default = null): float
+    public function getFloat(int|string $key, mixed $default = null): float
     {
         return (float) $this->get($key, $default);
     }
@@ -52,11 +48,11 @@ trait GetTrait
      * Get a value as string.
      *
      * @param  int|string $key
-     * @param  any|null   $default
+     * @param  mixed|null $default
      * @return string
      * @since  4.2
      */
-    public function getString(int|string $key, $default = null): string
+    public function getString(int|string $key, mixed $default = null): string
     {
         return (string) $this->get($key, $default);
     }
@@ -65,39 +61,38 @@ trait GetTrait
      * Get a value as bool.
      *
      * @param  int|string $key
-     * @param  any|null   $default
+     * @param  mixed|null $default
      * @return bool
      * @since  4.2
      */
-    public function getBool(int|string $key, $default = null): bool
+    public function getBool(int|string $key, mixed $default = null): bool
     {
         return (bool) $this->get($key, $default);
     }
 
     /**
-     * Get a value as given type.
+     * Get a value as array.
      *
      * @param  int|string $key
-     * @param  string     $type
      * @param  mixed|null $default
-     * @return mixed|null
-     * @since  5.0
+     * @return array
+     * @since  6.0
      */
-    public function getAs(int|string $key, string $type, mixed $default = null)
+    public function getArray(int|string $key, mixed $default = null): array
     {
-        return Arrays::getAs($this->data, $key, $type, $default);
+        return (array) $this->get($key, $default);
     }
 
     /**
-     * Get random item(s).
+     * Get a value as object.
      *
-     * @param  int        $limit
+     * @param  int|string $key
      * @param  mixed|null $default
-     * @return mixed|null
-     * @since  5.25
+     * @return object
+     * @since  6.0
      */
-    public function getRandom(int $limit = 1, mixed $default = null): mixed
+    public function getObject(int|string $key, mixed $default = null): object
     {
-        return Arrays::getRandom($this->data, $limit, drop: $drop) ?? $default;
+        return (object) $this->get($key, $default);
     }
 }

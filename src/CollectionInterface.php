@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace froq\collection;
 
 /**
- * Collection Interface.
+ * An interface, for type hint purposes only for collection classes.
  *
  * @package froq\collection
  * @object  froq\collection\CollectionInterface

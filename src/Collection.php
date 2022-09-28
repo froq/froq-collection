@@ -7,38 +7,25 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\AbstractCollection;
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait, HasTrait};
-use froq\util\Arrays;
-use ArrayAccess;
 
 /**
- * Collection.
- *
- * Represents a collection entity that contains a bunch of utility methods and behaves like a simple
- * object.
+ * A collection class, contains a couple of utility methods and behaves like a simple object.
  *
  * @package froq\collection
  * @object  froq\collection\Collection
  * @author  Kerem Güneş
  * @since   1.0
  */
-class Collection extends AbstractCollection implements ArrayAccess
+class Collection extends AbstractCollection implements \ArrayAccess
 {
-    /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\AccessMagicTrait
-     * @see froq\collection\trait\GetTrait
-     * @see froq\collection\trait\HasTrait
-     * @since 4.0, 5.0, 5.15
-     */
     use AccessTrait, AccessMagicTrait, GetTrait, HasTrait;
 
     /**
      * Constructor.
      *
-     * @param array<int|string, any>|null $data
-     * @param bool|null                   $readOnly
+     * @param array|null $data
+     * @param bool|null  $readOnly
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {
@@ -46,64 +33,62 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Set an item/items.
+     * Set one/many items.
      *
      * @param  int|string|array<int|string> $key
-     * @param  any|null                     $value
+     * @param  mixed|null                   $value
      * @return self
      */
-    public function set(int|string|array $key, $value = null): self
+    public function set(int|string|array $key, mixed $value = null): self
     {
         $this->readOnlyCheck();
+        $this->keyCheck($key);
 
-        is_array($key) ? Arrays::setAll($this->data, $key)
-                       : Arrays::set($this->data, $key, $value);
+        array_set($this->data, $key, $value);
 
         return $this;
     }
 
     /**
-     * Get an item/items.
+     * Get one/many items.
      *
      * @param  int|string|array<int|string> $key
-     * @param  any|null                     $default
-     * @return any|null
+     * @param  mixed|null                   $default
+     * @param  bool                         $drop
+     * @return mixed|null
      */
-    public function get(int|string|array $key, $default = null)
+    public function get(int|string|array $key, mixed $default = null, bool $drop = false): mixed
     {
-        return is_array($key) ? Arrays::getAll($this->data, $key, $default)
-                              : Arrays::get($this->data, $key, $default);
+        $value = array_get($this->data, $key, $default, $drop);
+
+        return $value;
     }
 
     /**
-     * Pull an item/items.
+     * Remove one/many items.
      *
      * @param  int|string|array<int|string> $key
-     * @param  any|null                     $default
-     * @return any|null
-     * @since  3.0
-     */
-    public function pull(int|string|array $key, $default = null)
-    {
-        $this->readOnlyCheck();
-
-        return is_array($key) ? Arrays::pullAll($this->data, $key, $default)
-                              : Arrays::pull($this->data, $key, $default);
-    }
-
-    /**
-     * Add (append) an item/items.
-     *
-     * @param  any  ...$value
      * @return self
-     * @throws froq\collection\CollectionException
-     * @since  3.0
      */
-    public function add(...$values): self
+    public function remove(int|string|array $key): self
     {
         $this->readOnlyCheck();
 
-        $values || throw new CollectionException('No value(s) provided');
+        array_remove($this->data, $key);
+
+        return $this;
+    }
+
+    /**
+     * Add (append) items.
+     *
+     * @param  mixed ...$values
+     * @return self
+     * @since  3.0
+     */
+    public function add(mixed ...$values): self
+    {
+        $this->readOnlyCheck();
 
         foreach ($values as $value) {
             $this->data[] = $value;
@@ -113,70 +98,45 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Remove an item/items.
+     * Compact given keys with given vars.
      *
-     * @param  int|string|array<int|string> $key
+     * @param  int|string|array $keys
+     * @param  mixed            ...$vars
      * @return self
+     * @since  5.0
      */
-    public function remove(int|string|array $key): self
+    public function compact(int|string|array $keys, mixed ...$vars): self
     {
         $this->readOnlyCheck();
 
-        Arrays::removeAll($this->data, (array) $key);
+        $this->data = array_compact($keys, ...$vars);
 
         return $this;
     }
 
     /**
-     * Compact given key(s) with value(s).
+     * Extract given keys to given vars with refs.
      *
-     * @param  int|string|array     $key
-     * @param  mixed            &...$value
-     * @return self
-     * @throws froq\collection\CollectionException
+     * @param  int|string|array $keys
+     * @param  mixed            &...$vars
+     * @return int
      * @since  5.0
      */
-    public function compact(int|string|array $key, mixed ...$value): self
+    public function extract(int|string|array $keys, mixed &...$vars): int
     {
-        $this->readOnlyCheck();
+        $ret = array_extract($this->data, $keys, ...$vars);
 
-        $value || throw new CollectionException('No value(s) provided');
-
-        foreach ((array) $key as $i => $key) {
-            $this->data[$key] = $value[$i] ?? null;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Extract given key(s) onto value(s) with ref(s).
-     *
-     * @param  int|string|array     $key
-     * @param  mixed            &...$value
-     * @return self
-     * @throws froq\collection\CollectionException
-     * @since  5.0
-     */
-    public function extract(int|string|array $key, mixed &...$value): self
-    {
-        $value || throw new CollectionException('No value(s) provided');
-
-        foreach ((array) $key as $i => $key) {
-            $value[$i] = $this->data[$key] ?? null;
-        }
-
-        return $this;
+        return $ret;
     }
 
     /**
      * Push an item.
      *
-     * @param  any $value
+     * @param  mixed $value
      * @return self
      * @since  5.11
      */
-    public function push($value): self
+    public function push(mixed $value): self
     {
         $this->readOnlyCheck();
 
@@ -188,10 +148,10 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Pop an item.
      *
-     * @return any
+     * @return mixed
      * @since  4.0
      */
-    public function pop()
+    public function pop(): mixed
     {
         $this->readOnlyCheck();
 
@@ -201,7 +161,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Unpop an item (aka push).
      *
-     * @param  array<int|string, any> $data
+     * @param  array $data
      * @return self
      * @since  4.0
      */
@@ -223,10 +183,10 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Shift an item.
      *
-     * @return any
+     * @return mixed
      * @since  4.0
      */
-    public function shift()
+    public function shift(): mixed
     {
         $this->readOnlyCheck();
 
@@ -236,7 +196,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Unshift an item.
      *
-     * @param  array<int|string, any> $data
+     * @param  array $data
      * @return self
      * @since  4.0
      */
@@ -284,7 +244,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Delete an item/items from data array by given value(s).
+     * Delete one/many items by given value(s).
      *
      * @param  mixed    $value
      * @param  mixed ...$values
@@ -301,7 +261,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Delete an item/items from data array by given key(s).
+     * Delete one/many items by given key(s).
      *
      * @param  int|string    $key
      * @param  int|string ...$keys
@@ -345,7 +305,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::concat($this->data, $item, ...$items);
+        $this->data = array_concat($this->data, $item, ...$items);
 
         return $this;
     }
@@ -362,7 +322,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::union($this->data, $data, ...$datas);
+        $this->data = array_union($this->data, $data, ...$datas);
 
         return $this;
     }
@@ -378,7 +338,23 @@ class Collection extends AbstractCollection implements ArrayAccess
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::dedupe($this->data, $strict);
+        $this->data = array_dedupe($this->data, $strict);
+
+        return $this;
+    }
+
+    /**
+     * Refine items in data array.
+     *
+     * @param  array|null $values
+     * @return self
+     * @since  4.0
+     */
+    public function refine(array $values = null): self
+    {
+        $this->readOnlyCheck();
+
+        $this->data = array_refine($this->data, $values);
 
         return $this;
     }
@@ -386,17 +362,12 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Use unique items in data array.
      *
-     * @param  bool $strict
      * @param  int $flags
      * @return self
      * @since  4.0
      */
-    public function unique(bool $strict = true, int $flags = SORT_REGULAR): self
+    public function unique(int $flags = SORT_STRING): self
     {
-        if ($strict) {
-            return $this->dedupe(true);
-        }
-
         $this->readOnlyCheck();
 
         $this->data = array_unique($this->data, $flags);
@@ -408,13 +379,14 @@ class Collection extends AbstractCollection implements ArrayAccess
      * Select item(s) from data array by given key(s) & return a new static instance.
      *
      * @param  int|string|array<int|string> $key
-     * @param  bool                         $combine (AKA keep-keys directive).
+     * @param  mixed|null                   $default
+     * @param  bool                         $combine
      * @return static
      * @since  5.0
      */
-    public function select(int|string|array $key, bool $combine = true): static
+    public function select(int|string|array $key, mixed $default = null, bool $combine = true): static
     {
-        $data = (array) array_select($this->data, $key, combine: $combine);
+        $data = (array) array_select($this->data, $key, $default, combine: $combine);
 
         return new static($data);
     }
@@ -436,7 +408,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * @alias of selectColumn()
+     * @alias selectColumn()
      */
     public function column(...$args)
     {
@@ -460,70 +432,12 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * @alias of indexColumn()
+     * @alias indexColumn()
      * @since 5.5
      */
     public function index(...$args)
     {
         return $this->indexColumn(...$args);
-    }
-
-    /**
-     * Get mutual items in given data array & return a new static instance.
-     *
-     * @param  array $data
-     * @return static
-     * @since  5.0
-     */
-    public function mutual(array $data): static
-    {
-        $data = Arrays::mutual($this->data, $data);
-
-        return new static($data);
-    }
-
-    /**
-     * Get unmutual items & return a new static instance.
-     *
-     * @param  array $data
-     * @return static
-     * @since  5.0
-     */
-    public function unmutual(array $data): static
-    {
-        $data = Arrays::unmutual($this->data, $data);
-
-        return new static($data);
-    }
-
-    /**
-     * Get different items & return a new static instance.
-     *
-     * @param  array  $data
-     * @param  bool   $assoc
-     * @return static
-     * @since  5.21
-     */
-    public function diff(array $data, bool $assoc = false): static
-    {
-        $data = Arrays::diff($this->data, $data, $assoc);
-
-        return new static($data);
-    }
-
-    /**
-     * Get different (keyed) items & return a new static instance.
-     *
-     * @param  array  $data
-     * @param  bool   $assoc
-     * @return static
-     * @since  5.21
-     */
-    public function diffKey(array $data): static
-    {
-        $data = Arrays::diffKey($this->data, $data);
-
-        return new static($data);
     }
 
     /**
@@ -640,79 +554,49 @@ class Collection extends AbstractCollection implements ArrayAccess
     /**
      * Flat data array.
      *
-     * @param  bool $useKeys
+     * @param  bool $keepKeys
      * @param  bool $fixKeys
      * @param  bool $multi
      * @return self
      * @since  4.0
      */
-    public function flat(bool $useKeys = false, bool $fixKeys = false, bool $multi = true): self
+    public function flat(bool $keepKeys = false, bool $fixKeys = false, bool $multi = true): self
     {
         $this->readOnlyCheck();
 
-        $this->data = Arrays::flat($this->data, $useKeys, $fixKeys, $multi);
+        $this->data = array_flat($this->data, $keepKeys, $fixKeys, $multi);
 
         return $this;
-    }
-
-    /**
-     * Clean data array dropping empty (null, '', []) items.
-     *
-     * @param  array|null $ignoredKeys
-     * @param  bool       $keepKeys
-     * @return self
-     * @since  4.0
-     */
-    public function clean(array $ignoredKeys = null, bool $keepKeys = true): self
-    {
-        $this->readOnlyCheck();
-
-        $this->data = Arrays::clean($this->data, $ignoredKeys, $keepKeys);
-
-        return $this;
-    }
-
-    /**
-     * Search given value returning value's hit count.
-     *
-     * @param  any  $value
-     * @param  bool $strict
-     * @return int
-     * @since  4.0
-     */
-    public function search($value, bool $strict = true): int
-    {
-        return Arrays::search($this->data, $value, $strict);
     }
 
     /**
      * Search given value's key.
      *
-     * @param  any  $value
-     * @param  bool $strict
+     * @param  mixed $value
+     * @param  bool  $strict
      * @return int|string|null
      * @since  5.2
      */
-    public function searchKey($value, bool $strict = true): int|string|null
+    public function searchKey(mixed $value, bool $strict = true): int|string|null
     {
-        return Arrays::searchKey($this->data, $value, $strict);
+        return array_search_key($this->data, $value, $strict);
     }
 
     /**
      * Search given value's last key.
      *
-     * @param  any  $value
-     * @param  bool $strict
+     * @param  mixed $value
+     * @param  bool  $strict
      * @return int|string|null
      * @since  5.5
      */
-    public function searchLastKey($value, bool $strict = true): int|string|null
+    public function searchLastKey(mixed $value, bool $strict = true): int|string|null
     {
-        return Arrays::searchLastKey($this->data, $value, $strict);
+        return array_search_key($this->data, $value, $strict, true);
     }
 
     /**
-     * @alias of searchKey()
+     * @alias searchKey()
      * @since 5.5
      */
     public function indexOf(...$args)
@@ -721,7 +605,7 @@ class Collection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * @alias of searchLastKey()
+     * @alias searchLastKey()
      * @since 5.5
      */
     public function lastIndexOf(...$args)
@@ -738,7 +622,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function test(callable $func): bool
     {
-        return Arrays::test($this->data, $func);
+        return array_test($this->data, $func);
     }
 
     /**
@@ -750,7 +634,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      */
     public function testAll(callable $func): bool
     {
-        return Arrays::testAll($this->data, $func);
+        return array_test_all($this->data, $func);
     }
 
     /**
@@ -758,26 +642,27 @@ class Collection extends AbstractCollection implements ArrayAccess
      *
      * @param  int  $limit
      * @param  bool $pack
-     * @return any|null
+     * @param  bool $drop
+     * @return mixed|null
      * @since  4.0
      */
-    public function random(int $limit = 1, bool $pack = false)
+    public function random(int $limit = 1, bool $pack = false, bool $drop = false): mixed
     {
-        return Arrays::random($this->data, $limit, $pack);
+        return array_random($this->data, $limit, $pack, $drop);
     }
 
     /**
      * Shuffle data array.
      *
-     * @param  bool $assoc
+     * @param  bool|null $assoc
      * @return self
      * @since  4.0
      */
-    public function shuffle(bool $assoc = false)
+    public function shuffle(bool $assoc = null)
     {
         $this->readOnlyCheck();
 
-        Arrays::shuffle($this->data, $assoc);
+        $this->data = array_shuffle($this->data, $assoc);
 
         return $this;
     }
@@ -828,14 +713,15 @@ class Collection extends AbstractCollection implements ArrayAccess
      *
      * @param  array      $keys
      * @param  mixed|null $value
+     * @param  bool       $isset
      * @return self
      * @since  5.0
      */
-    public function padKeys(array $keys, mixed $value = null): self
+    public function padKeys(array $keys, mixed $value = null, bool $isset = false): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_pad_keys($this->data, $keys, $value);
+        $this->data = array_pad_keys($this->data, $keys, $value, $isset);
 
         return $this;
     }
@@ -887,7 +773,7 @@ class Collection extends AbstractCollection implements ArrayAccess
      * Get an item from data array with given key.
      *
      * @param  int|string $key
-     * @return mixed|null
+     * @return mixed
      */
     public function item(int|string $key): mixed
     {
@@ -898,11 +784,11 @@ class Collection extends AbstractCollection implements ArrayAccess
      * Get all items from data array with/without given keys.
      *
      * @param  array<int|string>|null $keys
-     * @return array<mixed>
+     * @return array
      */
     public function items(array $keys = null): array
     {
-        if ($keys == null) {
+        if ($keys === null) {
             return $this->data;
         }
 

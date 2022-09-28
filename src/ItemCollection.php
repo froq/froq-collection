@@ -7,34 +7,25 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\{AbstractCollection, CollectionException};
-use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
-use ArrayAccess;
+use froq\collection\trait\{AccessTrait, GetTrait};
 
 /**
- * Item Collection.
- *
- * Represents a simple array structure that accepts int keys only, and also prevents modifications
- * in read-only mode. Inspired by JavaScript's DOMTokenList.
+ * A simple array class, accepts int keys only.
  *
  * @package froq\collection
  * @object  froq\collection\ItemCollection
  * @author  Kerem Güneş
  * @since   4.0
  */
-class ItemCollection extends AbstractCollection implements ArrayAccess
+class ItemCollection extends AbstractCollection implements \ArrayAccess
 {
-    /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\GetTrait
-     */
     use AccessTrait, GetTrait;
 
     /**
      * Constructor.
      *
-     * @param array<int, any>|null $data
-     * @param bool|null            $readOnly
+     * @param array|null $data
+     * @param bool|null  $readOnly
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {
@@ -42,30 +33,12 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     }
 
     /**
-     * Set data.
-     *
-     * @param  array<int, any> $data
-     * @param  bool            $reset
-     * @return self
-     * @causes froq\collection\CollectionException
-     * @override
-     */
-    public final function setData(array $data, bool $reset = true): self
-    {
-        foreach (array_keys($data) as $index) {
-            $this->indexCheck($index, true);
-        }
-
-        return parent::setData($data, $reset);
-    }
-
-    /**
      * Get an item by given index.
      *
      * @param  int $index
-     * @return any|null
+     * @return mixed|null
      */
-    public final function item(int $index)
+    public final function item(int $index): mixed
     {
         return $this->data[$index] ?? null;
     }
@@ -74,11 +47,11 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
      * Get all items.
      *
      * @param  array<int>|null $indexes
-     * @return array<int, any>
+     * @return array<int, mixed>
      */
     public final function items(array $indexes = null): array
     {
-        if ($indexes == null) {
+        if (!func_num_args()) {
             return $this->data;
         }
 
@@ -114,11 +87,11 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     /**
      * Check whether given item exists in data array (with/without strict mode).
      *
-     * @param  any  $item
-     * @param  bool $strict
+     * @param  mixed $item
+     * @param  bool  $strict
      * @return bool
      */
-    public final function hasItem($item, bool $strict = true): bool
+    public final function hasItem(mixed $item, bool $strict = true): bool
     {
         return array_value_exists($item, $this->data, $strict);
     }
@@ -126,11 +99,11 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     /**
      * Add (append) an item to data array.
      *
-     * @param  any $item
+     * @param  mixed $item
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public final function add($item): self
+    public final function add(mixed $item): self
     {
         $this->readOnlyCheck();
 
@@ -142,15 +115,16 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     /**
      * Put an item by given index to data array.
      *
-     * @param  int $index
-     * @param  any $item
+     * @param  int   $index
+     * @param  mixed $item
      * @return self
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidIndexException
      */
-    public final function set(int $index, $item): self
+    public final function set(int $index, mixed $item): self
     {
-        $this->indexCheck($index);
         $this->readOnlyCheck();
+        $this->keyCheck($index);
 
         $this->data[$index] = $item;
 
@@ -160,13 +134,14 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     /**
      * Get an item by given index from data array.
      *
-     * @param  int      $index
-     * @param  any|null $default
-     * @return any|null
+     * @param  int        $index
+     * @param  mixed|null $default
+     * @return mixed|null
+     * @causes froq\common\exception\InvalidIndexException
      */
-    public final function get(int $index, $default = null)
+    public final function get(int $index, mixed $default = null): mixed
     {
-        $this->indexCheck($index);
+        $this->keyCheck($index);
 
         return $this->data[$index] ?? $default;
     }
@@ -174,62 +149,45 @@ class ItemCollection extends AbstractCollection implements ArrayAccess
     /**
      * Remove an item by given index from data array by given index.
      *
-     * @param  int       $index
-     * @param  any|null &$item
+     * @param  int         $index
+     * @param  mixed|null &$item
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidIndexException
      */
-    public final function remove(int $index, &$item = null): bool
+    public final function remove(int $index, mixed &$item = null): bool
     {
-        $this->indexCheck($index);
         $this->readOnlyCheck();
+        $this->keyCheck($index);
 
         if (array_key_exists($index, $this->data)) {
             $item = $this->data[$index];
             unset($this->data[$index]);
+
             return true;
         }
+
         return false;
     }
 
     /**
      * Replace an item with new one.
      *
-     * @param  any $oldItem
-     * @param  any $newItem
+     * @param  mixed $oldItem
+     * @param  mixed $newItem
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
      */
-    public final function replace($oldItem, $newItem): bool
+    public final function replace(mixed $oldItem, mixed $newItem): bool
     {
         $this->readOnlyCheck();
 
         if (array_value_exists($oldItem, $this->data, key: $index)) {
             $this->data[$index] = $newItem;
+
             return true;
         }
+
         return false;
-    }
-
-    /**
-     * Check index validity.
-     *
-     * @param  int|null $index
-     * @param  bool     $all
-     * @return void
-     * @throws froq\collection\CollectionException
-     */
-    private function indexCheck(int|null $index, bool $all = false): void
-    {
-        if ($index && !is_int($index)) throw new CollectionException(
-            $all ? 'Invalid data, data indexes must be int'
-                 : 'Invalid index type, index type must be int'
-        );
-
-        // Note: evaluates "'' < 0" true.
-        if ($index < 0) throw new CollectionException(
-            $all ? 'Invalid data, data indexes must be sequential'
-                 : 'Invalid index, index must be greater than or equal to 0'
-        );
     }
 }

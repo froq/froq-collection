@@ -10,9 +10,7 @@ namespace froq\collection\trait;
 use froq\util\Arrays;
 
 /**
- * Aggregate Trait.
- *
- * Represents a trait entity that provides `aggregate()` method.
+ * A trait, provides `aggregate()` method.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\AggregateTrait
@@ -26,10 +24,12 @@ trait AggregateTrait
      *
      * @param  callable   $func
      * @param  array|null $carry
-     * @return array
+     * @return static
      */
-    public function aggregate(callable $func, array $carry = null): array
+    public function aggregate(callable $func, array $carry = null): static
     {
-        return Arrays::aggregate($this->data, $func, $carry);
+        $data = Arrays::aggregate($this->data, $func, $carry);
+
+        return new static($data);
     }
 }

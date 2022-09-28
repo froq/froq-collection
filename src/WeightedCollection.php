@@ -7,12 +7,8 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\AbstractCollection;
-
 /**
- * Weighted Collection.
- *
- * Represents a weighted array structure that utilizes items selection operations by their weights.
+ * A weighted-array class, utilizes item selection operations by their weights.
  *
  * @package froq\collection
  * @object  froq\collection\WeightedCollection
@@ -24,8 +20,8 @@ class WeightedCollection extends AbstractCollection
     /**
      * Constructor.
      *
-     * @param array<int|string, any>|null $data
-     * @param bool|null                   $readOnly
+     * @param array|null $data
+     * @param bool|null  $readOnly
      */
     public function __construct(array $data = null, bool $readOnly = null)
     {
@@ -88,17 +84,17 @@ class WeightedCollection extends AbstractCollection
             $totalWeight += (float) $item['weight'];
         }
 
-        // No total weight no items to select.
-        if ($totalWeight == 0.0) {
+        // No total weight, no items to select.
+        if (!$totalWeight) {
             return null;
         }
 
         $accWeight = 0.0;
-        $rndWeight = $this->randomize(0.0, $totalWeight);
+        $ranWeight = $this->randomize(0.0, $totalWeight);
 
         foreach ($items as $item) {
             $accWeight += (float) $item['weight'];
-            if ($accWeight >= $rndWeight) {
+            if ($accWeight >= $ranWeight) {
                 break;
             }
         }

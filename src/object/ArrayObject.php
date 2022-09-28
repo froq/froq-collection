@@ -9,28 +9,29 @@ namespace froq\collection\object;
 
 use froq\collection\AbstractCollection;
 use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
-use froq\common\exception\InvalidKeyException;
-use ArrayAccess;
 
 /**
- * Array Object.
- *
- * Represents a simple but very extended array-object structure (not like `ArrayObject`) with
- * some utility methods.
+ * A simple array-object structure (not like `ArrayObject`) with some utility methods.
  *
  * @package froq\collection\object
  * @object  froq\collection\object\ArrayObject
  * @author  Kerem Güneş
- * @since   5.14, 5.15 Refactored extending AbstractCollection.
+ * @since   5.14, 5.15
  */
-class ArrayObject extends AbstractCollection implements ArrayAccess
+class ArrayObject extends AbstractCollection implements \ArrayAccess
 {
-    /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\GetTrait
-     * @see froq\collection\trait\HasTrait
-     */
     use AccessTrait, GetTrait, HasTrait;
+
+    /**
+     * Constructor.
+     *
+     * @param array|null $data
+     * @param bool|null  $readOnly
+     */
+    public function __construct(array $data = null, bool $readOnly = null)
+    {
+        parent::__construct($data, $readOnly);
+    }
 
     /**
      * Add an item.
@@ -54,13 +55,13 @@ class ArrayObject extends AbstractCollection implements ArrayAccess
      * @param  int|string $key
      * @param  mixed      $value
      * @return self
-     * @causes froq\common\exception\InvalidKeyException
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidKeyException
      */
     public function set(int|string $key, mixed $value): self
     {
-        $this->keyCheck($key);
         $this->readOnlyCheck();
+        $this->keyCheck($key);
 
         $this->data[$key] = $value;
 
@@ -86,15 +87,15 @@ class ArrayObject extends AbstractCollection implements ArrayAccess
      * Remove an item.
      *
      * @param  int|string  $key
-     * @param  any|null   &$value
+     * @param  mixed|null &$value
      * @return self
-     * @causes froq\common\exception\InvalidKeyException
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidKeyException
      */
-    public function remove(int|string $key, &$value = null): bool
+    public function remove(int|string $key, mixed &$value = null): bool
     {
-        $this->keyCheck($key);
         $this->readOnlyCheck();
+        $this->keyCheck($key);
 
         if (array_key_exists($key, $this->data)) {
             $value = $this->data[$key];
@@ -109,34 +110,22 @@ class ArrayObject extends AbstractCollection implements ArrayAccess
     /**
      * Replace an item with new one.
      *
-     * @param  any              $oldValue
-     * @param  any              $newValue
+     * @param  mixed            $oldValue
+     * @param  mixed            $newValue
      * @param  int|string|null &$key
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function replace($oldValue, $newValue, int|string &$key = null): bool
+    public function replace(mixed $oldValue, mixed $newValue, int|string &$key = null): bool
     {
         $this->readOnlyCheck();
 
         if (array_value_exists($oldValue, $this->data, key: $key)) {
             $this->data[$key] = $newValue;
+
             return true;
         }
-        return false;
-    }
 
-    /**
-     * Check key validity.
-     *
-     * @param  int|string|null $key
-     * @return void
-     * @throws froq\collection\InvalidKeyException
-     */
-    private function keyCheck(int|string|null $key): void
-    {
-        if ($key === '') throw new InvalidKeyException(
-            'Empty keys are not allowed',
-        );
+        return false;
     }
 }

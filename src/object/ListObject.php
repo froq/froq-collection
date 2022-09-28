@@ -9,28 +9,34 @@ namespace froq\collection\object;
 
 use froq\collection\AbstractCollection;
 use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
-use froq\common\exception\InvalidIndexException;
-use ArrayAccess;
 
 /**
- * List Object.
- *
- * Represents a simple but very extended list-object structure with
- * some utility methods.
+ * A simple list-object structure with some utility methods.
  *
  * @package froq\collection\object
  * @object  froq\collection\object\ListObject
  * @author  Kerem Güneş
  * @since   5.27
  */
-class ListObject extends AbstractCollection implements ArrayAccess
+class ListObject extends AbstractCollection implements \ArrayAccess
 {
-    /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\GetTrait
-     * @see froq\collection\trait\HasTrait
-     */
     use AccessTrait, GetTrait, HasTrait;
+
+    /**
+     * Constructor.
+     *
+     * @param array|null $data
+     * @param bool|null  $readOnly
+     */
+    public function __construct(array $data = null, bool $readOnly = null)
+    {
+        // Values as list.
+        if ($data) {
+            $data = array_list($data);
+        }
+
+        parent::__construct($data, $readOnly);
+    }
 
     /**
      * Add an item.
@@ -54,13 +60,13 @@ class ListObject extends AbstractCollection implements ArrayAccess
      * @param  int   $index
      * @param  mixed $value
      * @return self
-     * @causes froq\common\exception\InvalidIndexException
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidKeyException
      */
     public function set(int $index, mixed $value): self
     {
-        $this->indexCheck($index);
         $this->readOnlyCheck();
+        $this->keyCheck($index);
 
         // Maintain next index.
         if ($index > $nextIndex = $this->count()) {
@@ -78,11 +84,11 @@ class ListObject extends AbstractCollection implements ArrayAccess
      * @param  int        $index
      * @param  mixed|null $default
      * @return mixed|null
-     * @causes froq\common\exception\InvalidIndexException
+     * @causes froq\common\exception\InvalidKeyException
      */
     public function get(int $index, mixed $default = null): mixed
     {
-        $this->indexCheck($index);
+        $this->keyCheck($index);
 
         return $this->data[$index] ?? $default;
     }
@@ -91,14 +97,15 @@ class ListObject extends AbstractCollection implements ArrayAccess
      * Remove an item.
      *
      * @param  int         $index
-     * @param  any|null   &$value
+     * @param  mixed|null &$value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
+     * @causes froq\common\exception\InvalidKeyException
      */
-    public function remove(int $index, &$value = null): bool
+    public function remove(int $index, mixed &$value = null): bool
     {
-        $this->indexCheck($index);
         $this->readOnlyCheck();
+        $this->keyCheck($index);
 
         if (array_key_exists($index, $this->data)) {
             $value = $this->data[$index];
@@ -116,14 +123,13 @@ class ListObject extends AbstractCollection implements ArrayAccess
     /**
      * Replace an item with new one.
      *
-     * @param  any              $oldValue
-     * @param  any              $newValue
+     * @param  mixed            $oldValue
+     * @param  mixed            $newValue
      * @param  int|null        &$index
      * @return bool
-     * @causes froq\common\exception\InvalidIndexException
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function replace($oldValue, $newValue, int &$index = null): bool
+    public function replace(mixed $oldValue, mixed $newValue, int &$index = null): bool
     {
         $this->readOnlyCheck();
 
@@ -134,24 +140,5 @@ class ListObject extends AbstractCollection implements ArrayAccess
         }
 
         return false;
-    }
-
-    /**
-     * Check index validity.
-     *
-     * @param  int|null $index
-     * @return void
-     * @throws froq\collection\InvalidIndexException
-     */
-    private function indexCheck(int|null $index): void
-    {
-        if ($index && !is_int($index)) throw new InvalidIndexException(
-            'Invalid index type, index type must be int'
-        );
-
-        // Note: evaluates "'' < 0" true.
-        if ($index < 0) throw new InvalidIndexException(
-            'Invalid index, index must be greater than or equal to 0'
-        );
     }
 }

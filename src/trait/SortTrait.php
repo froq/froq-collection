@@ -7,15 +7,11 @@ declare(strict_types=1);
 
 namespace froq\collection\trait;
 
-use froq\collection\collator\MapCollator;
-use froq\common\trait\ReadOnlyCallTrait;
+use froq\common\trait\CallTrait;
 use froq\util\Arrays;
-use Map;
 
 /**
- * Sort Trait.
- *
- * Represents a trait entity that provides some sorting methods.
+ * A trait, provides `sort()`, `sortKey()`, `sortLocale()` and `sortNatural()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\SortTrait
@@ -24,8 +20,7 @@ use Map;
  */
 trait SortTrait
 {
-    /** @see froq\common\trait\ReadOnlyCallTrait */
-    use ReadOnlyCallTrait;
+    use CallTrait;
 
     /**
      * Apply a sort on data array.
@@ -38,19 +33,13 @@ trait SortTrait
      */
     public function sort(callable|int $func = null, $flags = 0, bool $assoc = null): self
     {
-        $this->readOnlyCall();
-
-        // Check assoc option.
-        if (func_num_args() != 3 && ($this instanceof Map || $this instanceof MapCollator)) {
-            $assoc = true;
-        }
+        // For read-only check.
+        $this->call('readOnlyCheck');
 
         $this->data = Arrays::sort($this->data, $func, $flags, $assoc);
 
         // For some internal data changes.
-        if (method_exists($this, 'onDataChange')) {
-            $this->onDataChange(__function__);
-        }
+        $this->call('onDataChange', __function__);
 
         return $this;
     }
@@ -65,14 +54,13 @@ trait SortTrait
      */
     public function sortKey(callable|int $func = null, int $flags = 0): self
     {
-        $this->readOnlyCall();
+        // For read-only check.
+        $this->call('readOnlyCheck');
 
         $this->data = Arrays::sortKey($this->data, $func, $flags);
 
         // For some internal data changes.
-        if (method_exists($this, 'onDataChange')) {
-            $this->onDataChange(__function__);
-        }
+        $this->call('onDataChange', __function__);
 
         return $this;
     }
@@ -87,19 +75,13 @@ trait SortTrait
      */
     public function sortLocale(string $locale = null, bool $assoc = null): self
     {
-        $this->readOnlyCall();
-
-        // Check assoc option.
-        if (func_num_args() != 2 && ($this instanceof Map || $this instanceof MapCollator)) {
-            $assoc = true;
-        }
+        // For read-only check.
+        $this->call('readOnlyCheck');
 
         $this->data = Arrays::sortLocale($this->data, $locale, $assoc);
 
         // For some internal data changes.
-        if (method_exists($this, 'onDataChange')) {
-            $this->onDataChange(__function__);
-        }
+        $this->call('onDataChange', __function__);
 
         return $this;
     }
@@ -113,14 +95,13 @@ trait SortTrait
      */
     public function sortNatural(bool $icase = false): self
     {
-        $this->readOnlyCall();
+        // For read-only check.
+        $this->call('readOnlyCheck');
 
         $this->data = Arrays::sortNatural($this->data, $icase);
 
         // For some internal data changes.
-        if (method_exists($this, 'onDataChange')) {
-            $this->onDataChange(__function__);
-        }
+        $this->call('onDataChange', __function__);
 
         return $this;
     }

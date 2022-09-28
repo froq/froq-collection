@@ -7,13 +7,11 @@ declare(strict_types=1);
 
 namespace froq\collection\trait;
 
-use froq\common\trait\ReadOnlyCallTrait;
+use froq\common\trait\CallTrait;
 use froq\util\Arrays;
 
 /**
- * Filter Trait.
- *
- * Represents a trait entity that provides `filter()` method.
+ * A trait, provides `filter()` and `filterKeys()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\FilterTrait
@@ -22,27 +20,48 @@ use froq\util\Arrays;
  */
 trait FilterTrait
 {
-    /** @see froq\common\trait\ReadOnlyCallTrait */
-    use ReadOnlyCallTrait;
+    use CallTrait;
 
     /**
      * Apply a filter action on data array.
      *
      * @param  callable|null $func
+     * @param  bool          $recursive
+     * @param  bool          $useKeys
      * @param  bool          $keepKeys
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function filter(callable $func = null, bool $keepKeys = true): self
+    public function filter(callable $func = null, bool $recursive = false, bool $useKeys = false, bool $keepKeys = true): self
     {
-        $this->readOnlyCall();
+        // For read-only check.
+        $this->call('readOnlyCheck');
 
-        $this->data = Arrays::filter($this->data, $func, $keepKeys);
+        $this->data = Arrays::filter($this->data, $func, $recursive, $useKeys, $keepKeys);
 
         // For some internal data changes.
-        if (method_exists($this, 'onDataChange')) {
-            $this->onDataChange(__function__);
-        }
+        $this->call('onDataChange', __function__);
+
+        return $this;
+    }
+
+    /**
+     * Apply a filter action on data array keys.
+     *
+     * @param  callable|string $func
+     * @param  bool            $recursive
+     * @return self
+     * @causes froq\common\exception\ReadOnlyException
+     */
+    public function filterKeys(callable $func, bool $recursive = false): self
+    {
+        // For read-only check.
+        $this->call('readOnlyCheck');
+
+        $this->data = Arrays::filterKeys($this->data, $func, $recursive);
+
+        // For some internal data changes.
+        $this->call('onDataChange', __function__);
 
         return $this;
     }

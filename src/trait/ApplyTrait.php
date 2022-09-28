@@ -7,14 +7,11 @@ declare(strict_types=1);
 
 namespace froq\collection\trait;
 
-use froq\common\trait\ReadOnlyCallTrait;
-use froq\common\exception\{InvalidArgumentException, RuntimeException};
+use froq\common\trait\CallTrait;
 use froq\util\Arrays;
 
 /**
- * Apply Trait.
- *
- * Represents a trait entity that provides `apply()` method.
+ * A trait, provides `apply()` method.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\ApplyTrait
@@ -23,28 +20,25 @@ use froq\util\Arrays;
  */
 trait ApplyTrait
 {
-    /** @see froq\common\trait\ReadOnlyCallTrait */
-    use ReadOnlyCallTrait;
+    use CallTrait;
 
     /**
-     * Apply a given action on data array.
+     * Apply given action on data array.
      *
      * @param  callable $func
-     * @param  bool     $swapKeys
      * @param  bool     $recursive
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      */
-    public function apply(callable $func, bool $swapKeys = false, bool $recursive = false): self
+    public function apply(callable $func, bool $recursive = false): self
     {
-        $this->readOnlyCall();
+        // For read-only check.
+        $this->call('readOnlyCheck');
 
-        $this->data = Arrays::apply($this->data, $func, $swapKeys, $recursive);
+        $this->data = Arrays::apply($this->data, $func, $recursive);
 
         // For some internal data changes.
-        if (method_exists($this, 'onDataChange')) {
-            $this->onDataChange(__function__);
-        }
+        $this->call('onDataChange', __function__);
 
         return $this;
     }

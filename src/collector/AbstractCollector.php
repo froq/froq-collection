@@ -5,7 +5,7 @@
  */
 declare(strict_types=1);
 
-namespace froq\collection;
+namespace froq\collection\collector;
 
 use froq\collection\trait\ArrayTrait;
 use froq\common\interface\{Arrayable, Objectable, Listable, Jsonable, Yieldable, Iteratable, IteratableReverse};
@@ -13,17 +13,17 @@ use froq\common\{trait\ReadOnlyTrait, exception\InvalidKeyException};
 use froq\util\Util;
 
 /**
- * An abstract collection class, extended by collection classes.
+ * An abstract collector class, extended by collector classes.
  *
- * @package froq\collection
- * @object  froq\collection\AbstractCollection
+ * @package froq\collection\collector
+ * @object  froq\collection\collector\AbstractCollector
  * @author  Kerem Güneş
- * @since   4.0, 6.0
+ * @since   5.17, 6.0
  */
-abstract class AbstractCollection implements CollectionInterface, Arrayable, Objectable, Listable, Jsonable, Yieldable,
+abstract class AbstractCollector implements CollectorInterface, Arrayable, Objectable, Listable, Jsonable, Yieldable,
     Iteratable, IteratableReverse, \Iterator, \Countable, \JsonSerializable
 {
-    use ArrayTrait, ReadOnlyTrait;
+    use CollectorTrait, ArrayTrait, ReadOnlyTrait;
 
     /** @var array */
     protected array $data = [];
@@ -71,18 +71,7 @@ abstract class AbstractCollection implements CollectionInterface, Arrayable, Obj
         }
 
         switch (true) {
-            case ($this instanceof Collection):
-                if (!is_int($key) && !is_string($key) && !is_array($key)) {
-                    $message = ($offset !== null)
-                        ? 'Invalid data, data keys must be int|string|array [type: %t, offset: %s]'
-                        : 'Invalid key type, key type must be int|string|array [type: %t]';
-
-                    throw new InvalidKeyException($message, [$key, $offset]);
-                }
-                break;
-            case ($this instanceof TypedCollection):
-            case ($this instanceof WeightedCollection):
-            case ($this instanceof object\ArrayObject):
+            case ($this instanceof ArrayCollector):
                 if (!is_int($key) && !is_string($key)) {
                     $message = ($offset !== null)
                         ? 'Invalid data, data keys must be int|string [type: %t, offset: %s]'
@@ -91,8 +80,17 @@ abstract class AbstractCollection implements CollectionInterface, Arrayable, Obj
                     throw new InvalidKeyException($message, [$key, $offset]);
                 }
                 break;
-            case ($this instanceof ItemCollection):
-            case ($this instanceof object\ListObject):
+            case ($this instanceof MapCollector):
+                if (!is_string($key)) {
+                    $message = ($offset !== null)
+                        ? 'Invalid data, data keys must be string [type: %t, offset: %s]'
+                        : 'Invalid key type, key type must be string [type: %t]';
+
+                    throw new InvalidKeyException($message, [$key, $offset]);
+                }
+                break;
+            case ($this instanceof SetCollector):
+            case ($this instanceof ListCollector):
                 if (!is_int($key)) {
                     $message = ($offset !== null)
                         ? 'Invalid data, data keys must be int [type: %t, offset: %s]'

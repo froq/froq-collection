@@ -7,12 +7,8 @@ declare(strict_types=1);
 
 namespace froq\collection\iterator;
 
-use froq\collection\iterator\ArrayIterator;
-
 /**
- * Reverse Array Iterator.
- *
- * Represents a reverse-array iterator class that contains some utility methods (via its parent).
+ * A reverse-array iterator class that contains some utility methods (by its parent).
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\ReverseArrayIterator

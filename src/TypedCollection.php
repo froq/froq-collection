@@ -7,29 +7,18 @@ declare(strict_types=1);
 
 namespace froq\collection;
 
-use froq\collection\{AbstractCollection, CollectionException};
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait, HasTrait};
-use ArrayAccess;
 
 /**
- * Typed Collection.
- *
- * Represents a typed array structure that accepts strict values only which forced with `$dataType` property.
+ * A typed-array class, accepts strict values only forced by `$dataType` property.
  *
  * @package froq\collection
  * @object  froq\collection\TypedCollection
  * @author  Kerem Güneş
  * @since   4.0
  */
-class TypedCollection extends AbstractCollection implements ArrayAccess
+class TypedCollection extends AbstractCollection implements \ArrayAccess
 {
-    /**
-     * @see froq\collection\trait\AccessTrait
-     * @see froq\collection\trait\AccessMagicTrait
-     * @see froq\collection\trait\GetTrait
-     * @see froq\collection\trait\HasTrait
-     * @since 5.4, 5.15
-     */
     use AccessTrait, AccessMagicTrait, GetTrait, HasTrait;
 
     /** @var string */
@@ -38,9 +27,9 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
     /**
      * Constructor.
      *
-     * @param array<int|string, any>|null $data
-     * @param  string|null                $dataType
-     * @param  bool|null                  $readOnly
+     * @param  array|null   $data
+     * @param  string|null $dataType
+     * @param  bool|null   $readOnly
      * @throws froq\collection\CollectionException
      */
     public function __construct(array $data = null, string $dataType = null, bool $readOnly = null)
@@ -48,11 +37,15 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
         // Data type might be defined in extender class.
         $this->dataType = $dataType ?? $this->dataType ?? '';
 
-        if ($this->dataType == '') {
+        if (!$this->dataType) {
             throw new CollectionException(
                 'Data type is required, it must be defined like `protected string $dataType = \'int\'` '.
                 'or given at constructor calls as second argument'
             );
+        }
+
+        if ($data) foreach ($data as $value) {
+            $this->typeCheck($value);
         }
 
         parent::__construct($data, $readOnly);
@@ -63,38 +56,20 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
      *
      * @return string
      */
-    public final function getDataType(): string
+    public final function dataType(): string
     {
         return $this->dataType;
     }
 
     /**
-     * Set data.
-     *
-     * @param  array<int|string, any> $data
-     * @param  bool                   $reset
-     * @return self
-     * @causes froq\collection\CollectionException
-     * @override
-     */
-    public final function setData(array $data, bool $reset = true): self
-    {
-        foreach ($data as $value) {
-            $this->typeCheck($value);
-        }
-
-        return parent::setData($data, $reset);
-    }
-
-    /**
      * Add (append) an item.
      *
-     * @param  any $value
+     * @param  mixed $value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\collection\CollectionException
      */
-    public final function add($value): self
+    public final function add(mixed $value): self
     {
         $this->readOnlyCheck();
         $this->typeCheck($value);
@@ -108,14 +83,15 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
      * Set an item.
      *
      * @param  int|string $key
-     * @param  any        $value
+     * @param  mixed      $value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\collection\CollectionException
      */
-    public final function set(int|string $key, $value): self
+    public final function set(int|string $key, mixed $value): self
     {
         $this->readOnlyCheck();
+        $this->keyCheck($key);
         $this->typeCheck($value);
 
         $this->data[$key] = $value;
@@ -127,10 +103,10 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
      * Get an item.
      *
      * @param  int|string $key
-     * @param  any|null   $default
-     * @return any|null
+     * @param  mixed|null $default
+     * @return mixed|null
      */
-    public final function get(int|string $key, $default = null)
+    public final function get(int|string $key, mixed $default = null): mixed
     {
         return $this->data[$key] ?? $default;
     }
@@ -145,6 +121,7 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
     public final function remove(int|string $key): void
     {
         $this->readOnlyCheck();
+        $this->keyCheck($key);
 
         unset($this->data[$key]);
     }
@@ -152,14 +129,14 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
     /**
      * Check data type.
      *
-     * @param  any $value
+     * @param  mixed $value
      * @return void
      * @throws froq\collection\CollectionException
      */
-    private function typeCheck($value): void
+    private function typeCheck(mixed $value): void
     {
         // Any type?
-        if ($this->dataType == 'any') {
+        if ($this->dataType == 'any' || $this->dataType == 'mixed') {
             return;
         }
 
@@ -169,8 +146,10 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
                 return;
             }
 
-            throw new CollectionException('Each value must be type of %s, %s given',
-                [$this->dataType, $value::class]);
+            throw new CollectionException(
+                'Each value must be type of %s, %s given',
+                [$this->dataType, $value::class]
+            );
         }
 
         if (($this->dataType == 'scalar' && is_scalar($value))
@@ -183,13 +162,14 @@ class TypedCollection extends AbstractCollection implements ArrayAccess
         if ($type != $this->dataType) {
             $types = explode('|', $this->dataType);
 
-            // @fix @todo: Make namespace resolution for short class names.
-            if (in_array($type, $types)) {
+            if (in_array($type, $types, true)) {
                 return;
             }
 
-            throw new CollectionException('Each value must be type of %s, %s given',
-                [$this->dataType, $type]);
+            throw new CollectionException(
+                'Each value must be type of %s, %s given',
+                [$this->dataType, $type]
+            );
         }
     }
 }

@@ -10,9 +10,7 @@ namespace froq\collection\trait;
 use froq\util\Arrays;
 
 /**
- * Each Trait.
- *
- * Represents a trait entity that provides `each()` method.
+ * A trait, provides `each()` method.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\EachTrait
@@ -22,7 +20,7 @@ use froq\util\Arrays;
 trait EachTrait
 {
     /**
-     * Call given function for each item of data array.
+     * Call given function for each value of data array.
      *
      * @param  callable $func
      * @return self
@@ -35,7 +33,7 @@ trait EachTrait
     }
 
     /**
-     * Call given function for each item key of data array.
+     * Call given function for each key of data array.
      *
      * @param  callable $func
      * @return self

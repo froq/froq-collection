@@ -8,9 +8,7 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * Calc-Product Trait.
- *
- * Represents a trait that provides `product()` method.
+ * A trait, provides `product()` method.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\CalcProductTrait
@@ -20,19 +18,22 @@ namespace froq\collection\trait;
 trait CalcProductTrait
 {
     /**
-     * Calculate the product of values in data array.
+     * Calculate the product of values of data array.
      *
      * @param  int|null $precision
      * @return int|float
      */
     public function product(int $precision = null): int|float
     {
-        if (empty($this->data)) {
-            return 0;
+        $ret = 0;
+
+        if ($this->data) {
+            $ret = array_product($this->data);
+            if ($precision !== null) {
+                $ret = round($ret, $precision);
+            }
         }
 
-        return ($precision === null)
-             ? array_product($this->data)
-             : round(array_product($this->data), $precision);
+        return $ret;
     }
 }

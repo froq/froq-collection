@@ -7,12 +7,8 @@ declare(strict_types=1);
 
 namespace froq\collection\iterator;
 
-use froq\collection\iterator\Iterator;
-
 /**
- * Reverse Iterator.
- *
- * Represents a reverse iterator class that contains some utility methods (via its parent).
+ * A reverse iterator class that contains some utility methods (by its parent).
  *
  * @package froq\collection\iterator
  * @object  froq\collection\iterator\ReverseIterator

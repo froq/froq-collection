@@ -8,9 +8,7 @@ declare(strict_types=1);
 namespace froq\collection\trait;
 
 /**
- * First-Last Trait.
- *
- * Represents a trait that provides `first()`, `firstKey()`, `last()` and `lastKey()` methods.
+ * A trait, provides `first()`, `firstKey()`, `last()` and `lastKey()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\FirstLastTrait
@@ -20,7 +18,7 @@ namespace froq\collection\trait;
 trait FirstLastTrait
 {
     /**
-     * Get first item or return null if no items on data array.
+     * Get first value or return null if data array is empty.
      *
      * @return mixed|null
      */
@@ -30,7 +28,7 @@ trait FirstLastTrait
     }
 
     /**
-     * Find first key or return null if no items data array.
+     * Find first key or return null if data array is empty.
      *
      * @return int|string|null
      */
@@ -40,7 +38,7 @@ trait FirstLastTrait
     }
 
     /**
-     * Get last item or return null if no items on data array.
+     * Get last value or return null if data array is empty.
      *
      * @return mixed|null
      */
@@ -50,7 +48,7 @@ trait FirstLastTrait
     }
 
     /**
-     * Find last key or return null if no items data array.
+     * Find last key or return null if data array is empty.
      *
      * @return int|string|null
      */
