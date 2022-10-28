@@ -43,7 +43,7 @@ trait ArrayTrait
      */
     public function copy(): static
     {
-        return new static($this->data);
+        return clone $this;
     }
 
     /**
