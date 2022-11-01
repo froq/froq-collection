@@ -104,7 +104,7 @@ trait ArrayTrait
     }
 
     /**
-     * Check whether data array contains given value/values.
+     * Check whether data array contains any of given values.
      *
      * @param  mixed ...$values
      * @return bool
@@ -116,7 +116,7 @@ trait ArrayTrait
     }
 
     /**
-     * Check whether data array contains given key/keys.
+     * Check whether data array contains any of given keys.
      *
      * @param  int|string ...$keys
      * @return bool
