@@ -57,9 +57,9 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * @param  bool                         $drop
      * @return mixed|null
      */
-    public function get(int|string|array $key, mixed $default = null, bool $drop = false): mixed
+    public function &get(int|string|array $key, mixed $default = null, bool $drop = false): mixed
     {
-        $value = array_get($this->data, $key, $default, $drop);
+        $value =& array_get($this->data, $key, $default, $drop);
 
         return $value;
     }
