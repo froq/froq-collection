@@ -36,6 +36,9 @@ trait AccessTrait
     /** @inheritDoc ArrayAccess */
     public function &offsetGet(mixed $key): mixed
     {
+        // For calls like `items[] = item`.
+        $key ??= $this->count();
+
         return $this->get($key);
     }
 
