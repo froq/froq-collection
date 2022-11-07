@@ -30,6 +30,12 @@ trait IteratorTrait
     }
 
     /** @inheritDoc Iterator */
+    public function next(): void
+    {
+        next($this->data);
+    }
+
+    /** @inheritDoc Iterator */
     public function key(): int|string|null
     {
         return key($this->data);
@@ -39,12 +45,6 @@ trait IteratorTrait
     public function current(): mixed
     {
         return current($this->data);
-    }
-
-    /** @inheritDoc Iterator */
-    public function next(): void
-    {
-        next($this->data);
     }
 
     /** @alias current() */
