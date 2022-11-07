@@ -18,21 +18,15 @@ namespace froq\collection\trait;
 trait IteratorTrait
 {
     /** @inheritDoc Iterator */
-    public function current(): mixed
-    {
-        return current($this->data);
-    }
-
-    /** @inheritDoc Iterator */
-    public function next(): void
-    {
-        next($this->data);
-    }
-
-    /** @inheritDoc Iterator */
     public function rewind(): void
     {
         reset($this->data);
+    }
+
+    /** @inheritDoc Iterator */
+    public function valid(): bool
+    {
+        return key($this->data) !== null;
     }
 
     /** @inheritDoc Iterator */
@@ -42,9 +36,15 @@ trait IteratorTrait
     }
 
     /** @inheritDoc Iterator */
-    public function valid(): bool
+    public function current(): mixed
     {
-        return key($this->data) !== null;
+        return current($this->data);
+    }
+
+    /** @inheritDoc Iterator */
+    public function next(): void
+    {
+        next($this->data);
     }
 
     /** @alias current() */
