@@ -31,7 +31,7 @@ trait AccessMagicTrait
     }
 
     /** @magic */
-    public function __get(int|string $key): mixed
+    public function &__get(int|string $key): mixed
     {
         return $this->get($key);
     }
