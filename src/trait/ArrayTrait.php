@@ -128,6 +128,19 @@ trait ArrayTrait
     }
 
     /**
+     * Search for the key of given value.
+     *
+     * @param  mixed $value
+     * @param  bool  $strict
+     * @param  bool  $last
+     * @return int|string|null
+     */
+    public function search(mixed $value, bool $strict = true, bool $last = false): int|string|null
+    {
+        return array_search_key($this->data, $value, $strict, $last);
+    }
+
+    /**
      * @inheritDoc froq\common\interface\Yieldable
      * @since 5.4
      */
