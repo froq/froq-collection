@@ -9,7 +9,7 @@ namespace froq\collection\trait;
 
 /**
  * A trait, provides related methods for the classes implementing `ArrayAccess` interface
- * and defining `set()`, `get(), `remove()` and `count()` methods.
+ * and defining `set()`, `get() and `remove()` methods.
  *
  * @package froq\collection\trait
  * @object  froq\collection\trait\AccessTrait
@@ -18,6 +18,9 @@ namespace froq\collection\trait;
  */
 trait AccessTrait
 {
+    /** @internal */
+    private int|null $__indexer = null;
+
     /** @inheritDoc ArrayAccess */
     public function offsetExists(mixed $key): bool
     {
@@ -27,8 +30,11 @@ trait AccessTrait
     /** @inheritDoc ArrayAccess */
     public function offsetSet(mixed $key, mixed $value): void
     {
-        // For calls like `items[] = item`.
-        $key ??= $this->count();
+        // Calls like `items[] = item`.
+        if ($key === null) {
+            $this->__indexer ??= $this->__getMaxIndex();
+            $key = $this->__indexer++;
+        }
 
         $this->set($key, $value);
     }
@@ -36,8 +42,12 @@ trait AccessTrait
     /** @inheritDoc ArrayAccess */
     public function &offsetGet(mixed $key): mixed
     {
-        // For calls like `items[] = item`.
-        $key ??= $this->count();
+        // Calls like `items[][] = item`.
+        // It does NOT maintain negative indexes.
+        if ($key === null) {
+            $this->__indexer ??= $this->__getMaxIndex();
+            $key = $this->__indexer++;
+        }
 
         return $this->get($key);
     }
@@ -46,5 +56,16 @@ trait AccessTrait
     public function offsetUnset(mixed $key): void
     {
         $this->remove($key);
+    }
+
+    /** @internal */
+    private function __getMaxIndex(): int|null
+    {
+        if (isset($this->data)) {
+            $keys = array_keys($this->data);
+            $keys = array_filter($keys, 'is_int');
+            return max($keys ?: [0]);
+        }
+        return null;
     }
 }
