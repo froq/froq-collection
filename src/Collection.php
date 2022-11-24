@@ -330,15 +330,16 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Dedupe items in data array.
      *
-     * @param  bool $strict
+     * @param  bool      $strict
+     * @param  bool|null $list
      * @return self
      * @since  4.0
      */
-    public function dedupe(bool $strict = true): self
+    public function dedupe(bool $strict = true, bool $list = null): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_dedupe($this->data, $strict);
+        $this->data = array_dedupe($this->data, $strict, $list);
 
         return $this;
     }
@@ -347,14 +348,15 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * Refine items in data array.
      *
      * @param  array|null $values
+     * @param  bool|null  $list
      * @return self
      * @since  4.0
      */
-    public function refine(array $values = null): self
+    public function refine(array $values = null, bool $list = null): self
     {
         $this->readOnlyCheck();
 
-        $this->data = array_refine($this->data, $values);
+        $this->data = array_refine($this->data, $values, $list);
 
         return $this;
     }
