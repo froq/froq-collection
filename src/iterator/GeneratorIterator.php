@@ -34,7 +34,7 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
             if (is_callable($generator)) {
                 $this->setGenerator($generator);
             } else {
-                $this->setGenerator(static fn() => yield from $generator);
+                $this->setGenerator(static fn(): Generator => yield from $generator);
             }
         }
     }
@@ -58,8 +58,8 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
             'Invalid $generator argument, given generator must execute `yield` stuff'
         );
 
-        // Wrap in static function.
-        $this->generator = static fn() => $generator;
+        // Wrap in a static function.
+        $this->generator = static fn(): Closure => $generator;
 
         return $this;
     }
@@ -80,19 +80,25 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
     }
 
     /**
-     * Apply given action for each item & return a new modified generator iterator.
+     * Apply given action for each item & return a new `GeneratorIterator` instance.
+     *
+     * Note: Using this method requires new variable assignment as return, otherwise it
+     * does not modify this instance's generator.
      *
      * @param  callable $func
      * @return froq\collection\iterator\GeneratorIterator
      */
     public function apply(callable $func): GeneratorIterator
     {
-        $generator = function () use ($func) {
-            // Prevent argument errors.
+        $generator = function () use ($func): Generator {
             $ref = new \ReflectionCallable($func);
-            $fun = $ref->getParametersCount() > 1
-                 ? static fn($value, $key) => $func($value, $key)
-                 : static fn($value)       => $func($value);
+
+            // Prevent argument errors.
+            if ($ref->isInternal() || $ref->getParametersCount() === 1) {
+                $fun = static fn($value) => $func($value);
+            } else {
+                $fun = static fn($value, $key) => $func($value, $key);
+            }
 
             foreach ($this->generate() as $key => $value) {
                 yield $key => $fun($value, $key);
@@ -110,11 +116,14 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
      */
     public function each(callable $func): void
     {
-        // Prevent argument errors.
         $ref = new \ReflectionCallable($func);
-        $fun = $ref->getParametersCount() > 1
-             ? static fn($value, $key) => $func($value, $key)
-             : static fn($value)       => $func($value);
+
+        // Prevent argument errors.
+        if ($ref->isInternal() || $ref->getParametersCount() === 1) {
+            $fun = static fn($value) => $func($value);
+        } else {
+            $fun = static fn($value, $key) => $func($value, $key);
+        }
 
         foreach ($this->generate() as $key => $value) {
             $fun($value, $key);
