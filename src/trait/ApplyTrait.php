@@ -38,7 +38,7 @@ trait ApplyTrait
         $this->data = Arrays::apply($this->data, $func, $recursive);
 
         // For some internal data changes.
-        $this->call('onDataChange', __function__);
+        $this->call('onDataChange', __FUNCTION__);
 
         return $this;
     }

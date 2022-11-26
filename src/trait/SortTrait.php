@@ -39,7 +39,7 @@ trait SortTrait
         $this->data = Arrays::sort($this->data, $func, $flags, $assoc);
 
         // For some internal data changes.
-        $this->call('onDataChange', __function__);
+        $this->call('onDataChange', __FUNCTION__);
 
         return $this;
     }
@@ -60,7 +60,7 @@ trait SortTrait
         $this->data = Arrays::sortKey($this->data, $func, $flags);
 
         // For some internal data changes.
-        $this->call('onDataChange', __function__);
+        $this->call('onDataChange', __FUNCTION__);
 
         return $this;
     }
@@ -81,7 +81,7 @@ trait SortTrait
         $this->data = Arrays::sortLocale($this->data, $locale, $assoc);
 
         // For some internal data changes.
-        $this->call('onDataChange', __function__);
+        $this->call('onDataChange', __FUNCTION__);
 
         return $this;
     }
@@ -101,7 +101,7 @@ trait SortTrait
         $this->data = Arrays::sortNatural($this->data, $icase);
 
         // For some internal data changes.
-        $this->call('onDataChange', __function__);
+        $this->call('onDataChange', __FUNCTION__);
 
         return $this;
     }

@@ -40,7 +40,7 @@ trait FilterTrait
         $this->data = Arrays::filter($this->data, $func, $recursive, $useKeys, $keepKeys);
 
         // For some internal data changes.
-        $this->call('onDataChange', __function__);
+        $this->call('onDataChange', __FUNCTION__);
 
         return $this;
     }
@@ -61,7 +61,7 @@ trait FilterTrait
         $this->data = Arrays::filterKeys($this->data, $func, $recursive);
 
         // For some internal data changes.
-        $this->call('onDataChange', __function__);
+        $this->call('onDataChange', __FUNCTION__);
 
         return $this;
     }
