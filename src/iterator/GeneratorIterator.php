@@ -55,7 +55,7 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
         }
 
         $ref->isGenerator() || throw new GeneratorIteratorException(
-            'Invalid $generator argument, given generator must execute `yield` stuff'
+            'Invalid $generator argument, given generator must execute "yield" stuff'
         );
 
         // Wrap in a static function.

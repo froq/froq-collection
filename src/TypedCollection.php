@@ -39,7 +39,7 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
 
         if (!$this->dataType) {
             throw new CollectionException(
-                'Data type is required, it must be defined like `protected string $dataType = \'int\'` '.
+                'Data type is required, it must be defined like "protected string $dataType = \'int\'" '.
                 'or given at constructor calls as second argument'
             );
         }
