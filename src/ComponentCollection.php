@@ -193,7 +193,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
         }
 
         throw new CollectionException(
-            'Invalid component name `%s` [class: %s, valids: %a]',
+            'Invalid component name %q [class: %s, valids: %A]',
             [$name, static::class, self::$names]
         );
     }
