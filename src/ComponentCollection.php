@@ -22,24 +22,16 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
 {
     use AccessTrait, AccessMagicTrait, GetTrait;
 
-    /** @var array */
-    private static array $names = [];
-
-    /** @var bool */
-    private static bool $throw;
-
     /**
      * Constructor.
      *
      * @param array     $names
-     * @param bool      $throw
      * @param bool|null $readOnly
      * @throws froq\collection\CollectionException
      */
-    public function __construct(array $names, bool $throw = true, bool $readOnly = null)
+    public function __construct(array $names, bool $readOnly = null)
     {
-        self::$names = $names ?: throw new CollectionException('No names given');
-        self::$throw = $throw;
+        $names ?: throw new CollectionException('No names given');
 
         parent::__construct(array_fill_keys($names, null), $readOnly);
     }
@@ -68,7 +60,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
         throw new CollectionException(
             'Invalid method call as %s(), [tip: %s class is a component collection '.
             'and only set/get prefixed methods can be called via __call() if not exist]',
-            [$method, static::class]
+            [$method, $this::class]
         );
     }
 
@@ -79,17 +71,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      */
     public final function names(): array
     {
-        return self::$names;
-    }
-
-    /**
-     * Get throw state.
-     *
-     * @return bool
-     */
-    public final function throw(): bool
-    {
-        return self::$throw;
+        return array_keys($this->data);
     }
 
     /**
@@ -179,22 +161,15 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Check for a valid component name.
      *
-     * @param  string $name
-     * @return void
      * @throws froq\collection\CollectionException
      */
     private function nameCheck(string $name): void
     {
-        if (!self::$throw) {
-            return;
+        if (!$this->hasName($name)) {
+            throw new CollectionException(
+                'Invalid component name %q for %s [valids: %A]',
+                [$name, $this::class, $this->names()]
+            );
         }
-        if (in_array($name, self::$names, true)) {
-            return;
-        }
-
-        throw new CollectionException(
-            'Invalid component name %q [class: %s, valids: %A]',
-            [$name, static::class, self::$names]
-        );
     }
 }
