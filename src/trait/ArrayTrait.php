@@ -141,23 +141,6 @@ trait ArrayTrait
     }
 
     /**
-     * @inheritDoc froq\common\interface\Yieldable
-     * @since 5.4
-     */
-    public function yield(bool $reverse = false): iterable
-    {
-        if (!$reverse) {
-            foreach ($this->data as $key => $value) {
-                yield $key => $value;
-            }
-        } else {
-            for (end($this->data); ($key = key($this->data)) !== null; prev($this->data)) {
-                yield $key => current($this->data);
-            }
-        }
-    }
-
-    /**
      * @inheritDoc JsonSerializable
      */
     public function jsonSerialize(): array
