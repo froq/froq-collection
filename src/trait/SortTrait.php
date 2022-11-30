@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection\trait;
 
 use froq\common\trait\CallTrait;
@@ -14,7 +12,7 @@ use froq\util\Arrays;
  * A trait, provides `sort()`, `sortKey()`, `sortLocale()` and `sortNatural()` methods.
  *
  * @package froq\collection\trait
- * @object  froq\collection\trait\SortTrait
+ * @class   froq\collection\trait\SortTrait
  * @author  Kerem Güneş
  * @since   5.4
  */

@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection\trait;
 
 /**
@@ -12,7 +10,7 @@ namespace froq\collection\trait;
  * and defining `set()`, `get() and `remove()` methods.
  *
  * @package froq\collection\trait
- * @object  froq\collection\trait\AccessTrait
+ * @class   froq\collection\trait\AccessTrait
  * @author  Kerem Güneş
  * @since   4.0, 5.4
  */
@@ -20,6 +18,17 @@ trait AccessTrait
 {
     /** @internal */
     private int|null $__indexer = null;
+
+    /** @internal */
+    private function __getMaxIndex(): int|null
+    {
+        if (isset($this->data)) {
+            $keys = array_keys($this->data);
+            $keys = array_filter($keys, 'is_int');
+            return max($keys ?: [0]);
+        }
+        return null;
+    }
 
     /** @inheritDoc ArrayAccess */
     public function offsetExists(mixed $key): bool
@@ -56,16 +65,5 @@ trait AccessTrait
     public function offsetUnset(mixed $key): void
     {
         $this->remove($key);
-    }
-
-    /** @internal */
-    private function __getMaxIndex(): int|null
-    {
-        if (isset($this->data)) {
-            $keys = array_keys($this->data);
-            $keys = array_filter($keys, 'is_int');
-            return max($keys ?: [0]);
-        }
-        return null;
     }
 }

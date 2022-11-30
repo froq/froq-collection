@@ -28,7 +28,7 @@ namespace froq\collection\trait;
  *  ```
  *
  * @package froq\collection\trait
- * @object  froq\collection\trait\IteratorTrait
+ * @class   froq\collection\trait\IteratorTrait
  * @author  Kerem Güneş
  * @since   5.10, 6.0
  */

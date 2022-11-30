@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection\trait;
 
 use froq\collection\iterator\{ArrayIterator, ReverseArrayIterator};
@@ -13,7 +11,7 @@ use froq\collection\iterator\{ArrayIterator, ReverseArrayIterator};
  * A trait, provides some basic methods for array-like classes.
  *
  * @package froq\collection\trait
- * @object  froq\collection\trait\ArrayTrait
+ * @class   froq\collection\trait\ArrayTrait
  * @author  Kerem Güneş
  * @since   4.0, 6.0
  */
