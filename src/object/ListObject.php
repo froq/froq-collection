@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection\object;
 
 use froq\collection\AbstractCollection;
@@ -14,7 +12,7 @@ use froq\collection\trait\{AccessTrait, GetTrait, HasTrait};
  * A simple list-object structure with some utility methods.
  *
  * @package froq\collection\object
- * @object  froq\collection\object\ListObject
+ * @class   froq\collection\object\ListObject
  * @author  Kerem Güneş
  * @since   5.27
  */
