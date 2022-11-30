@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection\iterator;
 
 use froq\collection\trait\{SortTrait, FilterTrait, MapTrait, ReduceTrait, EachTrait, CountTrait, EmptyTrait, HasTrait,
@@ -17,7 +15,7 @@ use froq\util\Util;
  * An abstract iterator class, extended by iterator classes.
  *
  * @package froq\collection\iterator
- * @object  froq\collection\iterator\AbstractIterator
+ * @class   froq\collection\iterator\AbstractIterator
  * @author  Kerem Güneş
  * @since   5.3, 6.0
  */
@@ -29,7 +27,7 @@ abstract class AbstractIterator implements IteratorInterface, Arrayable, Objecta
 
     use ReadOnlyTrait;
 
-    /** @var array */
+    /** Data. */
     protected array $data = [];
 
     /**

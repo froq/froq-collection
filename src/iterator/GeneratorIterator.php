@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection\iterator;
 
 use froq\common\interface\{Arrayable, Listable};
@@ -14,13 +12,13 @@ use Closure, Generator;
  * A generator iterator class which is countable & reusable.
  *
  * @package froq\collection\iterator
- * @object  froq\collection\iterator\GeneratorIterator
+ * @class   froq\collection\iterator\GeneratorIterator
  * @author  Kerem Güneş
  * @since   5.0, 5.3
  */
 class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAggregate
 {
-    /** @var Closure */
+    /** Generator wrap. */
     private Closure $generator;
 
     /**

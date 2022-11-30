@@ -1,17 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection\iterator;
 
 /**
  * An iterator class, contains some utility methods.
  *
  * @package froq\collection\iterator
- * @object  froq\collection\iterator\Iterator
+ * @class   froq\collection\iterator\Iterator
  * @author  Kerem Güneş
  * @since   5.3
  */
@@ -59,13 +57,5 @@ class Iterator extends AbstractIterator
         $this->data[$key] = $value;
 
         return $this;
-    }
-
-    /**
-     * @inheritDoc JsonSerializable
-     */
-    public function jsonSerialize(): array
-    {
-        return $this->data;
     }
 }
