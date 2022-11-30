@@ -45,7 +45,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @throws froq\collection\CollectionException
      * @magic
      */
-    public final function __call(string $method, array $methodArgs = []): mixed
+    public function __call(string $method, array $methodArgs = []): mixed
     {
         // Eg: setFoo('bar') => set('foo', 'bar') or getFoo() => get('foo').
         if (str_starts_with($method, 'set')) {
@@ -69,7 +69,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      *
      * @return array
      */
-    public final function names(): array
+    public function names(): array
     {
         return array_keys($this->data);
     }
@@ -80,7 +80,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @param  string $name
      * @return bool
      */
-    public final function has(string $name): bool
+    public function has(string $name): bool
     {
         return isset($this->data[$name]);
     }
@@ -91,7 +91,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @param  string $name
      * @return bool
      */
-    public final function hasName(string $name): bool
+    public function hasName(string $name): bool
     {
         return array_key_exists($name, $this->data);
     }
@@ -103,7 +103,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @param  bool  $strict
      * @return bool
      */
-    public final function hasValue(mixed $value, bool $strict = true): bool
+    public function hasValue(mixed $value, bool $strict = true): bool
     {
         return array_value_exists($value, $this->data, $strict);
     }
@@ -117,7 +117,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @causes froq\collection\CollectionException
      * @causes froq\common\exception\ReadOnlyException
      */
-    public final function set(string $name, mixed $value): self
+    public function set(string $name, mixed $value): self
     {
         $this->readOnlyCheck();
         $this->nameCheck($name);
@@ -135,7 +135,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @return mixed|null
      * @causes froq\collection\CollectionException
      */
-    public final function get(string $name, mixed $default = null): mixed
+    public function get(string $name, mixed $default = null): mixed
     {
         $this->nameCheck($name);
 
@@ -150,7 +150,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @causes froq\collection\CollectionException
      * @causes froq\common\exception\ReadOnlyException
      */
-    public final function remove(string $name): void
+    public function remove(string $name): void
     {
         $this->readOnlyCheck();
         $this->nameCheck($name);

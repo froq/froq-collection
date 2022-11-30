@@ -37,7 +37,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function set(string $key, mixed $value): self
+    public function set(string $key, mixed $value): self
     {
         return $this->_set($key, $value);
     }
@@ -45,7 +45,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function get(string $key, mixed $default = null): mixed
+    public function get(string $key, mixed $default = null): mixed
     {
         return $this->_get($key, $default);
     }
@@ -53,7 +53,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function remove(string $key, mixed &$value = null): bool
+    public function remove(string $key, mixed &$value = null): bool
     {
         return $this->_remove($key, $value);
     }
@@ -61,7 +61,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function removeValue(mixed $value, string &$key = null): bool
+    public function removeValue(mixed $value, string &$key = null): bool
     {
         return $this->_removeValue($value, $key);
     }
@@ -69,7 +69,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function replace(string $key, mixed $value): bool
+    public function replace(string $key, mixed $value): bool
     {
         return $this->_replace($key, $value);
     }
@@ -77,7 +77,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function replaceValue(mixed $oldValue, mixed $newValue, string &$key = null): bool
+    public function replaceValue(mixed $oldValue, mixed $newValue, string &$key = null): bool
     {
         return $this->_replaceValue($oldValue, $newValue, $key);
     }
@@ -85,7 +85,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function has(string $key): bool
+    public function has(string $key): bool
     {
         return $this->_has($key);
     }
@@ -93,7 +93,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function hasKey(string $key): bool
+    public function hasKey(string $key): bool
     {
         return $this->_hasKey($key);
     }
@@ -101,7 +101,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function hasValue(mixed $value, string &$key = null): bool
+    public function hasValue(mixed $value, string &$key = null): bool
     {
         return $this->_hasValue($value, $key);
     }

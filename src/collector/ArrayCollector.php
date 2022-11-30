@@ -36,7 +36,7 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function add(mixed $value): self
+    public function add(mixed $value): self
     {
         return $this->_add($value);
     }
@@ -44,7 +44,7 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function set(int|string $key, mixed $value): self
+    public function set(int|string $key, mixed $value): self
     {
         return $this->_set($key, $value);
     }
@@ -52,7 +52,7 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function get(int|string $key, mixed $default = null): mixed
+    public function get(int|string $key, mixed $default = null): mixed
     {
         return $this->_get($key, $default);
     }
@@ -60,7 +60,7 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function remove(int|string $key, mixed &$value = null): bool
+    public function remove(int|string $key, mixed &$value = null): bool
     {
         return $this->_remove($key, $value);
     }
@@ -68,7 +68,7 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function removeValue(mixed $value, int|string &$key = null): bool
+    public function removeValue(mixed $value, int|string &$key = null): bool
     {
         return $this->_removeValue($value, $key);
     }
@@ -76,7 +76,7 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function replace(int|string $key, mixed $value): bool
+    public function replace(int|string $key, mixed $value): bool
     {
         return $this->_replace($key, $value);
     }
@@ -84,7 +84,7 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function replaceValue(mixed $oldValue, mixed $newValue, int|string &$key = null): bool
+    public function replaceValue(mixed $oldValue, mixed $newValue, int|string &$key = null): bool
     {
         return $this->_replaceValue($oldValue, $newValue, $key);
     }
@@ -92,7 +92,7 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function has(int|string $key): bool
+    public function has(int|string $key): bool
     {
         return $this->_has($key);
     }
@@ -100,7 +100,7 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function hasKey(int|string $key): bool
+    public function hasKey(int|string $key): bool
     {
         return $this->_hasKey($key);
     }
@@ -108,7 +108,7 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public final function hasValue(mixed $value, int|string &$key = null): bool
+    public function hasValue(mixed $value, int|string &$key = null): bool
     {
         return $this->_hasValue($value, $key);
     }

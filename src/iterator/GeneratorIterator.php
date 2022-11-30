@@ -46,7 +46,7 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
      * @return self
      * @throws froq\collection\iterator\GeneratorIteratorException
      */
-    public final function setGenerator(callable $generator): self
+    public function setGenerator(callable $generator): self
     {
         try {
             $ref = new \ReflectionCallable($generator);
@@ -70,7 +70,7 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
      * @return Closure
      * @throws froq\collection\iterator\GeneratorIteratorException
      */
-    public final function getGenerator(): Closure
+    public function getGenerator(): Closure
     {
         isset($this->generator) || throw new GeneratorIteratorException(
             'No generator was set yet, try after calling setGenerator() method'

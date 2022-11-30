@@ -33,7 +33,7 @@ class WeightedCollection extends AbstractCollection
      *
      * @return array|null
      */
-    public final function select(): array|null
+    public function select(): array|null
     {
         return $this->selectBy(null, null);
     }
@@ -45,7 +45,7 @@ class WeightedCollection extends AbstractCollection
      * @param  float|null $maxWeight
      * @return array|null
      */
-    public final function selectBy(float $minWeight = null, float $maxWeight = null): array|null
+    public function selectBy(float $minWeight = null, float $maxWeight = null): array|null
     {
         return $this->filterize(function ($item) use ($minWeight, $maxWeight) {
             // There is nothing to do without weight.

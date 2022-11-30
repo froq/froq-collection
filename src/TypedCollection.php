@@ -56,7 +56,7 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      *
      * @return string
      */
-    public final function dataType(): string
+    public function dataType(): string
     {
         return $this->dataType;
     }
@@ -69,7 +69,7 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\collection\CollectionException
      */
-    public final function add(mixed $value): self
+    public function add(mixed $value): self
     {
         $this->readOnlyCheck();
         $this->typeCheck($value);
@@ -88,7 +88,7 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      * @causes froq\common\exception\ReadOnlyException
      * @causes froq\collection\CollectionException
      */
-    public final function set(int|string $key, mixed $value): self
+    public function set(int|string $key, mixed $value): self
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
@@ -106,7 +106,7 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      * @param  mixed|null $default
      * @return mixed|null
      */
-    public final function get(int|string $key, mixed $default = null): mixed
+    public function get(int|string $key, mixed $default = null): mixed
     {
         return $this->data[$key] ?? $default;
     }
@@ -118,7 +118,7 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      * @return void
      * @causes froq\common\exception\ReadOnlyException
      */
-    public final function remove(int|string $key): void
+    public function remove(int|string $key): void
     {
         $this->readOnlyCheck();
         $this->keyCheck($key);
