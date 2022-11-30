@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection;
 
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
@@ -14,7 +12,7 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
  * given names only, also provides calls via `__call()` magic for given names.
  *
  * @package froq\collection
- * @object  froq\collection\ComponentCollection
+ * @class   froq\collection\ComponentCollection
  * @author  Kerem Güneş
  * @since   3.5
  */

@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection;
 
 use froq\collection\trait\{AccessTrait, GetTrait};
@@ -13,7 +11,7 @@ use froq\collection\trait\{AccessTrait, GetTrait};
  * A simple array class, accepts int keys only.
  *
  * @package froq\collection
- * @object  froq\collection\ItemCollection
+ * @class   froq\collection\ItemCollection
  * @author  Kerem Güneş
  * @since   4.0
  */

@@ -1,17 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection;
 
 /**
  * A weighted-array class, utilizes item selection operations by their weights.
  *
  * @package froq\collection
- * @object  froq\collection\WeightedCollection
+ * @class   froq\collection\WeightedCollection
  * @author  Kerem Güneş
  * @since   4.0
  */
@@ -76,8 +74,8 @@ class WeightedCollection extends AbstractCollection
         $items = array_filter($this->data, $calback);
         $count = count($items);
 
-        if ($count == 0) return null;
-        if ($count == 1) return $items[0];
+        if ($count === 0) return null;
+        if ($count === 1) return $items[0];
 
         $totalWeight = 0.0;
         foreach ($items as $item) {

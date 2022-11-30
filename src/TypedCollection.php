@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection;
 
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait, HasTrait};
@@ -13,7 +11,7 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait, HasTrait};
  * A typed-array class, accepts strict values only forced by `$dataType` property.
  *
  * @package froq\collection
- * @object  froq\collection\TypedCollection
+ * @class   froq\collection\TypedCollection
  * @author  Kerem Güneş
  * @since   4.0
  */
@@ -136,13 +134,13 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
     private function typeCheck(mixed $value): void
     {
         // Any type?
-        if ($this->dataType == 'any' || $this->dataType == 'mixed') {
+        if ($this->dataType === 'any' || $this->dataType === 'mixed') {
             return;
         }
 
         if (is_object($value)) {
             // All objects.
-            if ($this->dataType == 'object' || $value instanceof $this->dataType) {
+            if ($this->dataType === 'object' || $value instanceof $this->dataType) {
                 return;
             }
 
@@ -152,14 +150,14 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
             );
         }
 
-        if (($this->dataType == 'scalar' && is_scalar($value))
-            || ($this->dataType == 'number' && is_number($value))) {
+        if (($this->dataType === 'scalar' && is_scalar($value))
+            || ($this->dataType === 'number' && is_number($value))) {
             return;
         }
 
         $type = get_type($value);
 
-        if ($type != $this->dataType) {
+        if ($type !== $this->dataType) {
             $types = explode('|', $this->dataType);
 
             if (in_array($type, $types, true)) {

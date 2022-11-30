@@ -1,17 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection;
 
 /**
  * A collection class, utilies string splitting stuff.
  *
  * @package froq\collection
- * @object  froq\collection\SplitCollection
+ * @class   froq\collection\SplitCollection
  * @author  Kerem Güneş
  * @since   5.9, 6.0
  */
@@ -31,7 +29,7 @@ class SplitCollection extends Collection
         bool $readOnly = null, array $data = null)
     {
         // Internal call check.
-        if (func_num_args() != 6) {
+        if (func_num_args() !== 6) {
             $data = split($pattern, $string, $limit, $flags);
         }
 

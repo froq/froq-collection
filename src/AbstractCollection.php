@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection;
 
 use froq\collection\trait\ArrayTrait;
@@ -16,7 +14,7 @@ use froq\util\Util;
  * An abstract collection class, extended by collection classes.
  *
  * @package froq\collection
- * @object  froq\collection\AbstractCollection
+ * @class   froq\collection\AbstractCollection
  * @author  Kerem Güneş
  * @since   4.0, 6.0
  */
@@ -25,7 +23,7 @@ abstract class AbstractCollection implements CollectionInterface, Arrayable, Obj
 {
     use ArrayTrait, ReadOnlyTrait;
 
-    /** @var array */
+    /** Data. */
     protected array $data = [];
 
     /**
