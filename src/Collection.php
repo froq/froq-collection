@@ -594,7 +594,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function searchLastKey(mixed $value, bool $strict = true): int|string|null
     {
-        return array_search_key($this->data, $value, $strict, true);
+        return array_search_key($this->data, $value, $strict, last: true);
     }
 
     /**
