@@ -19,7 +19,7 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
 {
     use AccessTrait, AccessMagicTrait, GetTrait, HasTrait;
 
-    /** @var string */
+    /** Data type. */
     protected string $dataType;
 
     /**
