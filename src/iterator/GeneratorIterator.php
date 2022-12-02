@@ -52,9 +52,9 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
             throw new GeneratorIteratorException($e);
         }
 
-        $ref->isGenerator() || throw new GeneratorIteratorException(
-            'Invalid $generator argument, given generator must execute "yield" stuff'
-        );
+        if (!$ref->isGenerator()) {
+            throw GeneratorIteratorException::forInvalidGeneratorArgument();
+        }
 
         // Wrap in a static function.
         $this->generator = static fn(): Closure => $generator;
@@ -70,9 +70,9 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
      */
     public function getGenerator(): Closure
     {
-        isset($this->generator) || throw new GeneratorIteratorException(
-            'No generator was set yet, try after calling setGenerator() method'
-        );
+        if (!isset($this->generator)) {
+            throw GeneratorIteratorException::forUninitializedGeneratorProperty();
+        }
 
         return $this->generator;
     }
