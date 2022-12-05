@@ -6,7 +6,7 @@
 namespace froq\collection\iterator;
 
 /**
- * A reverse-array iterator class that contains some utility methods (by its parent).
+ * An extended reverse `ArrayIterator` class.
  *
  * @package froq\collection\iterator
  * @class   froq\collection\iterator\ReverseArrayIterator
@@ -16,14 +16,12 @@ namespace froq\collection\iterator;
 class ReverseArrayIterator extends ArrayIterator
 {
     /**
-     * Constructor.
-     *
-     * @param array     $data
-     * @param bool|null $readOnly
-     * @param bool      $keepKeys
+     * @override
      */
-    public function __construct(array $data, bool $readOnly = null, bool $keepKeys = false)
+    public function __construct(iterable $data = [], bool $keepKeys = false)
     {
-        parent::__construct(array_reverse($data, $keepKeys), $readOnly);
+        parent::__construct($data);
+
+        $this->reverse($keepKeys);
     }
 }

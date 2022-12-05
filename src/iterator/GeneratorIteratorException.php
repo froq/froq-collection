@@ -11,7 +11,7 @@ namespace froq\collection\iterator;
  * @author  Kerem Güneş
  * @since   5.7
  */
-class GeneratorIteratorException extends IteratorException
+class GeneratorIteratorException extends \froq\collection\CollectionException
 {
     public static function forInvalidGeneratorArgument(): static
     {
