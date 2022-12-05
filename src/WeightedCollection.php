@@ -18,10 +18,10 @@ class WeightedCollection extends AbstractCollection
     /**
      * Constructor.
      *
-     * @param array|null $data
-     * @param bool|null  $readOnly
+     * @param iterable  $data
+     * @param bool|null $readOnly
      */
-    public function __construct(array $data = null, bool $readOnly = null)
+    public function __construct(iterable $data = [], bool $readOnly = null)
     {
         parent::__construct($data, $readOnly);
     }

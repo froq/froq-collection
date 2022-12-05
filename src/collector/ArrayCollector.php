@@ -23,10 +23,10 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * Constructor.
      *
-     * @param array|null $data
-     * @param bool|null  $readOnly
+     * @param array     $data
+     * @param bool|null $readOnly
      */
-    public function __construct(array $data = null, bool $readOnly = null)
+    public function __construct(array $data = [], bool $readOnly = null)
     {
         parent::__construct($data, $readOnly);
     }

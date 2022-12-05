@@ -29,10 +29,10 @@ abstract class AbstractCollection implements CollectionInterface, Arrayable, Obj
     /**
      * Constructor.
      *
-     * @param iterable|null $data
-     * @param bool|null     $readOnly
+     * @param iterable  $data
+     * @param bool|null $readOnly
      */
-    public function __construct(iterable $data = null, bool $readOnly = null)
+    public function __construct(iterable $data = [], bool $readOnly = null)
     {
         if ($data) {
             if (is_iterator($data)) {

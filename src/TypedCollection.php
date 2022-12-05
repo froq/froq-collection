@@ -25,12 +25,12 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Constructor.
      *
-     * @param  array|null   $data
+     * @param  iterable    $data
      * @param  string|null $dataType
      * @param  bool|null   $readOnly
      * @throws froq\collection\CollectionException
      */
-    public function __construct(array $data = null, string $dataType = null, bool $readOnly = null)
+    public function __construct(iterable $data = [], string $dataType = null, bool $readOnly = null)
     {
         // Data type might be defined in extender class.
         $this->dataType = $dataType ?? $this->dataType ?? '';
