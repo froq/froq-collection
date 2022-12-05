@@ -59,7 +59,7 @@ class ListCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\CollectorTrait
      */
-    public function get(int $key, mixed $default = null): mixed
+    public function &get(int $key, mixed $default = null): mixed
     {
         return $this->_get($key, $default);
     }

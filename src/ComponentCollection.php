@@ -133,11 +133,13 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @return mixed|null
      * @causes froq\collection\CollectionException
      */
-    public function get(string $name, mixed $default = null): mixed
+    public function &get(string $name, mixed $default = null): mixed
     {
         $this->nameCheck($name);
 
-        return $this->data[$name] ?? $default;
+        $value =& $this->data[$name] ?? $default;
+
+        return $value;
     }
 
     /**

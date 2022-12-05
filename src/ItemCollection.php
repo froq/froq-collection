@@ -134,9 +134,11 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
      * @param  mixed|null $default
      * @return mixed|null
      */
-    public function get(int $index, mixed $default = null): mixed
+    public function &get(int $index, mixed $default = null): mixed
     {
-        return $this->data[$index] ?? $default;
+        $value =& $this->data[$index] ?? $default;
+
+        return $value;
     }
 
     /**

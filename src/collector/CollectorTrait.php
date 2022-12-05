@@ -56,9 +56,11 @@ trait CollectorTrait
      * @param  mixed|null $default
      * @return mixed|null
      */
-    protected function _get(int|string $key, mixed $default = null): mixed
+    protected function &_get(int|string $key, mixed $default = null): mixed
     {
-        return $this->data[$key] ?? $default;
+        $value =& $this->data[$key] ?? $default;
+
+        return $value;
     }
 
     /**
