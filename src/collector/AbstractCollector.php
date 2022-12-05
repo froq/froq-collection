@@ -18,8 +18,8 @@ use froq\util\Util;
  * @author  Kerem Güneş
  * @since   5.17, 6.0
  */
-abstract class AbstractCollector implements CollectorInterface, Arrayable, Objectable, Listable, Jsonable,
-    Iteratable, IteratableReverse, \Iterator, \Countable, \JsonSerializable
+abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jsonable, Iteratable, IteratableReverse,
+    \Iterator, \Countable, \JsonSerializable
 {
     use CollectorTrait, ArrayTrait, ReadOnlyTrait;
 
