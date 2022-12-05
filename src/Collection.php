@@ -40,7 +40,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
     public function set(int|string|array $key, mixed $value = null): self
     {
         $this->readOnlyCheck();
-        $this->keyCheck($key);
 
         array_set($this->data, $key, $value);
 

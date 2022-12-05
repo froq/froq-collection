@@ -89,7 +89,6 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
     public function set(int|string $key, mixed $value): self
     {
         $this->readOnlyCheck();
-        $this->keyCheck($key);
         $this->typeCheck($value);
 
         $this->data[$key] = $value;
@@ -119,7 +118,6 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
     public function remove(int|string $key): void
     {
         $this->readOnlyCheck();
-        $this->keyCheck($key);
 
         unset($this->data[$key]);
     }

@@ -117,12 +117,10 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
      * @param  mixed $item
      * @return self
      * @causes froq\common\exception\ReadOnlyException
-     * @causes froq\common\exception\InvalidIndexException
      */
     public function set(int $index, mixed $item): self
     {
         $this->readOnlyCheck();
-        $this->keyCheck($index);
 
         $this->data[$index] = $item;
 
@@ -135,12 +133,9 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
      * @param  int        $index
      * @param  mixed|null $default
      * @return mixed|null
-     * @causes froq\common\exception\InvalidIndexException
      */
     public function get(int $index, mixed $default = null): mixed
     {
-        $this->keyCheck($index);
-
         return $this->data[$index] ?? $default;
     }
 
@@ -151,12 +146,10 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
      * @param  mixed|null &$item
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
-     * @causes froq\common\exception\InvalidIndexException
      */
     public function remove(int $index, mixed &$item = null): bool
     {
         $this->readOnlyCheck();
-        $this->keyCheck($index);
 
         if (array_key_exists($index, $this->data)) {
             $item = $this->data[$index];

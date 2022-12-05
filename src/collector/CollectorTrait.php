@@ -39,12 +39,10 @@ trait CollectorTrait
      * @param  mixed      $value
      * @return self
      * @causes froq\common\exception\ReadOnlyException
-     * @causes froq\common\exception\InvalidKeyException
      */
     protected function _set(int|string $key, mixed $value): self
     {
         $this->readOnlyCheck();
-        $this->keyCheck($key);
 
         $this->data[$key] = $value;
 
@@ -57,12 +55,9 @@ trait CollectorTrait
      * @param  int|string $key
      * @param  mixed|null $default
      * @return mixed|null
-     * @causes froq\common\exception\InvalidKeyException
      */
     protected function _get(int|string $key, mixed $default = null): mixed
     {
-        $this->keyCheck($key);
-
         return $this->data[$key] ?? $default;
     }
 
@@ -74,12 +69,10 @@ trait CollectorTrait
      * @param  bool        $reset
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
-     * @causes froq\common\exception\InvalidKeyException
      */
     protected function _remove(int|string $key, mixed &$value = null, bool $reset = false): bool
     {
         $this->readOnlyCheck();
-        $this->keyCheck($key);
 
         if (array_key_exists($key, $this->data)) {
             $value = $this->data[$key];
@@ -127,12 +120,10 @@ trait CollectorTrait
      * @return bool
      * @since  5.17
      * @causes froq\common\exception\ReadOnlyException
-     * @causes froq\common\exception\InvalidKeyException
      */
     protected function _replace(int|string $key, mixed $value): bool
     {
         $this->readOnlyCheck();
-        $this->keyCheck($key);
 
         if (array_key_exists($key, $this->data)) {
             $this->data[$key] = $value;
