@@ -165,10 +165,10 @@ trait ArrayTrait
     /**
      * Static constructor.
      *
-     * @param  iterable|null $data
+     * @param  iterable $data
      * @return static
      */
-    public static function from(iterable|null $data): static
+    public static function from(iterable $data): static
     {
         return new static($data);
     }

@@ -11,7 +11,7 @@ use froq\common\trait\ReadOnlyTrait;
 use froq\util\Util;
 
 /**
- * An abstract collection class, extended by collection classes.
+ * Abstract collection class.
  *
  * @package froq\collection
  * @class   froq\collection\AbstractCollection
