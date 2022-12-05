@@ -33,7 +33,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
     public function set(string $key, mixed $value): self
     {
@@ -41,7 +41,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
     public function &get(string $key, mixed $default = null): mixed
     {
@@ -49,7 +49,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
     public function remove(string $key, mixed &$value = null): bool
     {
@@ -57,7 +57,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
     public function removeValue(mixed $value, string &$key = null): bool
     {
@@ -65,7 +65,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
     public function replace(string $key, mixed $value): bool
     {
@@ -73,7 +73,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
     public function replaceValue(mixed $oldValue, mixed $newValue, string &$key = null): bool
     {
@@ -81,7 +81,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
     public function has(string $key): bool
     {
@@ -89,7 +89,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
     public function hasKey(string $key): bool
     {
@@ -97,7 +97,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
     public function hasValue(mixed $value, string &$key = null): bool
     {
