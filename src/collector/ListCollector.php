@@ -23,13 +23,12 @@ class ListCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @override
      */
-    public function __construct(array $data = [])
+    public function __construct(iterable $data = [])
     {
-        if ($data) {
-            $data = array_list($data);
-        }
-
         parent::__construct($data);
+
+        // Make list.
+        $data && $this->data = array_list($this->data);
     }
 
     /**

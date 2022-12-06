@@ -21,14 +21,6 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     use AccessTrait, AccessMagicTrait, GetTrait;
 
     /**
-     * @override
-     */
-    public function __construct(array $data = [])
-    {
-        parent::__construct($data);
-    }
-
-    /**
      * @inheritDoc froq\collection\collector\AbstractCollector
      */
     public function add(mixed $value): self
