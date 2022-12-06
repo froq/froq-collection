@@ -64,17 +64,17 @@ class ListCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public function remove(int $key, mixed &$value = null, bool $reset = true): bool
+    public function remove(int $key, bool $reset = true): bool
     {
-        return $this->_remove($key, $value, $reset);
+        return $this->_remove($key, $reset);
     }
 
     /**
      * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public function removeValue(mixed $value, int &$key = null, bool $reset = true): bool
+    public function removeValue(mixed $value, bool $reset = true): bool
     {
-        return $this->_removeValue($value, $key, $reset);
+        return $this->_removeValue($value, $reset);
     }
 
     /**
@@ -88,9 +88,9 @@ class ListCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public function replaceValue(mixed $oldValue, mixed $newValue, int &$key = null): bool
+    public function replaceValue(mixed $oldValue, mixed $newValue): bool
     {
-        return $this->_replaceValue($oldValue, $newValue, $key);
+        return $this->_replaceValue($oldValue, $newValue);
     }
 
     /**

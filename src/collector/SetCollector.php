@@ -74,17 +74,17 @@ class SetCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public function remove(int $key, mixed &$value = null): bool
+    public function remove(int $key): bool
     {
-        return $this->_remove($key, $value, true);
+        return $this->_remove($key, true);
     }
 
     /**
      * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public function removeValue(mixed $value, int &$key = null): bool
+    public function removeValue(mixed $value): bool
     {
-        return $this->_removeValue($value, $key, true);
+        return $this->_removeValue($value, true);
     }
 
     /**
@@ -98,9 +98,9 @@ class SetCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public function replaceValue(mixed $oldValue, mixed $newValue, int &$key = null): bool
+    public function replaceValue(mixed $oldValue, mixed $newValue): bool
     {
-        return $this->_replaceValue($oldValue, $newValue, $key);
+        return $this->_replaceValue($oldValue, $newValue);
     }
 
     /**

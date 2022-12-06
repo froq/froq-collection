@@ -95,20 +95,18 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
     }
 
     /**
-     * Remove a value from data array by given key & fill ref if success.
+     * Remove a value from data array by given key.
      *
-     * @param  int|string  $key
-     * @param  mixed|null &$value
-     * @param  bool        $reset
+     * @param  int|string $key
+     * @param  bool       $reset
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
      */
-    protected function _remove(int|string $key, mixed &$value = null, bool $reset = false): bool
+    protected function _remove(int|string $key, bool $reset = false): bool
     {
         $this->readOnlyCheck();
 
         if (array_key_exists($key, $this->data)) {
-            $value = $this->data[$key];
             unset($this->data[$key]);
 
             // Re-index.
@@ -123,13 +121,12 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
     /**
      * Remove a value from data array.
      *
-     * @param  mixed            $value
-     * @param  int|string|null &$key
-     * @param  bool             $reset
+     * @param  mixed $value
+     * @param  bool  $reset
      * @return bool
      * @causes froq\common\exception\ReadOnlyException
      */
-    protected function _removeValue(mixed $value, int|string &$key = null, bool $reset = false): bool
+    protected function _removeValue(mixed $value, bool $reset = false): bool
     {
         $this->readOnlyCheck();
 
@@ -151,7 +148,6 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
      * @param  int|string $key
      * @param  mixed      $value
      * @return bool
-     * @since  5.17
      * @causes froq\common\exception\ReadOnlyException
      */
     protected function _replace(int|string $key, mixed $value): bool
@@ -170,14 +166,12 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
     /**
      * Replace a value with given new value if value exists.
      *
-     * @param  mixed            $oldValue
-     * @param  mixed            $newValue
-     * @param  int|string|null &$key
+     * @param  mixed $oldValue
+     * @param  mixed $newValue
      * @return bool
-     * @since  5.17
      * @causes froq\common\exception\ReadOnlyException
      */
-    protected function _replaceValue(mixed $oldValue, mixed $newValue, int|string &$key = null): bool
+    protected function _replaceValue(mixed $oldValue, mixed $newValue): bool
     {
         $this->readOnlyCheck();
 

@@ -55,17 +55,17 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public function remove(int|string $key, mixed &$value = null): bool
+    public function remove(int|string $key): bool
     {
-        return $this->_remove($key, $value);
+        return $this->_remove($key);
     }
 
     /**
      * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public function removeValue(mixed $value, int|string &$key = null): bool
+    public function removeValue(mixed $value): bool
     {
-        return $this->_removeValue($value, $key);
+        return $this->_removeValue($value);
     }
 
     /**
@@ -79,9 +79,9 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public function replaceValue(mixed $oldValue, mixed $newValue, int|string &$key = null): bool
+    public function replaceValue(mixed $oldValue, mixed $newValue): bool
     {
-        return $this->_replaceValue($oldValue, $newValue, $key);
+        return $this->_replaceValue($oldValue, $newValue);
     }
 
     /**
