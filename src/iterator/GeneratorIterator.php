@@ -24,7 +24,8 @@ class GeneratorIterator implements Arrayable, Listable, \Countable, \IteratorAgg
     /**
      * Constructor.
      *
-     * @param callable|iterable|null $generator
+     * @param  callable|iterable|null $generator
+     * @causes froq\collection\iterator\GeneratorIteratorException
      */
     public function __construct(callable|iterable $generator = null)
     {
