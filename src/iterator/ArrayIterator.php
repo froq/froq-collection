@@ -19,9 +19,7 @@ use froq\util\Util;
 class ArrayIterator extends \ArrayIterator implements Arrayable, Listable, \JsonSerializable
 {
     /**
-     * Constructor.
-     *
-     * @param iterable $data
+     * @override
      */
     public function __construct(iterable $data = [])
     {

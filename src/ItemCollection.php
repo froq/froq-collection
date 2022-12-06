@@ -20,10 +20,7 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
     use AccessTrait, GetTrait;
 
     /**
-     * Constructor.
-     *
-     * @param iterable  $data
-     * @param bool|null $readOnly
+     * @override
      */
     public function __construct(iterable $data = [], bool $readOnly = null)
     {

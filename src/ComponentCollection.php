@@ -21,11 +21,8 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
     use AccessTrait, AccessMagicTrait, GetTrait;
 
     /**
-     * Constructor.
-     *
-     * @param array     $names
-     * @param bool|null $readOnly
      * @throws froq\collection\CollectionException
+     * @override
      */
     public function __construct(array $names, bool $readOnly = null)
     {
