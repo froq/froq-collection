@@ -40,12 +40,13 @@ trait HasTrait
     /**
      * Check whether given value exists in data array.
      *
-     * @param  mixed $value
-     * @param  bool  $strict
+     * @param  mixed       $value
+     * @param  bool        $strict
+     * @param  int|string &$key
      * @return bool
      */
-    public function hasValue(mixed $value, bool $strict = true): bool
+    public function hasValue(mixed $value, bool $strict = true, int|string &$key = null): bool
     {
-        return array_value_exists($value, $this->data, $strict);
+        return array_value_exists($value, $this->data, $strict, $key);
     }
 }
