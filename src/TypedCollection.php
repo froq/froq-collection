@@ -26,7 +26,7 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      * @throws froq\collection\CollectionException
      * @override
      */
-    public function __construct(iterable $data = [], string $dataType = null, bool $readOnly = null)
+    public function __construct(iterable $data = [], string $dataType = null)
     {
         // Data type might be defined in extender class.
         $this->dataType = $dataType ?? $this->dataType ?? '';
@@ -42,7 +42,7 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
             $this->typeCheck($value);
         }
 
-        parent::__construct($data, $readOnly);
+        parent::__construct($data);
     }
 
     /**
@@ -60,12 +60,10 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      *
      * @param  mixed $value
      * @return self
-     * @causes froq\common\exception\ReadOnlyException
      * @causes froq\collection\CollectionException
      */
     public function add(mixed $value): self
     {
-        $this->readOnlyCheck();
         $this->typeCheck($value);
 
         $this->data[] = $value;
@@ -79,12 +77,10 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      * @param  int|string $key
      * @param  mixed      $value
      * @return self
-     * @causes froq\common\exception\ReadOnlyException
      * @causes froq\collection\CollectionException
      */
     public function set(int|string $key, mixed $value): self
     {
-        $this->readOnlyCheck();
         $this->typeCheck($value);
 
         $this->data[$key] = $value;
@@ -111,12 +107,9 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      *
      * @param  int|string $key
      * @return void
-     * @causes froq\common\exception\ReadOnlyException
      */
     public function remove(int|string $key): void
     {
-        $this->readOnlyCheck();
-
         unset($this->data[$key]);
     }
 

@@ -7,7 +7,6 @@ namespace froq\collection;
 
 use froq\collection\trait\ArrayTrait;
 use froq\common\interface\{Arrayable, Objectable, Listable, Jsonable, Iteratable, IteratableReverse};
-use froq\common\trait\ReadOnlyTrait;
 use froq\util\Util;
 
 /**
@@ -21,7 +20,7 @@ use froq\util\Util;
 abstract class AbstractCollection implements Arrayable, Objectable, Listable, Jsonable, Iteratable, IteratableReverse,
     \Iterator, \Countable, \JsonSerializable
 {
-    use ArrayTrait, ReadOnlyTrait;
+    use ArrayTrait;
 
     /** Data. */
     protected array $data = [];
@@ -29,10 +28,9 @@ abstract class AbstractCollection implements Arrayable, Objectable, Listable, Js
     /**
      * Constructor.
      *
-     * @param iterable  $data
-     * @param bool|null $readOnly
+     * @param iterable $data
      */
-    public function __construct(iterable $data = [], bool $readOnly = null)
+    public function __construct(iterable $data = [])
     {
         if ($data) {
             if (is_iterator($data)) {
@@ -43,7 +41,5 @@ abstract class AbstractCollection implements Arrayable, Objectable, Listable, Js
                 $this->data[$key] = $value;
             }
         }
-
-        $this->readOnly($readOnly);
     }
 }

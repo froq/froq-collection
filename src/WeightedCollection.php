@@ -16,14 +16,6 @@ namespace froq\collection;
 class WeightedCollection extends AbstractCollection
 {
     /**
-     * @override
-     */
-    public function __construct(iterable $data = [], bool $readOnly = null)
-    {
-        parent::__construct($data, $readOnly);
-    }
-
-    /**
      * Select items by default.
      *
      * @return array|null

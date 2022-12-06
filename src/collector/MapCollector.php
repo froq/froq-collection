@@ -24,9 +24,9 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @override
      */
-    public function __construct(iterable|Map $data = [], bool $readOnly = null)
+    public function __construct(iterable|Map $data = [])
     {
-        parent::__construct($data, $readOnly);
+        parent::__construct($data);
     }
 
     /**

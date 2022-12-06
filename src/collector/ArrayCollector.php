@@ -23,9 +23,9 @@ class ArrayCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @override
      */
-    public function __construct(array $data = [], bool $readOnly = null)
+    public function __construct(array $data = [])
     {
-        parent::__construct($data, $readOnly);
+        parent::__construct($data);
     }
 
     /**

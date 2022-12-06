@@ -26,13 +26,9 @@ trait ApplyTrait
      * @param  callable $func
      * @param  bool     $recursive
      * @return self
-     * @causes froq\common\exception\ReadOnlyException
      */
     public function apply(callable $func, bool $recursive = false): self
     {
-        // For read-only check.
-        $this->call('readOnlyCheck');
-
         $this->data = Arrays::apply($this->data, $func, $recursive);
 
         // For some internal data changes.

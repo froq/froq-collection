@@ -7,7 +7,6 @@ namespace froq\collection\collector;
 
 use froq\collection\trait\ArrayTrait;
 use froq\common\interface\{Arrayable, Objectable, Listable, Jsonable, Iteratable, IteratableReverse};
-use froq\common\trait\ReadOnlyTrait;
 use froq\util\Util;
 
 /**
@@ -21,7 +20,7 @@ use froq\util\Util;
 abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jsonable, Iteratable, IteratableReverse,
     \Iterator, \Countable, \JsonSerializable
 {
-    use ArrayTrait, ReadOnlyTrait;
+    use ArrayTrait;
 
     /** Data. */
     protected array $data = [];
@@ -29,10 +28,9 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
     /**
      * Constructor.
      *
-     * @param iterable  $data
-     * @param bool|null $readOnly
+     * @param iterable $data
      */
-    public function __construct(iterable $data = [], bool $readOnly = null)
+    public function __construct(iterable $data = [])
     {
         if ($data) {
             if (is_iterator($data)) {
@@ -43,8 +41,6 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
                 $this->data[$key] = $value;
             }
         }
-
-        $this->readOnly($readOnly);
     }
 
     /**
@@ -52,12 +48,9 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
      *
      * @param  mixed $value
      * @return self
-     * @causes froq\common\exception\ReadOnlyException
      */
     protected function _add(mixed $value): self
     {
-        $this->readOnlyCheck();
-
         $this->data[] = $value;
 
         return $this;
@@ -69,12 +62,9 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
      * @param  int|string $key
      * @param  mixed      $value
      * @return self
-     * @causes froq\common\exception\ReadOnlyException
      */
     protected function _set(int|string $key, mixed $value): self
     {
-        $this->readOnlyCheck();
-
         $this->data[$key] = $value;
 
         return $this;
@@ -100,12 +90,9 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
      * @param  int|string $key
      * @param  bool       $reset
      * @return bool
-     * @causes froq\common\exception\ReadOnlyException
      */
     protected function _remove(int|string $key, bool $reset = false): bool
     {
-        $this->readOnlyCheck();
-
         if (array_key_exists($key, $this->data)) {
             unset($this->data[$key]);
 
@@ -124,12 +111,9 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
      * @param  mixed $value
      * @param  bool  $reset
      * @return bool
-     * @causes froq\common\exception\ReadOnlyException
      */
     protected function _removeValue(mixed $value, bool $reset = false): bool
     {
-        $this->readOnlyCheck();
-
         if (array_value_exists($value, $this->data, key: $key)) {
             unset($this->data[$key]);
 
@@ -148,12 +132,9 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
      * @param  int|string $key
      * @param  mixed      $value
      * @return bool
-     * @causes froq\common\exception\ReadOnlyException
      */
     protected function _replace(int|string $key, mixed $value): bool
     {
-        $this->readOnlyCheck();
-
         if (array_key_exists($key, $this->data)) {
             $this->data[$key] = $value;
 
@@ -169,12 +150,9 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
      * @param  mixed $oldValue
      * @param  mixed $newValue
      * @return bool
-     * @causes froq\common\exception\ReadOnlyException
      */
     protected function _replaceValue(mixed $oldValue, mixed $newValue): bool
     {
-        $this->readOnlyCheck();
-
         if (array_value_exists($oldValue, $this->data, key: $key)) {
             $this->data[$key] = $newValue;
 

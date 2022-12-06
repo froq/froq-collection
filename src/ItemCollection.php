@@ -20,14 +20,6 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
     use AccessTrait, GetTrait;
 
     /**
-     * @override
-     */
-    public function __construct(iterable $data = [], bool $readOnly = null)
-    {
-        parent::__construct($data, $readOnly);
-    }
-
-    /**
      * Get an item by given index.
      *
      * @param  int $index
@@ -96,12 +88,9 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
      *
      * @param  mixed $item
      * @return self
-     * @causes froq\common\exception\ReadOnlyException
      */
     public function add(mixed $item): self
     {
-        $this->readOnlyCheck();
-
         $this->data[] = $item;
 
         return $this;
@@ -113,12 +102,9 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
      * @param  int   $index
      * @param  mixed $item
      * @return self
-     * @causes froq\common\exception\ReadOnlyException
      */
     public function set(int $index, mixed $item): self
     {
-        $this->readOnlyCheck();
-
         $this->data[$index] = $item;
 
         return $this;
@@ -141,17 +127,12 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Remove an item by given index from data array by given index.
      *
-     * @param  int         $index
-     * @param  mixed|null &$item
+     * @param  int $index
      * @return bool
-     * @causes froq\common\exception\ReadOnlyException
      */
-    public function remove(int $index, mixed &$item = null): bool
+    public function remove(int $index): bool
     {
-        $this->readOnlyCheck();
-
         if (array_key_exists($index, $this->data)) {
-            $item = $this->data[$index];
             unset($this->data[$index]);
 
             return true;
@@ -166,12 +147,9 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
      * @param  mixed $oldItem
      * @param  mixed $newItem
      * @return bool
-     * @causes froq\common\exception\ReadOnlyException
      */
     public function replace(mixed $oldItem, mixed $newItem): bool
     {
-        $this->readOnlyCheck();
-
         if (array_value_exists($oldItem, $this->data, key: $index)) {
             $this->data[$index] = $newItem;
 

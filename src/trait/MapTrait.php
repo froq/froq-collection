@@ -27,13 +27,9 @@ trait MapTrait
      * @param  bool                  $recursive
      * @param  bool                  $keepKeys
      * @return self
-     * @causes froq\common\exception\ReadOnlyException
      */
     public function map(callable|string|array $func, bool $recursive = false, bool $useKeys = false, bool $keepKeys = true): self
     {
-        // For read-only check.
-        $this->call('readOnlyCheck');
-
         $this->data = Arrays::map($this->data, $func, $recursive, $useKeys, $keepKeys);
 
         // For some internal data changes.
@@ -48,13 +44,9 @@ trait MapTrait
      * @param  callable|string|array $func
      * @param  bool                  $recursive
      * @return self
-     * @causes froq\common\exception\ReadOnlyException
      */
     public function mapKeys(callable|string|array $func, bool $recursive = false): self
     {
-        // For read-only check.
-        $this->call('readOnlyCheck');
-
         $this->data = Arrays::mapKeys($this->data, $func, $recursive);
 
         // For some internal data changes.

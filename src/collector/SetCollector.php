@@ -24,14 +24,14 @@ class SetCollector extends AbstractCollector implements \ArrayAccess
     /**
      * @override
      */
-    public function __construct(array|Set $data = [], bool $readOnly = null)
+    public function __construct(array|Set $data = [])
     {
         if ($data && is_array($data)) {
             $data = array_list($data);
             $data = array_dedupe($data);
         }
 
-        parent::__construct($data, $readOnly);
+        parent::__construct($data);
     }
 
     /**

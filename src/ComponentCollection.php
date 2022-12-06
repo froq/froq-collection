@@ -24,11 +24,11 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @throws froq\collection\CollectionException
      * @override
      */
-    public function __construct(array $names, bool $readOnly = null)
+    public function __construct(array $names)
     {
         $names ?: throw new CollectionException('No names given');
 
-        parent::__construct(array_fill_keys($names, null), $readOnly);
+        parent::__construct(array_fill_keys($names, null));
     }
 
     /**
@@ -110,11 +110,9 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @param  mixed  $value
      * @return self
      * @causes froq\collection\CollectionException
-     * @causes froq\common\exception\ReadOnlyException
      */
     public function set(string $name, mixed $value): self
     {
-        $this->readOnlyCheck();
         $this->nameCheck($name);
 
         $this->data[$name] = $value;
@@ -145,11 +143,9 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @param  string $name
      * @return void
      * @causes froq\collection\CollectionException
-     * @causes froq\common\exception\ReadOnlyException
      */
     public function remove(string $name): void
     {
-        $this->readOnlyCheck();
         $this->nameCheck($name);
 
         $this->data[$name] = null;

@@ -28,13 +28,9 @@ trait FilterTrait
      * @param  bool          $useKeys
      * @param  bool          $keepKeys
      * @return self
-     * @causes froq\common\exception\ReadOnlyException
      */
     public function filter(callable $func = null, bool $recursive = false, bool $useKeys = false, bool $keepKeys = true): self
     {
-        // For read-only check.
-        $this->call('readOnlyCheck');
-
         $this->data = Arrays::filter($this->data, $func, $recursive, $useKeys, $keepKeys);
 
         // For some internal data changes.
@@ -49,13 +45,9 @@ trait FilterTrait
      * @param  callable|string $func
      * @param  bool            $recursive
      * @return self
-     * @causes froq\common\exception\ReadOnlyException
      */
     public function filterKeys(callable $func, bool $recursive = false): self
     {
-        // For read-only check.
-        $this->call('readOnlyCheck');
-
         $this->data = Arrays::filterKeys($this->data, $func, $recursive);
 
         // For some internal data changes.
