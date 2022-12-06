@@ -180,14 +180,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Append given values to data array.
      *
-     * @param  mixed    $value
      * @param  mixed ...$values
      * @return self
      * @since  5.0
      */
-    public function append(mixed $value, mixed ...$values): self
+    public function append(mixed ...$values): self
     {
-        $this->data = array_append($this->data, $value, ...$values);
+        $this->data = array_append($this->data, ...$values);
 
         return $this;
     }
@@ -195,14 +194,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Prepend given values to data array.
      *
-     * @param  mixed    $value
      * @param  mixed ...$values
      * @return self
      * @since  5.0
      */
-    public function prepend(mixed $value, mixed ...$values): self
+    public function prepend(mixed ...$values): self
     {
-        $this->data = array_prepend($this->data, $value, ...$values);
+        $this->data = array_prepend($this->data, ...$values);
 
         return $this;
     }
@@ -210,14 +208,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Delete one/many items by given value(s).
      *
-     * @param  mixed    $value
      * @param  mixed ...$values
      * @return self
      * @since  5.0
      */
-    public function delete(mixed $value, mixed ...$values): self
+    public function delete(mixed ...$values): self
     {
-        $this->data = array_delete($this->data, $value, ...$values);
+        $this->data = array_delete($this->data, ...$values);
 
         return $this;
     }
@@ -225,14 +222,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Delete one/many items by given key(s).
      *
-     * @param  int|string    $key
      * @param  int|string ...$keys
      * @return self
      * @since  5.24
      */
-    public function deleteKey(int|string $key, int|string ...$keys): self
+    public function deleteKey(int|string ...$keys): self
     {
-        $this->data = array_delete_key($this->data, $key, ...$keys);
+        $this->data = array_delete_key($this->data, ...$keys);
 
         return $this;
     }
@@ -254,14 +250,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Concat given item(s) with data array.
      *
-     * @param  mixed    $item
      * @param  mixed ...$items
      * @return self
      * @since  5.22
      */
-    public function concat(mixed $item, mixed ...$items): self
+    public function concat(mixed ...$items): self
     {
-        $this->data = array_concat($this->data, $item, ...$items);
+        $this->data = array_concat($this->data, ...$items);
 
         return $this;
     }
