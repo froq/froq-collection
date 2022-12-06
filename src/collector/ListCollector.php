@@ -21,10 +21,7 @@ class ListCollector extends AbstractCollector implements \ArrayAccess
     use AccessTrait, GetTrait;
 
     /**
-     * Constructor.
-     *
-     * @param array     $data
-     * @param bool|null $readOnly
+     * @override
      */
     public function __construct(array $data = [], bool $readOnly = null)
     {

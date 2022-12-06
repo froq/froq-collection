@@ -22,10 +22,7 @@ class SetCollector extends AbstractCollector implements \ArrayAccess
     use AccessTrait, GetTrait;
 
     /**
-     * Constructor.
-     *
-     * @param array|Set $data
-     * @param bool|null $readOnly
+     * @override
      */
     public function __construct(array|Set $data = [], bool $readOnly = null)
     {

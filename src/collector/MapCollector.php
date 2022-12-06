@@ -22,10 +22,7 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     use AccessTrait, AccessMagicTrait, GetTrait;
 
     /**
-     * Constructor.
-     *
-     * @param iterable|Map $data
-     * @param bool|null    $readOnly
+     * @override
      */
     public function __construct(iterable|Map $data = [], bool $readOnly = null)
     {
