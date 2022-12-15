@@ -37,9 +37,9 @@ class ArrayIterator extends \ArrayIterator implements Arrayable, Listable, \Json
      * @param  int|null  $func
      * @param  int       $flags
      * @param  bool|null $assoc
-     * @return void
+     * @return self
      */
-    public function sort(callable|int $func = null, int $flags = 0, bool $assoc = null): void
+    public function sort(callable|int $func = null, int $flags = 0, bool $assoc = null): self
     {
         if ($data = $this->toArray()) {
             $data = array_sort($data, $func, $flags, $assoc);
@@ -47,15 +47,37 @@ class ArrayIterator extends \ArrayIterator implements Arrayable, Listable, \Json
             // The only way to replace data so far.
             parent::__construct($data);
         }
+
+        return $this;
+    }
+
+    /**
+     * Slice (useful for after-sort calls).
+     *
+     * @param  int      $start
+     * @param  int|null $end
+     * @param  bool     $keepKeys
+     * @return self
+     */
+    public function slice(int $start, int $end = null, bool $keepKeys = false): self
+    {
+        if ($data = $this->toArray()) {
+            $data = array_slice($data, $start, $end, $keepKeys);
+
+            // The only way to replace data so far.
+            parent::__construct($data);
+        }
+
+        return $this;
     }
 
     /**
      * Reverse.
      *
      * @param  bool $keepKeys
-     * @return void
+     * @return self
      */
-    public function reverse(bool $keepKeys = false): void
+    public function reverse(bool $keepKeys = false): self
     {
         if ($data = $this->toArray()) {
             $data = array_reverse($this->toArray(), $keepKeys);
@@ -63,16 +85,20 @@ class ArrayIterator extends \ArrayIterator implements Arrayable, Listable, \Json
             // The only way to replace data so far.
             parent::__construct($data);
         }
+
+        return $this;
     }
 
     /**
      * @override
      */
-    public function append(mixed ...$items): void
+    public function append(mixed ...$items): self
     {
         foreach ($items as $item) {
             parent::append($item);
         }
+
+        return $this;
     }
 
     /**
