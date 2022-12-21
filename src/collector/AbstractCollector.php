@@ -33,7 +33,7 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
     public function __construct(iterable $data = [])
     {
         if ($data) {
-            if (is_iterator($data)) {
+            if ($data instanceof \Traversable) {
                 $data = Util::makeArray($data, deep: false);
             }
 
