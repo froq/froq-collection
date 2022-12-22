@@ -132,7 +132,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
     {
         $this->nameCheck($name);
 
-        $value =& $this->data[$name] ?? $default;
+        $value = &$this->data[$name] ?? $default;
 
         return $value;
     }

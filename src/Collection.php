@@ -43,7 +43,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function &get(int|string|array $key, mixed $default = null, bool $drop = false): mixed
     {
-        $value =& array_get($this->data, $key, $default, $drop);
+        $value = &array_get($this->data, $key, $default, $drop);
 
         return $value;
     }

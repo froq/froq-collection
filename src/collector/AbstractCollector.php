@@ -79,7 +79,7 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
      */
     protected function &_get(int|string $key, mixed $default = null): mixed
     {
-        $value =& $this->data[$key] ?? $default;
+        $value = &$this->data[$key] ?? $default;
 
         return $value;
     }

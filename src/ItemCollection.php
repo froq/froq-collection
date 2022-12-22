@@ -119,7 +119,7 @@ class ItemCollection extends AbstractCollection implements \ArrayAccess
      */
     public function &get(int $index, mixed $default = null): mixed
     {
-        $value =& $this->data[$index] ?? $default;
+        $value = &$this->data[$index] ?? $default;
 
         return $value;
     }

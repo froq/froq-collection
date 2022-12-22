@@ -97,7 +97,7 @@ class TypedCollection extends AbstractCollection implements \ArrayAccess
      */
     public function &get(int|string $key, mixed $default = null): mixed
     {
-        $value =& $this->data[$key] ?? $default;
+        $value = &$this->data[$key] ?? $default;
 
         return $value;
     }
