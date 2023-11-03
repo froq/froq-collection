@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection\trait;
 
 use froq\collection\iterator\{ArrayIterator, ReverseArrayIterator};
@@ -13,7 +11,7 @@ use froq\collection\iterator\{ArrayIterator, ReverseArrayIterator};
  * A trait, provides some basic methods for array-like classes.
  *
  * @package froq\collection\trait
- * @object  froq\collection\trait\ArrayTrait
+ * @class   froq\collection\trait\ArrayTrait
  * @author  Kerem Güneş
  * @since   4.0, 6.0
  */
@@ -128,20 +126,16 @@ trait ArrayTrait
     }
 
     /**
-     * @inheritDoc froq\common\interface\Yieldable
-     * @since 5.4
+     * Search for the key of given value.
+     *
+     * @param  mixed $value
+     * @param  bool  $strict
+     * @param  bool  $last
+     * @return int|string|null
      */
-    public function yield(bool $reverse = false): iterable
+    public function search(mixed $value, bool $strict = true, bool $last = false): int|string|null
     {
-        if (!$reverse) {
-            foreach ($this->data as $key => $value) {
-                yield $key => $value;
-            }
-        } else {
-            for (end($this->data); ($key = key($this->data)) !== null; prev($this->data)) {
-                yield $key => current($this->data);
-            }
-        }
+        return array_search_key($this->data, $value, $strict, $last);
     }
 
     /**
@@ -171,10 +165,10 @@ trait ArrayTrait
     /**
      * Static constructor.
      *
-     * @param  iterable|null $data
+     * @param  iterable $data
      * @return static
      */
-    public static function from(iterable|null $data): static
+    public static function from(iterable $data): static
     {
         return new static($data);
     }

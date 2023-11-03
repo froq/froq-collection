@@ -1,17 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection\trait;
 
 /**
  * A trait, provides `has()`, `hasKey()` and `hasValue()` methods.
  *
  * @package froq\collection\trait
- * @object  froq\collection\trait\HasTrait
+ * @class   froq\collection\trait\HasTrait
  * @author  Kerem Güneş
  * @since   5.15
  */
@@ -42,12 +40,13 @@ trait HasTrait
     /**
      * Check whether given value exists in data array.
      *
-     * @param  mixed $value
-     * @param  bool  $strict
+     * @param  mixed       $value
+     * @param  bool        $strict
+     * @param  int|string &$key
      * @return bool
      */
-    public function hasValue(mixed $value, bool $strict = true): bool
+    public function hasValue(mixed $value, bool $strict = true, int|string &$key = null): bool
     {
-        return array_value_exists($value, $this->data, $strict);
+        return array_value_exists($value, $this->data, $strict, $key);
     }
 }

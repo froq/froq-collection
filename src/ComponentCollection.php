@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection;
 
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
@@ -14,7 +12,7 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
  * given names only, also provides calls via `__call()` magic for given names.
  *
  * @package froq\collection
- * @object  froq\collection\ComponentCollection
+ * @class   froq\collection\ComponentCollection
  * @author  Kerem Güneş
  * @since   3.5
  */
@@ -22,26 +20,15 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
 {
     use AccessTrait, AccessMagicTrait, GetTrait;
 
-    /** @var array */
-    private static array $names = [];
-
-    /** @var bool */
-    private static bool $throw;
-
     /**
-     * Constructor.
-     *
-     * @param array     $names
-     * @param bool      $throw
-     * @param bool|null $readOnly
      * @throws froq\collection\CollectionException
+     * @override
      */
-    public function __construct(array $names, bool $throw = true, bool $readOnly = null)
+    public function __construct(array $names)
     {
-        self::$names = $names ?: throw new CollectionException('No names given');
-        self::$throw = $throw;
+        $names ?: throw new CollectionException('No names given');
 
-        parent::__construct(array_fill_keys($names, null), $readOnly);
+        parent::__construct(array_fill_keys($names, null));
     }
 
     /**
@@ -53,7 +40,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @throws froq\collection\CollectionException
      * @magic
      */
-    public final function __call(string $method, array $methodArgs = []): mixed
+    public function __call(string $method, array $methodArgs = []): mixed
     {
         // Eg: setFoo('bar') => set('foo', 'bar') or getFoo() => get('foo').
         if (str_starts_with($method, 'set')) {
@@ -68,7 +55,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
         throw new CollectionException(
             'Invalid method call as %s(), [tip: %s class is a component collection '.
             'and only set/get prefixed methods can be called via __call() if not exist]',
-            [$method, static::class]
+            [$method, $this::class]
         );
     }
 
@@ -77,19 +64,9 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      *
      * @return array
      */
-    public final function names(): array
+    public function names(): array
     {
-        return self::$names;
-    }
-
-    /**
-     * Get throw state.
-     *
-     * @return bool
-     */
-    public final function throw(): bool
-    {
-        return self::$throw;
+        return array_keys($this->data);
     }
 
     /**
@@ -98,7 +75,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @param  string $name
      * @return bool
      */
-    public final function has(string $name): bool
+    public function has(string $name): bool
     {
         return isset($this->data[$name]);
     }
@@ -109,7 +86,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @param  string $name
      * @return bool
      */
-    public final function hasName(string $name): bool
+    public function hasName(string $name): bool
     {
         return array_key_exists($name, $this->data);
     }
@@ -121,7 +98,7 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @param  bool  $strict
      * @return bool
      */
-    public final function hasValue(mixed $value, bool $strict = true): bool
+    public function hasValue(mixed $value, bool $strict = true): bool
     {
         return array_value_exists($value, $this->data, $strict);
     }
@@ -133,11 +110,9 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @param  mixed  $value
      * @return self
      * @causes froq\collection\CollectionException
-     * @causes froq\common\exception\ReadOnlyException
      */
-    public final function set(string $name, mixed $value): self
+    public function set(string $name, mixed $value): self
     {
-        $this->readOnlyCheck();
         $this->nameCheck($name);
 
         $this->data[$name] = $value;
@@ -153,11 +128,13 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @return mixed|null
      * @causes froq\collection\CollectionException
      */
-    public final function get(string $name, mixed $default = null): mixed
+    public function &get(string $name, mixed $default = null): mixed
     {
         $this->nameCheck($name);
 
-        return $this->data[$name] ?? $default;
+        $value = &$this->data[$name] ?? $default;
+
+        return $value;
     }
 
     /**
@@ -166,11 +143,9 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
      * @param  string $name
      * @return void
      * @causes froq\collection\CollectionException
-     * @causes froq\common\exception\ReadOnlyException
      */
-    public final function remove(string $name): void
+    public function remove(string $name): void
     {
-        $this->readOnlyCheck();
         $this->nameCheck($name);
 
         $this->data[$name] = null;
@@ -179,22 +154,15 @@ class ComponentCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Check for a valid component name.
      *
-     * @param  string $name
-     * @return void
      * @throws froq\collection\CollectionException
      */
     private function nameCheck(string $name): void
     {
-        if (!self::$throw) {
-            return;
+        if (!$this->hasName($name)) {
+            throw new CollectionException(
+                'Invalid component name %q for %s [valids: %A]',
+                [$name, $this::class, $this->names()]
+            );
         }
-        if (in_array($name, self::$names, true)) {
-            return;
-        }
-
-        throw new CollectionException(
-            'Invalid component name `%s` [class: %s, valids: %a]',
-            [$name, static::class, self::$names]
-        );
     }
 }

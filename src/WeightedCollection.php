@@ -1,54 +1,41 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection;
 
 /**
  * A weighted-array class, utilizes item selection operations by their weights.
  *
  * @package froq\collection
- * @object  froq\collection\WeightedCollection
+ * @class   froq\collection\WeightedCollection
  * @author  Kerem Güneş
  * @since   4.0
  */
 class WeightedCollection extends AbstractCollection
 {
     /**
-     * Constructor.
-     *
-     * @param array|null $data
-     * @param bool|null  $readOnly
-     */
-    public function __construct(array $data = null, bool $readOnly = null)
-    {
-        parent::__construct($data, $readOnly);
-    }
-
-    /**
      * Select items by default.
      *
      * @return array|null
      */
-    public final function select(): array|null
+    public function select(): array|null
     {
         return $this->selectBy(null, null);
     }
 
     /**
-     * Select items (by optionally given min-weight / max-weight).
+     * Select items (by optionally given min/max weight).
      *
-     * @param  float|null $minWeight
-     * @param  float|null $maxWeight
+     * @param  int|float|null $minWeight
+     * @param  int|float|null $maxWeight
      * @return array|null
      */
-    public final function selectBy(float $minWeight = null, float $maxWeight = null): array|null
+    public function selectBy(int|float $minWeight = null, int|float $maxWeight = null): array|null
     {
         return $this->filterize(function ($item) use ($minWeight, $maxWeight) {
-            // There is nothing to do without weight.
+            // There is nothing to do without a "weight" field.
             if (!is_array($item) || !isset($item['weight'])) {
                 return false;
             }
@@ -67,17 +54,14 @@ class WeightedCollection extends AbstractCollection
 
     /**
      * Filter self data items by given callback.
-     *
-     * @param  callable $calback
-     * @return array|null
      */
     private function filterize(callable $calback): array|null
     {
         $items = array_filter($this->data, $calback);
         $count = count($items);
 
-        if ($count == 0) return null;
-        if ($count == 1) return $items[0];
+        if ($count === 0) return null;
+        if ($count === 1) return $items[0];
 
         $totalWeight = 0.0;
         foreach ($items as $item) {
@@ -104,10 +88,6 @@ class WeightedCollection extends AbstractCollection
 
     /**
      * Get a random number by given min/max directives.
-     *
-     * @param  float $min
-     * @param  float $max
-     * @return float
      */
     private function randomize(float $min, float $max): float
     {

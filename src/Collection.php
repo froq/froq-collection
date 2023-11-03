@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection;
 
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait, HasTrait};
@@ -13,24 +11,13 @@ use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait, HasTrait};
  * A collection class, contains a couple of utility methods and behaves like a simple object.
  *
  * @package froq\collection
- * @object  froq\collection\Collection
+ * @class   froq\collection\Collection
  * @author  Kerem Güneş
  * @since   1.0
  */
 class Collection extends AbstractCollection implements \ArrayAccess
 {
     use AccessTrait, AccessMagicTrait, GetTrait, HasTrait;
-
-    /**
-     * Constructor.
-     *
-     * @param array|null $data
-     * @param bool|null  $readOnly
-     */
-    public function __construct(array $data = null, bool $readOnly = null)
-    {
-        parent::__construct($data, $readOnly);
-    }
 
     /**
      * Set one/many items.
@@ -41,9 +28,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function set(int|string|array $key, mixed $value = null): self
     {
-        $this->readOnlyCheck();
-        $this->keyCheck($key);
-
         array_set($this->data, $key, $value);
 
         return $this;
@@ -57,9 +41,9 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * @param  bool                         $drop
      * @return mixed|null
      */
-    public function get(int|string|array $key, mixed $default = null, bool $drop = false): mixed
+    public function &get(int|string|array $key, mixed $default = null, bool $drop = false): mixed
     {
-        $value = array_get($this->data, $key, $default, $drop);
+        $value = &array_get($this->data, $key, $default, $drop);
 
         return $value;
     }
@@ -72,8 +56,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function remove(int|string|array $key): self
     {
-        $this->readOnlyCheck();
-
         array_remove($this->data, $key);
 
         return $this;
@@ -88,8 +70,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function add(mixed ...$values): self
     {
-        $this->readOnlyCheck();
-
         foreach ($values as $value) {
             $this->data[] = $value;
         }
@@ -107,8 +87,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function compact(int|string|array $keys, mixed ...$vars): self
     {
-        $this->readOnlyCheck();
-
         $this->data = array_compact($keys, ...$vars);
 
         return $this;
@@ -138,8 +116,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function push(mixed $value): self
     {
-        $this->readOnlyCheck();
-
         array_push($this->data, $value);
 
         return $this;
@@ -153,8 +129,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function pop(): mixed
     {
-        $this->readOnlyCheck();
-
         return array_pop($this->data);
     }
 
@@ -167,8 +141,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function unpop(array $data): self
     {
-        $this->readOnlyCheck();
-
         foreach ($data as $key => $value) {
             // Drop olds, so prevent in-place replace.
             if (isset($this->data[$key])) {
@@ -188,8 +160,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function shift(): mixed
     {
-        $this->readOnlyCheck();
-
         return array_shift($this->data);
     }
 
@@ -202,8 +172,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function unshift(array $data): self
     {
-        $this->readOnlyCheck();
-
         $this->data = $data + $this->data;
 
         return $this;
@@ -212,16 +180,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Append given values to data array.
      *
-     * @param  mixed    $value
      * @param  mixed ...$values
      * @return self
      * @since  5.0
      */
-    public function append(mixed $value, mixed ...$values): self
+    public function append(mixed ...$values): self
     {
-        $this->readOnlyCheck();
-
-        $this->data = array_append($this->data, $value, ...$values);
+        $this->data = array_append($this->data, ...$values);
 
         return $this;
     }
@@ -229,16 +194,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Prepend given values to data array.
      *
-     * @param  mixed    $value
      * @param  mixed ...$values
      * @return self
      * @since  5.0
      */
-    public function prepend(mixed $value, mixed ...$values): self
+    public function prepend(mixed ...$values): self
     {
-        $this->readOnlyCheck();
-
-        $this->data = array_prepend($this->data, $value, ...$values);
+        $this->data = array_prepend($this->data, ...$values);
 
         return $this;
     }
@@ -246,16 +208,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Delete one/many items by given value(s).
      *
-     * @param  mixed    $value
      * @param  mixed ...$values
      * @return self
      * @since  5.0
      */
-    public function delete(mixed $value, mixed ...$values): self
+    public function delete(mixed ...$values): self
     {
-        $this->readOnlyCheck();
-
-        $this->data = array_delete($this->data, $value, ...$values);
+        $this->data = array_delete($this->data, ...$values);
 
         return $this;
     }
@@ -263,16 +222,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Delete one/many items by given key(s).
      *
-     * @param  int|string    $key
      * @param  int|string ...$keys
      * @return self
      * @since  5.24
      */
-    public function deleteKey(int|string $key, int|string ...$keys): self
+    public function deleteKey(int|string ...$keys): self
     {
-        $this->readOnlyCheck();
-
-        $this->data = array_delete_key($this->data, $key, ...$keys);
+        $this->data = array_delete_key($this->data, ...$keys);
 
         return $this;
     }
@@ -286,8 +242,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function reverse(bool $keepKeys = false): self
     {
-        $this->readOnlyCheck();
-
         $this->data = array_reverse($this->data, $keepKeys);
 
         return $this;
@@ -296,16 +250,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Concat given item(s) with data array.
      *
-     * @param  mixed    $item
      * @param  mixed ...$items
      * @return self
      * @since  5.22
      */
-    public function concat(mixed $item, mixed ...$items): self
+    public function concat(mixed ...$items): self
     {
-        $this->readOnlyCheck();
-
-        $this->data = array_concat($this->data, $item, ...$items);
+        $this->data = array_concat($this->data, ...$items);
 
         return $this;
     }
@@ -320,8 +271,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function union(array $data, array ...$datas): self
     {
-        $this->readOnlyCheck();
-
         $this->data = array_union($this->data, $data, ...$datas);
 
         return $this;
@@ -330,15 +279,14 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Dedupe items in data array.
      *
-     * @param  bool $strict
+     * @param  bool      $strict
+     * @param  bool|null $list
      * @return self
      * @since  4.0
      */
-    public function dedupe(bool $strict = true): self
+    public function dedupe(bool $strict = true, bool $list = null): self
     {
-        $this->readOnlyCheck();
-
-        $this->data = array_dedupe($this->data, $strict);
+        $this->data = array_dedupe($this->data, $strict, $list);
 
         return $this;
     }
@@ -347,14 +295,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
      * Refine items in data array.
      *
      * @param  array|null $values
+     * @param  bool|null  $list
      * @return self
      * @since  4.0
      */
-    public function refine(array $values = null): self
+    public function refine(array $values = null, bool $list = null): self
     {
-        $this->readOnlyCheck();
-
-        $this->data = array_refine($this->data, $values);
+        $this->data = array_refine($this->data, $values, $list);
 
         return $this;
     }
@@ -368,8 +315,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function unique(int $flags = SORT_STRING): self
     {
-        $this->readOnlyCheck();
-
         $this->data = array_unique($this->data, $flags);
 
         return $this;
@@ -493,8 +438,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function merge(array $data, array ...$datas): self
     {
-        $this->readOnlyCheck();
-
         $this->data = array_merge($this->data, $data, ...$datas);
 
         return $this;
@@ -510,8 +453,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function mergeRecursive(array $data, array ...$datas): self
     {
-        $this->readOnlyCheck();
-
         $this->data = array_merge_recursive($this->data, $data, ...$datas);
 
         return $this;
@@ -527,8 +468,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function replace(array $data, array ...$datas): self
     {
-        $this->readOnlyCheck();
-
         $this->data = array_replace($this->data, $data, ...$datas);
 
         return $this;
@@ -544,8 +483,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function replaceRecursive(array $data, array ...$datas): self
     {
-        $this->readOnlyCheck();
-
         $this->data = array_replace_recursive($this->data, $data, ...$datas);
 
         return $this;
@@ -562,8 +499,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function flat(bool $keepKeys = false, bool $fixKeys = false, bool $multi = true): self
     {
-        $this->readOnlyCheck();
-
         $this->data = array_flat($this->data, $keepKeys, $fixKeys, $multi);
 
         return $this;
@@ -592,7 +527,7 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function searchLastKey(mixed $value, bool $strict = true): int|string|null
     {
-        return array_search_key($this->data, $value, $strict, true);
+        return array_search_key($this->data, $value, $strict, last: true);
     }
 
     /**
@@ -660,8 +595,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function shuffle(bool $assoc = null)
     {
-        $this->readOnlyCheck();
-
         $this->data = array_shuffle($this->data, $assoc);
 
         return $this;
@@ -675,8 +608,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function flip(): self
     {
-        $this->readOnlyCheck();
-
         $this->data = array_flip($this->data);
 
         return $this;
@@ -693,8 +624,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function pad(int $length, mixed $value = null, bool $append = false): self
     {
-        $this->readOnlyCheck();
-
         if (!$append) {
             $this->data = array_pad($this->data, $length, $value);
         } else {
@@ -719,8 +648,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function padKeys(array $keys, mixed $value = null, bool $isset = false): self
     {
-        $this->readOnlyCheck();
-
         $this->data = array_pad_keys($this->data, $keys, $value, $isset);
 
         return $this;
@@ -737,8 +664,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function fill(int $length, mixed $value = null, bool $append = false): self
     {
-        $this->readOnlyCheck();
-
         if (!$append) {
             $this->data = array_fill(0, $length, $value);
         } else {
@@ -762,8 +687,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
      */
     public function fillKeys(array $keys, mixed $value = null): self
     {
-        $this->readOnlyCheck();
-
         $this->data = array_fill_keys($keys, $value);
 
         return $this;

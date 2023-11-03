@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection\collector;
 
 use froq\collection\trait\{AccessTrait, AccessMagicTrait, GetTrait};
@@ -15,7 +13,7 @@ use Map;
  * structure with some utility methods.
  *
  * @package froq\collection\collector
- * @object  froq\collection\collector\MapCollector
+ * @class   froq\collection\collector\MapCollector
  * @author  Kerem Güneş
  * @since   4.0, 5.4, 5.16, 6.0
  */
@@ -24,84 +22,81 @@ class MapCollector extends AbstractCollector implements \ArrayAccess
     use AccessTrait, AccessMagicTrait, GetTrait;
 
     /**
-     * Constructor.
-     *
-     * @param array|Map|null $data
-     * @param bool|null      $readOnly
+     * @override
      */
-    public function __construct(array|Map $data = null, bool $readOnly = null)
+    public function __construct(iterable|Map $data = [])
     {
-        parent::__construct($data, $readOnly);
+        parent::__construct($data);
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public final function set(string $key, mixed $value): self
+    public function set(string $key, mixed $value): self
     {
         return $this->_set($key, $value);
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public final function get(string $key, mixed $default = null): mixed
+    public function &get(string $key, mixed $default = null): mixed
     {
         return $this->_get($key, $default);
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public final function remove(string $key, mixed &$value = null): bool
+    public function remove(string $key): bool
     {
-        return $this->_remove($key, $value);
+        return $this->_remove($key);
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public final function removeValue(mixed $value, string &$key = null): bool
+    public function removeValue(mixed $value): bool
     {
-        return $this->_removeValue($value, $key);
+        return $this->_removeValue($value);
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public final function replace(string $key, mixed $value): bool
+    public function replace(string $key, mixed $value): bool
     {
         return $this->_replace($key, $value);
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public final function replaceValue(mixed $oldValue, mixed $newValue, string &$key = null): bool
+    public function replaceValue(mixed $oldValue, mixed $newValue): bool
     {
-        return $this->_replaceValue($oldValue, $newValue, $key);
+        return $this->_replaceValue($oldValue, $newValue);
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public final function has(string $key): bool
+    public function has(string $key): bool
     {
         return $this->_has($key);
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public final function hasKey(string $key): bool
+    public function hasKey(string $key): bool
     {
         return $this->_hasKey($key);
     }
 
     /**
-     * @inheritDoc froq\collection\collector\CollectorTrait
+     * @inheritDoc froq\collection\collector\AbstractCollector
      */
-    public final function hasValue(mixed $value, string &$key = null): bool
+    public function hasValue(mixed $value, string &$key = null): bool
     {
         return $this->_hasValue($value, $key);
     }

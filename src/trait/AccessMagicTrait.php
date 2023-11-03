@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright (c) 2015 · Kerem Güneş
  * Apache License 2.0 · http://github.com/froq/froq-collection
  */
-declare(strict_types=1);
-
 namespace froq\collection\trait;
 
 /**
@@ -12,7 +10,7 @@ namespace froq\collection\trait;
  * and `remove()` methods.
  *
  * @package froq\collection\trait
- * @object  froq\collection\trait\AccessMagicTrait
+ * @class   froq\collection\trait\AccessMagicTrait
  * @author  Kerem Güneş
  * @since   5.0, 5.4
  */
@@ -31,7 +29,7 @@ trait AccessMagicTrait
     }
 
     /** @magic */
-    public function __get(int|string $key): mixed
+    public function &__get(int|string $key): mixed
     {
         return $this->get($key);
     }
