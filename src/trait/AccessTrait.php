@@ -17,17 +17,17 @@ namespace froq\collection\trait;
 trait AccessTrait
 {
     /** @internal */
-    private int|null $__indexer = null;
+    private ?int $__indexer = null;
 
     /** @internal */
-    private function __getMaxIndex(): int|null
+    private function __getMaxIndex(): int
     {
         if (isset($this->data)) {
             $keys = array_keys($this->data);
             $keys = array_filter($keys, 'is_int');
             return max($keys ?: [0]);
         }
-        return null;
+        return 0;
     }
 
     /** @inheritDoc ArrayAccess */
@@ -40,7 +40,10 @@ trait AccessTrait
     public function offsetSet(mixed $key, mixed $value): void
     {
         // Calls like `items[] = item`.
+        // Note: items['x'][] = 1; call should NOT be used,
+        // use instead; items['x'] = []; items['x'][] = 1;
         if ($key === null) {
+            // It does NOT maintain negative indexes.
             $this->__indexer ??= $this->__getMaxIndex();
             $key = $this->__indexer++;
         }
@@ -52,8 +55,8 @@ trait AccessTrait
     public function &offsetGet(mixed $key): mixed
     {
         // Calls like `items[][] = item`.
-        // It does NOT maintain negative indexes.
         if ($key === null) {
+            // It does NOT maintain negative indexes.
             $this->__indexer ??= $this->__getMaxIndex();
             $key = $this->__indexer++;
         }
