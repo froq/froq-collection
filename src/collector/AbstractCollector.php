@@ -7,7 +7,6 @@ namespace froq\collection\collector;
 
 use froq\collection\trait\ArrayTrait;
 use froq\common\interface\{Arrayable, Objectable, Listable, Jsonable, Iteratable, IteratableReverse};
-use froq\util\Util;
 
 /**
  * Abstract collector class.
@@ -32,15 +31,7 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
      */
     public function __construct(iterable $data = [])
     {
-        if ($data) {
-            if ($data instanceof \Traversable) {
-                $data = Util::makeArray($data, deep: false);
-            }
-
-            foreach ($data as $key => $value) {
-                $this->data[$key] = $value;
-            }
-        }
+        $data && $this->data = [...$data];
     }
 
     /**

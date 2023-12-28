@@ -6,7 +6,6 @@
 namespace froq\collection\iterator;
 
 use froq\common\interface\{Arrayable, Listable};
-use froq\util\Util;
 
 /**
  * An extended `ArrayIterator` class.
@@ -23,12 +22,7 @@ class ArrayIterator extends \ArrayIterator implements Arrayable, Listable, \Json
      */
     public function __construct(iterable $data = [])
     {
-        $data && $data = (
-            is_array($data) ? $data
-                : Util::makeArray($data, deep: false)
-        );
-
-        parent::__construct($data);
+        parent::__construct([...$data]);
     }
 
     /**
@@ -37,68 +31,93 @@ class ArrayIterator extends \ArrayIterator implements Arrayable, Listable, \Json
      * @param  int|null  $func
      * @param  int       $flags
      * @param  bool|null $assoc
+     * @param  bool      $key
      * @return self
      */
-    public function sort(callable|int $func = null, int $flags = 0, bool $assoc = null): self
+    public function sort(callable|int $func = null, int $flags = 0, bool $assoc = null, bool $key = false): self
     {
-        if ($data = $this->toArray()) {
-            $data = array_sort($data, $func, $flags, $assoc);
-
-            // The only way to replace data so far.
-            parent::__construct($data);
-        }
+        parent::__construct(
+            sorted($this->toArray(), $func, $flags, $assoc, $key)
+        );
 
         return $this;
     }
 
     /**
-     * Slice (useful for after-sort calls).
+     * Filter items.
      *
-     * @param  int      $start
-     * @param  int|null $end
+     * @param  callable|null $func
+     * @param  bool          $useKeys
+     * @param  bool          $keepKeys
+     * @return self
+     */
+    public function filter(callable $func = null, bool $useKeys = false, bool $keepKeys = true): self
+    {
+        parent::__construct(
+            filter($this->toArray(), $func, false, $useKeys, $keepKeys)
+        );
+
+        return $this;
+    }
+
+    /**
+     * Map items.
+     *
+     * @param  callable $func
+     * @param  bool     $useKeys
      * @param  bool     $keepKeys
      * @return self
      */
-    public function slice(int $start, int $end = null, bool $keepKeys = false): self
+    public function map(callable $func, bool $useKeys = false, bool $keepKeys = true): self
     {
-        if ($data = $this->toArray()) {
-            $data = array_slice($data, $start, $end, $keepKeys);
-
-            // The only way to replace data so far.
-            parent::__construct($data);
-        }
+        parent::__construct(
+            map($this->toArray(), $func, false, $useKeys, $keepKeys)
+        );
 
         return $this;
     }
 
     /**
-     * Reverse.
+     * Reduce.
      *
-     * @param  bool $keepKeys
-     * @return self
+     * @param  mixed    $carry
+     * @param  callable $func
+     * @param  bool     $right
+     * @return mixed
      */
-    public function reverse(bool $keepKeys = false): self
+    public function reduce(mixed $carry, callable $func, bool $right = false): mixed
     {
-        if ($data = $this->toArray()) {
-            $data = array_reverse($this->toArray(), $keepKeys);
+        return reduce($this->toArray(), $carry, $func, $right);
+    }
 
-            // The only way to replace data so far.
-            parent::__construct($data);
-        }
+    /**
+     * Get keys.
+     *
+     * @return array
+     */
+    public function keys(): array
+    {
+        return array_keys($this->toArray());
+    }
 
-        return $this;
+    /**
+     * Get values.
+     *
+     * @return array
+     */
+    public function values(): array
+    {
+        return array_values($this->toArray());
     }
 
     /**
      * @override
      */
-    public function append(mixed ...$items): self
+    public function append(mixed ...$items): void
     {
         foreach ($items as $item) {
             parent::append($item);
         }
-
-        return $this;
     }
 
     /**
