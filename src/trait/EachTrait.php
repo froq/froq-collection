@@ -21,25 +21,21 @@ trait EachTrait
      * Call given function for each value of data array.
      *
      * @param  callable $func
-     * @return self
+     * @return void
      */
-    public function each(callable $func): self
+    public function each(callable $func): void
     {
         Arrays::each($this->data, $func);
-
-        return $this;
     }
 
     /**
      * Call given function for each key of data array.
      *
      * @param  callable $func
-     * @return self
+     * @return void
      */
-    public function eachKey(callable $func): self
+    public function eachKey(callable $func): void
     {
         Arrays::each(array_keys($this->data), $func);
-
-        return $this;
     }
 }
