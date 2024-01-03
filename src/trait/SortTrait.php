@@ -28,7 +28,7 @@ trait SortTrait
      * @param  bool|null         $assoc
      * @return self
      */
-    public function sort(callable|int $func = null, $flags = 0, bool $assoc = null): self
+    public function sort(callable|int $func = null, int $flags = 0, bool $assoc = null): self
     {
         $this->data = Arrays::sort($this->data, $func, $flags, $assoc);
 
