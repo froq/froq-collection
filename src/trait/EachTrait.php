@@ -8,7 +8,7 @@ namespace froq\collection\trait;
 use froq\util\Arrays;
 
 /**
- * A trait, provides `each()` method.
+ * A trait, provides `each()` and `eachKey()` methods.
  *
  * @package froq\collection\trait
  * @class   froq\collection\trait\EachTrait
@@ -18,7 +18,7 @@ use froq\util\Arrays;
 trait EachTrait
 {
     /**
-     * Call given function for each value of data array.
+     * Call given function for each pair (value/key) of data array.
      *
      * @param  callable $func
      * @return void
