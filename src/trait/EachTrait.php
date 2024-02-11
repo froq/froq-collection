@@ -20,22 +20,28 @@ trait EachTrait
     /**
      * Call given function for each pair (value/key) of data array.
      *
-     * @param  callable $func
-     * @return void
+     * @param  callable    $func
+     * @param  mixed    ...$funcArgs
+     * @return self
      */
-    public function each(callable $func): void
+    public function each(callable $func, mixed ...$funcArgs): self
     {
-        Arrays::each($this->data, $func);
+        Arrays::each($this->data, $func, ...$funcArgs);
+
+        return $this;
     }
 
     /**
      * Call given function for each key of data array.
      *
-     * @param  callable $func
-     * @return void
+     * @param  callable    $func
+     * @param  mixed    ...$funcArgs
+     * @return self
      */
-    public function eachKey(callable $func): void
+    public function eachKey(callable $func, mixed ...$funcArgs): self
     {
-        Arrays::each(array_keys($this->data), $func);
+        Arrays::each(array_keys($this->data), $func, ...$funcArgs);
+
+        return $this;
     }
 }
