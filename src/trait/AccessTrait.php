@@ -22,12 +22,12 @@ trait AccessTrait
     /** @internal */
     private function __getMaxIndex(): int
     {
-        if (isset($this->data)) {
+        if (!empty($this->data)) {
             $keys = array_keys($this->data);
             $keys = array_filter($keys, 'is_int');
-            return max($keys ?: [0]);
+            return max($keys ?: [-1]);
         }
-        return 0;
+        return -1;
     }
 
     /** @inheritDoc ArrayAccess */
@@ -45,7 +45,7 @@ trait AccessTrait
         if ($key === null) {
             // It does NOT maintain negative indexes.
             $this->__indexer ??= $this->__getMaxIndex();
-            $key = $this->__indexer++;
+            $key = ++$this->__indexer;
         }
 
         $this->set($key, $value);
@@ -58,7 +58,7 @@ trait AccessTrait
         if ($key === null) {
             // It does NOT maintain negative indexes.
             $this->__indexer ??= $this->__getMaxIndex();
-            $key = $this->__indexer++;
+            $key = ++$this->__indexer;
         }
 
         return $this->get($key);
