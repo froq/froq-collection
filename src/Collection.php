@@ -133,26 +133,6 @@ class Collection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Unpop an item (aka push).
-     *
-     * @param  array $data
-     * @return self
-     * @since  4.0
-     */
-    public function unpop(array $data): self
-    {
-        foreach ($data as $key => $value) {
-            // Drop olds, so prevent in-place replace.
-            if (isset($this->data[$key])) {
-                unset($this->data[$key]);
-            }
-            $this->data[$key] = $value;
-        }
-
-        return $this;
-    }
-
-    /**
      * Shift an item.
      *
      * @return mixed
@@ -166,13 +146,13 @@ class Collection extends AbstractCollection implements \ArrayAccess
     /**
      * Unshift an item.
      *
-     * @param  array $data
+     * @param  array $value
      * @return self
      * @since  4.0
      */
-    public function unshift(array $data): self
+    public function unshift(array $value): self
     {
-        $this->data = $data + $this->data;
+        array_unshift($this->data, $value);
 
         return $this;
     }
