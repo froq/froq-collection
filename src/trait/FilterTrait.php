@@ -23,13 +23,13 @@ trait FilterTrait
     /**
      * Apply a filter action on data array.
      *
-     * @param  callable|null $func
-     * @param  bool          $recursive
-     * @param  bool          $useKeys
-     * @param  bool          $keepKeys
+     * @param  callable|string|array|null $func
+     * @param  bool                       $recursive
+     * @param  bool                       $useKeys
+     * @param  bool                       $keepKeys
      * @return self
      */
-    public function filter(callable $func = null, bool $recursive = false, bool $useKeys = false, bool $keepKeys = true): self
+    public function filter(callable|string|array $func = null, bool $recursive = false, bool $useKeys = false, bool $keepKeys = true): self
     {
         $this->data = Arrays::filter($this->data, $func, $recursive, $useKeys, $keepKeys);
 
