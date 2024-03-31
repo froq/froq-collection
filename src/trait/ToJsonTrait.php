@@ -6,7 +6,7 @@
 namespace froq\collection\trait;
 
 /**
- * A trait, provides `toJson()` and `json()` methods.
+ * A trait, provides `toJson()` methods.
  *
  * @package froq\collection\trait
  * @class   froq\collection\trait\ToJsonTrait
@@ -24,13 +24,5 @@ trait ToJsonTrait
     public function toJson(int $flags = 0): string
     {
         return (string) json_encode($this->data, $flags);
-    }
-
-    /**
-     * @alias toJson()
-     */
-    public function json(...$args)
-    {
-        return $this->toJson(...$args);
     }
 }

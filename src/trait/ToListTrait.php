@@ -6,7 +6,7 @@
 namespace froq\collection\trait;
 
 /**
- * A trait, provides `toList()` and `list()` methods.
+ * A trait, provides `toList()` methods.
  *
  * @package froq\collection\trait
  * @class   froq\collection\trait\ToListTrait
@@ -23,13 +23,5 @@ trait ToListTrait
     public function toList(): array
     {
         return array_values($this->data);
-    }
-
-    /**
-     * @alias toList()
-     */
-    public function list()
-    {
-        return $this->toList();
     }
 }

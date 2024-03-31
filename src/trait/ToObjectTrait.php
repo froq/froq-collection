@@ -6,7 +6,7 @@
 namespace froq\collection\trait;
 
 /**
- * A trait, provides `toObject()` and `object()` methods.
+ * A trait, provides `toObject()` methods.
  *
  * @package froq\collection\trait
  * @class   froq\collection\trait\ToObjectTrait
@@ -23,13 +23,5 @@ trait ToObjectTrait
     public function toObject(): object
     {
         return (object) $this->data;
-    }
-
-    /**
-     * @alias toObject()
-     */
-    public function object()
-    {
-        return $this->toObject();
     }
 }

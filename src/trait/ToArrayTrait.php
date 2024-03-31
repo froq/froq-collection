@@ -6,7 +6,7 @@
 namespace froq\collection\trait;
 
 /**
- * A trait, provides `toArray()` and `array()` methods.
+ * A trait, provides `toArray()` methods.
  *
  * @package froq\collection\trait
  * @class   froq\collection\trait\ToArrayTrait
@@ -23,13 +23,5 @@ trait ToArrayTrait
     public function toArray(): array
     {
         return $this->data;
-    }
-
-    /**
-     * @alias toArray()
-     */
-    public function array()
-    {
-        return $this->toArray();
     }
 }
