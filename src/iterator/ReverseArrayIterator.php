@@ -20,6 +20,11 @@ class ReverseArrayIterator extends ArrayIterator
      */
     public function __construct(iterable $data = [], bool $keepKeys = false)
     {
-        parent::__construct(array_reverse([...$data], $keepKeys));
+        $items = [];
+        foreach ($data as $key => $value) {
+            $items[$key] = $value;
+        }
+
+        parent::__construct(array_reverse($items, $keepKeys));
     }
 }

@@ -22,7 +22,12 @@ class ArrayIterator extends \ArrayIterator implements Arrayable, Listable, \Json
      */
     public function __construct(iterable $data = [])
     {
-        parent::__construct([...$data]);
+        $items = [];
+        foreach ($data as $key => $value) {
+            $items[$key] = $value;
+        }
+
+        parent::__construct($items);
     }
 
     /**
