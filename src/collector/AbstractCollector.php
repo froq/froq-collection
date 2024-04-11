@@ -31,7 +31,9 @@ abstract class AbstractCollector implements Arrayable, Objectable, Listable, Jso
      */
     public function __construct(iterable $data = [])
     {
-        $this->data = [...$data];
+        foreach ($data as $key => $value) {
+            $this->data[$key] = $value;
+        }
     }
 
     /**
