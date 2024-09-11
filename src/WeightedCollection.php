@@ -55,9 +55,9 @@ class WeightedCollection extends AbstractCollection
     /**
      * Filter self data items by given callback.
      */
-    private function filterize(callable $calback): array|null
+    private function filterize(callable $filter): array|null
     {
-        $items = array_filter($this->data, $calback);
+        $items = filter($this->data, $filter);
         $count = count($items);
 
         if ($count === 0) return null;
