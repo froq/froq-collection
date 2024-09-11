@@ -19,7 +19,7 @@ trait ArrayTrait
 {
     use SortTrait, FilterTrait, MapTrait, ReduceTrait, ApplyTrait, AggregateTrait,
         EachTrait, CountTrait, EmptyTrait, FindTrait, MinMaxTrait, FirstLastTrait,
-        CalcAverageTrait, CalcProductTrait, CalcSumTrait, IteratorTrait,
+        CalcAvgTrait, CalcSumTrait, IteratorTrait,
         ToArrayTrait, ToListTrait, ToObjectTrait, ToJsonTrait;
 
     /** @magic */

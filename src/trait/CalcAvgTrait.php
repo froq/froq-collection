@@ -6,24 +6,24 @@
 namespace froq\collection\trait;
 
 /**
- * A trait, provides `sum()` method.
+ * A trait, provides `avg()` methods.
  *
  * @package froq\collection\trait
- * @class   froq\collection\trait\CalcSumTrait
+ * @class   froq\collection\trait\CalcAvgTrait
  * @author  Kerem Güneş
  * @since   5.12
  */
-trait CalcSumTrait
+trait CalcAvgTrait
 {
     /**
-     * Calculate the sum of values of data array.
+     * Calculate the average of values of data array.
      *
      * @param  int|null $precision
-     * @return int|float
+     * @return float
      */
-    public function sum(int $precision = null): int|float
+    public function avg(int $precision = null): int|float
     {
-        $ret = sum($this->data);
+        $ret = avg($this->data);
 
         return ($precision !== null) ? round($ret, $precision) : $ret;
     }
